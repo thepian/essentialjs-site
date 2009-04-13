@@ -5,7 +5,7 @@
 .DS_Store
 .installed.cfg
 *.egg-info
-skeleton-log.txt
+instance-log.txt
 bin/
 develop-eggs/
 eggs/
@@ -16,3 +16,4 @@ target/
 release/
 repos/
 src/
+testdb
