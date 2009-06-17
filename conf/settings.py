@@ -58,7 +58,7 @@ MEDIA_ROOT = ''
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = structure.machine.MEDIA_URL
+MEDIA_URL = 'http://media.skeleton.com'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -101,10 +101,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     #'django_openidconsumer.middleware.OpenIDMiddleware',
     'theapps.supervisor.middleware.DeviceMiddleware',
-    'theapps.supervisor.middleware.StandardExceptionMiddleware',
 )
 
-ROOT_URLCONF = 'conf.urls' #'skeleton.urls'
+ROOT_URLCONF = 'urls' 
 #URLCONFS = {
 #    'www':'conf.urls',
 #    'media':'devonly.media_urls',
@@ -162,12 +161,12 @@ ABSOLUTE_URL_OVERRIDES = {
     "auth.user": lambda o: "/users/%s/" % o.username,
 }
 
-AUTH_USER_MODULE = 'theapps.account.user_model.User'
-AUTH_PROFILE_MODELS = ('retail.Partner',)
-AUTH_PROFILE_MODULE = 'account.Profile'
+# AUTH_USER_MODULE = 'account.user_model.User'
+# AUTH_PROFILE_MODELS = ('account.Profile',)
+# AUTH_PROFILE_MODULE = 'account.Profile'
 
-EMAIL_HOST = structure.machine.EMAIL_HOST
-SERVER_EMAIL = structure.machine.NICK + "@thepia.net"
+EMAIL_HOST = 'localhost'
+SERVER_EMAIL = "server@thepia.net"
 
 DEFAULT_FROM_EMAIL = 'confirmations@skeleton.com'
 
