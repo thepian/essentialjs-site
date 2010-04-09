@@ -25,10 +25,24 @@ body {
   line-height: 1.5; 
 }
 
+ins { text-decoration:none; }
+del { text-decoration: line-through; }
+em { text-decoration:none; font-style:normal; }
+sup { vertical-align:inherit; font-size:inherit; }
+
 /* Tables still need 'cellspacing="0"' in the markup. */
 table { border-collapse: separate; border-spacing: 0; }
-caption, th, td { text-align: left; font-weight: normal; }
+caption,th{text-align:left;}
+caption, th, td { /*text-align: left;*/ font-weight: normal; }
 table, td, th { vertical-align: middle; }
+
+address,caption,cite,code,dfn,em,strong,th,var{
+	font-style:normal;font-weight:normal;
+}
+
+ol,ul{
+	list-style:none;
+}
 
 /* Remove possible quote marks (") from <q>, <blockquote>. */
 blockquote:before, blockquote:after, q:before, q:after { content: ""; }
@@ -36,3 +50,40 @@ blockquote, q { quotes: "" ""; }
 
 /* Remove annoying border on linked images. */
 a img { border: none; }
+
+message,
+template {
+	display:none;
+}
+
+.canonical-html h1,h2,h3 { font-weight: bold; }
+.canonical-html h1 { font-size:1.4em; }
+.canonical-html h2 { font-size:1.2em; }
+
+.canonical-html dd { margin-left:4em; }
+.canonical-html fieldset {
+	position:relative;
+	border: 2px groove threedface; /* FF */
+	padding: 0.35em 0.625em 0.75em; /* FF */
+	margin: .25em 0; 
+}
+body.ext-ie .canonical-html fieldset {
+	border: 1px inset #ccc; /* IE */
+	padding: 0.95em 0.625em 0.75em 0.35em; /* FF */
+	margin: .75em 0; 
+}
+
+.canonical-html fieldset legend { 
+	border-style: none;
+	border-width: 0 medium;
+}
+
+body.ext-ie .canonical-html fieldset legend { 
+	position:absolute;
+	top:-.5em;
+	left:.6em;
+}
+/*
+ dt/dd fieldset/legend h1/h2/h3/h4 ol/ul/li
+ */
+
