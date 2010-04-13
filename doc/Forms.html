@@ -1,0 +1,502 @@
+<!doctype html>
+<html>
+	<head>
+<link rel="stylesheet" type="text/css" href="markitup/skins/macosx/style.css" />
+<link rel="stylesheet" type="text/css" href="markitup/sets/textile/style.css" />
+
+<script type="text/javascript" src="jquery-1.4.1.min.js"></script>
+<script type="text/javascript" src="markitup/jquery.markitup.js"></script>
+<script type="text/javascript" src="markitup/sets/textile/set.js"></script>
+
+<script type="text/javascript" src="textile.js"></script>
+
+<style>
+	body { font-family:Palatino Linotype,"Calisto MT",Geneva,Helvetica,Arial,sans-serif; font-size:.8em; }
+	code { font-family: "Courier New", Courier, monospace; }
+	code.blockquote { display:block; border-top:1px solid #aaa; border-bottom:1px solid #aaa;}
+	
+	span.test { display:none; }
+</style>
+<script type="text/javascript">
+$(document).ready(function() {
+	var body_html = $('body').html();
+	document.body.innerHTML = convert(body_html);
+//    $('#add-comment').markItUp(myTextileSettings);
+});
+</script>		
+	</head>
+	
+
+<body>
+h1)>. Form Essentials
+
+h2. Design Goals
+
+* Mimick HTML5 Forms wherever feasable.
+* Common interactive patterns for Tickets & Tiles are supported by special attributes
+* It should be possible to enhance forms for other use cases later such as Common/Open/Save dialogs.
+* Support plugging in Ext ComboBox & Date Picker with explicit attribute
+* Support translation of labels, button captions, titles and the like.
+* Support multiple controls manipulating the same data piece
+* Support lookup of valid values from internal/sl4b container/http rest api
+* Support time input (date, time, delta, datetime, tenor, custom calendar, custom delta)
+* Support command buttons, data buttons, menu buttons, progress indicators
+
+
+h2. Form as Webcentric Dialog
+
+Modify caplintrader.xml to include a new dialog definition, 
+==<showDialog id="my-trade-ticket" defer="true">
+  <caplin:Form	title="My Trade Ticket"
+  	name="my-trade-ticket" 
+	presentation="caplin.form.DefaultFormController"
+	template="form:my-trade-ticket">
+	<formDecorators></formDecorators>
+	<property setter="setObjectName"/>
+	<property setter="setBuySell" value="BUY"/>
+	<property setter="setAmount"/>
+  </caplin>
+</showDialog>==
+
+This will instantiate a @caplin.form.DefaultFormController@ as the presentation side.
+Setters will be called on the controller instance if they are implemented. 
+And it will instantiate a @caplin.form.FormView@ based on the *'form:my-trade-ticket'* template as the view side.
+
+Form nodes can be placed inside &lt;showDialog&gt; as above, inside a &lt;panel&gt;, or any other component.
+
+Standard HTML form element attributes can be set on the form element, and will be applied to the rendered form element. 
+
+Form Decorators are not currently supported, but will provide a form level way to enhance the view programaticly.
+
+h2. Rendering a Form explicitly
+
+The essential form functionality is implemented in the dom library which is agnostic to the Component-Decorator-Controller
+distinction. You will normally want to use the form library implementation.
+
+==var oForm = HTMLForm.get("form:myform");
+var eForm = oForm.render({
+	reset: resetHandler,
+	command: commandHandler
+},{ 
+	tag:"form",
+	attributes: { name:"my-trade-ticket" } 
+});
+// append the fragment to where you want the form rendered
+document.body.appendChild(eForm)==
+
+The FormView rests on top of the @caplin.dom.HTMLForm@ class. Handlers passed to the render call add the 
+behaviour to the form.
+
+To create a form component follow this this template:
+
+==var mElementAttributes = {
+	name:"my-trade-ticket"
+};
+
+var oFormView = new FormView("form:myform","caplin.form.DefaultFormController",mElementAttributes);
+
+// append the fragment to where you want the form rendered
+document.body.appendChild(oForm.getElement())==
+
+You can replace @caplin.form.DefaultFormController@ with your own controller implementation.
+
+Refer to the component library documentation for further information on lifecycle management for a Form Component.
+
+h2. Form Markup
+
+The form markup is written as HTML with additional tags and fields. The additions follow
+the "HTML 5 Specification":http://www.whatwg.org/specs/web-apps/current-work/multipage/forms.html#forms wherever possible.
+
+A form is created based on one or more templates, the main template being specified in the definition.
+When rendered the form is wrapped in an HTML form element. Attributes passed are applied to the element. 
+
+<form>
+	<fieldset data-name="names">
+	<label for="first">First</label>
+	<input name="first" type="text" data-name="first">
+	
+	<button type="submit">Ok</button>
+	<button type="reset">Reset</button>
+	</fieldset>
+</form>
+
+==<template name="form:myform">
+	<fieldset data-name="names">
+	<label for="first">First</label>
+	<input name="first" type="text" data-name="first">
+	
+	<button type="submit">Ok</button>
+	<button type="reset">Reset</button>
+	</fieldset>
+</template>==
+
+Refer to the *Data Model Attributes* and *Other Attributes* for enhancements.  
+
+h2. Relationship to TradeModel
+
+The TradeModel from @caplin.trading@ reflects how the trade is understood as a business concept.
+The running form maintains a simple presentation data (Form Data) which can track additional information about the interactive state.
+Some information that is implicit in the TradeModel becomes explicit in the form presentation data. (I.E. leg caption)
+
+The form data can be manipulated by FormView.get and FormComponent.set. The controller is notified whenever form data
+changes. 
+ 
+h2. Data Model Attributes
+These attribues are used to wire up the embedded form data.
+
+Any element in the form can become a data control element. If 'data-name', 'data-enabled', 'data-readonly', 'data-class', 
+'data-visible', or 'data-display' is specified the element becomes a control driving and/or being driven by form data.
+Controls are bound to the from and tracked in HTMLElements.
+
+dt. data-namespace (any)
+dd. Name of the entry used by this branch of the form. 
+dt. data-name (control)
+dd. Names of the entries within the form data that drives the control. (Must be valid identifier)
+dt. data-renderer (control)
+dd. The name of the renderer type (@caplin.element@) to apply to the control. The renderer handler is used to create the renderer.
+dt. name (control)
+dd. A control that requires a form data entry will resolve it using the name attribute if no data-name attribute exists.
+dt. data-lookup (control)
+dd. URL determining how valid model values are looked up. 
+dt. data-depends (control)
+dd. Names of entries within the form data that the lookup (or rendering) depends on.
+dt. data-enabled (control or fieldset)
+dd. Name of the entry that determines if control is enabled
+dt. data-class (any)
+dd. Name of the entry that determines the class of the element.
+dt. data-visible (any)
+dd. Name of the entry that determines inline style for css visibility. <br>Defaults to no inline style. Valid values for the entry are, true, false, '', 'visible', 'hidden', 'collapse'
+dt. data-display (any)
+dd. Name of the entry that determines inline style for css display. <br>Defaults to no inline style. Valid values for the entry are, true, false, '', 'default', 'inline', 'block', 'inline-block', 'none' 
+dt. data-action (button)
+dd. Name of the data handler to trigger when the button is pressed. Use in combination with data-name.
+dt. data-edit-timeout (input)
+dd. Speculative idle time after which editing of a value ends.
+dt. data-constant (button)
+dd. Used in combination with 'data-action' to reset,increase,decrease the current data entry Use constant notation to specify.
+dt. data-default (control)
+dd. Specify a constant default to use rather than the one in the html.
+
+Valid characters in data idenfifiers are [a-Z] /*-_~#@$;
+
+h2. Other Attributes
+
+dt. command (button)
+dd. Specifies a named command to trigger. Instantiates a handler specific to the command and control element.
+dt. translate
+dd. Message code used for the text content of the tag. (I.E. labels or spans)
+dt. translate-title
+dd. Message code used for the title of the tag. (I.E. tooltip for button or input)
+
+
+h2. Adding controls
+
+Input an amount in currency formatted using a renderer, but stored in the model.
+==<input type="text" data-name="amount" data-renderer="amount-in-currency">==
+
+Make a button for executing a trade when appropriate
+==<button data-enabled="execute-enabled" command="execute-trade">Execute</button>==
+
+Make a button with an updating bid price and enable clicking to execute when appropriate.
+==<button data-renderer="bid-price" data-enabled="bid-enabled" command="execute-bid"></button>==
+
+h2. Lifecycle Handlers
+
+Handlers are set when rendering a form element. They are the mechanism underlying the communication
+between Form and Controller. The handler should return a trigger function if behaviour is needed for the
+event on that element.
+
+dt. implementation
+dd. Called to "init" and "destroy" for each data element to determine the appropriate implementation.
+dt. renderer
+dd. Called to "init" and "destroy" for each data element with a renderer attribute, or a RendererImplementation.
+
+==eForm.handler(oView,sStage)==
+==eForm.initTrigger(eClone,oImplementation,sRenderer)==
+==eForm.initTrigger(eClone,sRenderer,mNames)==
+==eForm.destroyTrigger(eClone,oImplementation)==
+==destroyTrigger(eClone,oRenderer)==
+
+h2. Data Handlers
+
+Handlers are set when rendering a form element. They are the mechanism underlying the communication
+between Form and Controller. The handler should return a trigger function if behaviour is needed for the
+event on that element.
+
+dt. set
+dd. Called when a data value is set with a call to the set method
+dt. toggle
+dd. Called when a data value must be toggled
+dt. increase
+dd. Increase the value
+dt. decrease
+dd. Decrease the value
+dt. reset
+dd. Called when a data value needs to be reset during a call to reset. Call parameters are passed, allowing you to distinguish, initial open from reset button click. (init,all,single)
+dt. editbegin
+dd. Called before the first change is made to a data value by an editing operation or data-action
+dt. editdone
+dd. Called after a data value has been changed by an editing operation or data-action
+
+dt. lookup
+dd. somewhat different data handler. Expects an array of objects.
+dt. mapping
+dd. somewhat different data handler. Expects a map or a function.
+
+==eForm.handler(sNamespace,sName,oInstance,oFormData)==
+
+h2. Element Handlers
+
+Handlers are set when rendering a form element. They are the mechanism underlying the communication
+between Form and Controller. The handler should return a trigger function if behaviour is needed for the
+event on that element.
+
+dt. command
+dd. Called when a button with a command defined is clicked. 
+dt. change
+dd. Called after editing of an input or textarea.
+dt. changebegin
+dd. Called before the first change of an input or textarea.
+dt. formchange
+dd. called after editing of an input or textarea on all other data elements.
+dt. input
+dd. Called for every change of an input or textarea
+dt. forminput
+dd. Called after every change of and input or textarea on all other data elements.
+
+==eForm.handler(sNamespace,sName,oInstance,mElements)==
+==eForm.handler(sNamespace,sCommand,oInstance,mElements)==
+
+p. TODO edit used for validate ?
+p. TODO access key handler, set up for combinations of key & form state/stage. form.remap() ? templates/tabs/fieldset focus should remap
+
+h2. Stages
+
+Form construction goes through a number of stages
+
+Templates Load - Serverside determines what to templates and messages to put in document body
+
+HTMLTemplate Instantiation - handlers are called for relevant elements to create element triggers
+
+(Possible localisation stage)
+
+HTMLForm Instantiation - Just gets the appropriate template
+
+HTMLData init - data identified by the element attributes is reset to initial state
+
+HTMLTemplate render - element triggers are called to clone/decorate elements
+
+HTMLForm render - form handlers are called for relevant elements to create triggers
+
+Populate Controls
+
+Running Form
+
+Forget
+
+h2. decorator
+h2. controller
+h2. default model
+
+Fetching forms from a custom repository or with custom factory.
+
+var oDocument = window.createDocument();
+var oForm = HTMLForm.get("myform",oDocument);
+
+If no model name is given on an ancestor node using "data-namespace", the model name
+will be 'namespace'. Data field names will be a combination of "data-namespace" and "data-name".
+
+	
+==	<template> 
+		<form name="outer">
+			Before
+			<object name="inner"> Inner </object>
+			After
+		</form>
+	</template>
+==	
+	
+use Ext controls and hook in data model
+
+Allow combining text-input/span and button loosely
+
+Allow combo-box controls
+
+stick to essentially html for form definition
+
+time input (date, time, delta, datetime, tenor, custom-calendar, custom-delta)
+
+h2. Actions
+
+handler for an action
+
+Control actions
+* push a button (element command)
+* close dialog (element command)
+
+Data actions
+* initial values (data reset init)
+* reset form / form.reset (data reset all)
+* spin forward (data increase)
+* spin back (data decrease)
+
+Pane actions
+* scroll line up
+* scroll line down
+* scroll page up
+* scroll page down
+* scroll top
+* scroll bottom
+
+Form actions
+* submit
+* reset (default values)
+* clear (blank values)
+* show
+* hide
+
+
+h2. Looking up
+
+Combo-box lookup, popup lists, date picker
+
+Specify url of http / rttp scheme
+
+
+
+==function handler(action, {element attributes}, {form attributes}) {
+	// when handler is bound to element
+	
+	return function(event) {
+		// when thing happens
+	};
+}==
+
+h2. Namespaces
+
+p. namespace
+p. form (submit command)
+p. chrome (title and close button)
+
+h2. Validation
+
+Responding to failed validation check.
+
+Valid model entry value vs invalid value.
+
+h2. Translation
+
+Attributes 'translate' and 'translate-title' can be put on any element refering to a translation
+code that will be used to replace contents or title attribute.
+An option on the template will allow translation of all/given elements and/or attributes.
+ 
+h2. Access Keys
+
+Mapping key combinations for a particular form state.
+
+h2. HTML5 attributes and tags
+
+Attributes being considered
+
+dt. required (control)
+dd. Is a value required
+dt. pattern (control)
+dd. RegExp for validation
+dt. autofocus (control)
+dd. Moves focus to the control when form is opened
+dt. readonly (control)
+dd. The control cannot be changed only read
+dt. nofocus (control)
+dd. Focus cannot be moved to the control
+dt. autocomplete
+dt. list
+dt. multiple
+dt. min/max
+dt. step
+dt. placeholder
+
+Tags considered
+dt. time
+dt. datalist
+dt. progress
+dt. meter
+
+==form.checkValidity()
+form.dispatchFormInput()
+form.dispatchFormChange()==
+
+h2. Handler Internals
+
+# Template construction (no HTMLForm or eForm)
+# Template rendering (HTMLForm known, eClone passed)
+# Instantiate Data Handler (HTMLForm, eForm, mValues)
+# Reset presentation data 
+# Instantiate Element Handler (HTMLForm, eForm, eControl, mElements)
+
+When rendering a form a handlers map is created by cloning the map passed to the render function.
+Two sub-maps byElements and byData are added holding instantiated handlers.
+
+Commands are by Element, but listed as a combination of command name and the word command, such as:
+handlers.byElement[control]["submit_command"]
+
+text inputs have an implicit data-action=editdone
+
+button default type is set to button, to avoid browser submit behaviour, unless explicitly needed.
+
+eForm.bound
+eForm.values
+(eForm.statics)
+eForm.htmlForm
+eForm.instance
+eForm.handlers
+(eForm.triggers)
+eForm.handlers.triggers
+eForm.handlers.byData
+
+eControl.handlers
+eControl.handlers.triggers
+eControl.handlers.byData
+eControl.values
+eControl.elements
+(eControl.triggers)
+eControl.renderer
+eControl.implementation
+
+h2. Constant Notation
+
+data-constant			
+ * Parse a string of constant notation.
+ * "abc" -> "abc"
+ * "'abc'" -> "abc"
+ * "'ab'c'" -> "ab'c"
+ * "'ab'c" -> "'ab'c"
+ * "0" -> (0)
+ * "true" -> (true)
+ * "'true'" -> "true"
+ * "'0'" -> "0"
+
+
+h2. Outstanding
+Spinner repeats while holding down, trigger("ongoing") vs trigger("final")
+
+TODO Fields affecting changes to classes for expand/collapse hide/show
+TODO reflecting data-enabled with a css class
+
+
+<br>
+<textarea id="add-comment" cols="80" rows="20">
+h2. Comment
+	<template>
+		<form name="outer">
+			Before
+			<object name="inner"> Inner </object>
+			After
+		</form>
+	</template>
+	
+</textarea>
+	
+
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+body { 
+background-color: white;
+padding: 0 0.3em;
+font-family: Georgia, 'Times New Roman', serif;
+font-size:80%; 
+}
+
+fieldset {
+	background-color: aliceblue;
+}
+
+legend {
+	font-weight: bold;
+	color:dimgray;
+}
+
+p.validation { color: firebrick; font-size: .8em; }
+p.explanation { color: darkgreen; font-size: .8em; }
+dl.left-side { position:absolute; width:30%; }
+dl.right-side { position:relative; left:30%; width:30%; }
+
+.aligned-definitions {
+	border:2px groove threedface;
+	padding:.3em;
+	background-color: aliceblue;
+}
+body.ext-id .aligned-definitions { border:1px inset #ccc; }
+
+.aligned-definitions dt { position:absolute; }
+.aligned-definitions dd { position:relative; margin-left:0; left: 8.5em; padding-bottom: .2em; }
+.aligned-definitions dl.left-side { position:absolute; width:34%; }
+.aligned-definitions dl.right-side { position:relative; left:34%; width:34%; }
+.aligned-definitions span.spin-buttons { 
+	display:inline-block; position:relative;  
+	width:1em; height:1.8em; vertical-align:bottom;
+} 
+.aligned-definitions span.spin-buttons button { 
+	display:block; 
+	position:absolute;
+	left:0;
+	padding:0; 
+	margin:0;
+	width:20px;
+	height:11px;
+} 
+.aligned-definitions span.spin-buttons button.top { 
+	top:0;
+} 
+.aligned-definitions span.spin-buttons button.bottom { 
+	bottom:0;
+} 
+.aligned-definitions span.spin-buttons button em {
+	display:block;
+	vertical-align:top;
+	margin-top:-6px;
+	line-height:8px; 
+}
+
+body.ext-ie .aligned-definitions fieldset.just-line,
+.aligned-definitions fieldset.just-line { border-left:0; border-right:0; border-bottom:0; }
