@@ -1,9 +1,3 @@
-caplin.namespace("caplin.dom");
-
-caplin.include("caplin.core.Error");
-caplin.include("caplin.dom.HTMLTemplate",true);
-caplin.include("caplin.dom.HTMLMessage");
-caplin.include("caplin.dom.HTMLImplementation");
 
 /**
  * @beta
@@ -11,7 +5,7 @@ caplin.include("caplin.dom.HTMLImplementation");
  * Structure internal to HTMLForm
  * An instance is created for the form element and each of the controls
  */
-caplin.dom.HTMLFormData = function(oInstance,mHandlers,mExtras)
+HTMLFormData = function(oInstance,mHandlers,mExtras)
 {
 	this.namespaces = {};
 	this.values = {};
@@ -35,7 +29,7 @@ caplin.dom.HTMLFormData = function(oInstance,mHandlers,mExtras)
 };
 
 /** @private */
-caplin.dom.HTMLFormData.prototype._setEntry = function(sFullName,sNamespace,sName,mData)
+HTMLFormData.prototype._setEntry = function(sFullName,sNamespace,sName,mData)
 {
 	mData = mData || {};
 	if (this.namespaces[sNamespace] == undefined) {
@@ -68,7 +62,7 @@ caplin.dom.HTMLFormData.prototype._setEntry = function(sFullName,sNamespace,sNam
  * @param {Map} mExtras
  * @param {Map} mNames
  */
-caplin.dom.HTMLFormData.register = function(mExtras,mNames)
+HTMLFormData.register = function(mExtras,mNames)
 {
 	if (mExtras.namespaces == undefined) mExtras.namespaces = {};
 	if (mExtras.namespaces[mNames.namespace] == undefined) mExtras.namespaces[mNames.namespace] = {};
@@ -89,7 +83,7 @@ caplin.dom.HTMLFormData.register = function(mExtras,mNames)
  * @param sDataName Optional name of the data
  * @param sHtml Optional static value of the presentation data
  */
-caplin.dom.HTMLFormData.makeNames = function(pStack,sDataName,sHtml,sDefault)
+HTMLFormData.makeNames = function(pStack,sDataName,sHtml,sDefault)
 {
 	var pSpace = [];
 	pStack.forEach(function(e){
@@ -135,7 +129,7 @@ caplin.dom.HTMLFormData.makeNames = function(pStack,sDataName,sHtml,sDefault)
 };
 
 /** @private */
-caplin.dom.HTMLFormData.prototype.forget = function()
+HTMLFormData.prototype.forget = function()
 {
 	// Clear all data triggers
 	for(var n in this.values) {
@@ -149,7 +143,7 @@ caplin.dom.HTMLFormData.prototype.forget = function()
 };
 
 /** @private */
-caplin.dom.HTMLFormData.HANDLERS = {
+HTMLFormData.HANDLERS = {
 	"reset": "data", "increase":"data", "decrease":"data", "toggle":"data", 
 	"set": "data", "editbegin": "data", "editdone": "data",
 	
@@ -166,7 +160,7 @@ caplin.dom.HTMLFormData.HANDLERS = {
 
 
 /** @private */
-caplin.dom.HTMLFormData.prototype.ensureTriggers = function(eForm)
+HTMLFormData.prototype.ensureTriggers = function(eForm)
 {
 	if (this.handlers.command == null) return;
 	
@@ -181,7 +175,7 @@ caplin.dom.HTMLFormData.prototype.ensureTriggers = function(eForm)
 };
 
 /** @private */
-caplin.dom.HTMLFormData.prototype.DEFAULT_DATA_HANDLERS = {
+HTMLFormData.prototype.DEFAULT_DATA_HANDLERS = {
 	"reset": function(sNamespace,sName,oInstance,oFormData) {
 		return function(vValue,sStage) {
 			oFormData.set(sNamespace,sName,vValue === undefined? null : vValue);
@@ -210,7 +204,7 @@ caplin.dom.HTMLFormData.prototype.DEFAULT_DATA_HANDLERS = {
  * @private
  * @param {String} sEventName
  */
-caplin.dom.HTMLFormData.prototype.ensureMappingTriggers = function(sEventName,eForm)
+HTMLFormData.prototype.ensureMappingTriggers = function(sEventName,eForm)
 { 
 	var fDefaultDataHandler = this.DEFAULT_DATA_HANDLERS[sEventName];
 	var fDataHandler = this.handlers[sEventName] || fDefaultDataHandler; 
@@ -237,7 +231,7 @@ caplin.dom.HTMLFormData.prototype.ensureMappingTriggers = function(sEventName,eF
  * Call on Control Data
  * @param {String} sEventName
  */
-caplin.dom.HTMLFormData.prototype.ensureLookupTrigger = function(sEventName,eForm, sLookup)
+HTMLFormData.prototype.ensureLookupTrigger = function(sEventName,eForm, sLookup)
 { 
 	var fDefaultDataHandler = this.DEFAULT_DATA_HANDLERS[sEventName];
 	var fDataHandler = this.handlers[sEventName] || fDefaultDataHandler; 
@@ -255,7 +249,7 @@ caplin.dom.HTMLFormData.prototype.ensureLookupTrigger = function(sEventName,eFor
  * @private
  * @param {String} sEventName
  */
-caplin.dom.HTMLFormData.prototype.ensureDataTriggers = function(sEventName,eForm)
+HTMLFormData.prototype.ensureDataTriggers = function(sEventName,eForm)
 { 
 	var fDefaultDataHandler = this.DEFAULT_DATA_HANDLERS[sEventName];
 	var fDataHandler = this.handlers[sEventName] || fDefaultDataHandler; 
@@ -273,7 +267,7 @@ caplin.dom.HTMLFormData.prototype.ensureDataTriggers = function(sEventName,eForm
 };
 
 /** @private */
-caplin.dom.HTMLFormData.prototype.fireDataTrigger = function(sAction,oThis,sName,v1,v2)
+HTMLFormData.prototype.fireDataTrigger = function(sAction,oThis,sName,v1,v2)
 {
 	if (this.values[sName] == undefined) return; // data entry unknown
 	var mTriggers = this.values[sName].triggers;
@@ -286,7 +280,7 @@ caplin.dom.HTMLFormData.prototype.fireDataTrigger = function(sAction,oThis,sName
  * @param {Object} sStage
  * @param {String} sValue Determines which value to use ("default" for 
  */
-caplin.dom.HTMLFormData.prototype.fireAllDataTriggers = function(sAction,oThis,sValue,sStage)
+HTMLFormData.prototype.fireAllDataTriggers = function(sAction,oThis,sValue,sStage)
 {
 	for(var sFullName in this.values) {
 		var mValues = this.values[sFullName];
@@ -304,10 +298,10 @@ caplin.dom.HTMLFormData.prototype.fireAllDataTriggers = function(sAction,oThis,s
  * @param {String} sEventName implementation or renderer
  * @param {HTMLFormElement} eForm
  */
-caplin.dom.HTMLFormData.prototype.ensureLifecycleTriggers = function(sEventName,eForm)
+HTMLFormData.prototype.ensureLifecycleTriggers = function(sEventName,eForm)
 {
 	for(var n in this.handlers) {
-		if (caplin.dom.HTMLFormData.HANDLERS[n] == "life") {
+		if (HTMLFormData.HANDLERS[n] == "life") {
 			this.triggers["init_"+n] = this.handlers[n].call(eForm,this.instance,"init");
 			this.triggers["destroy_"+n] = this.handlers[n].call(eForm,this.instance,"destroy");
 		}
@@ -324,7 +318,7 @@ caplin.dom.HTMLFormData.prototype.ensureLifecycleTriggers = function(sEventName,
  * @param {Object} sNamespace
  * @param {Object} sName
  */
-caplin.dom.HTMLFormData.prototype.fireLifecycleTrigger = function(sEventName,sStage,oThis,eControl,v1,v2,v3,v4)
+HTMLFormData.prototype.fireLifecycleTrigger = function(sEventName,sStage,oThis,eControl,v1,v2,v3,v4)
 {
 	var sAction = sStage+"_"+sEventName;
 	if (this.formTriggers[sAction]) return this.formTriggers[sAction].call(oThis,eControl,v1,v2,v3,v4);
@@ -338,25 +332,25 @@ caplin.dom.HTMLFormData.prototype.fireLifecycleTrigger = function(sEventName,sSt
  * @param {HTMLFormElement} eForm
  * @param {String} sCommand
  */
-caplin.dom.HTMLFormData.prototype.ensureControlTriggers = function(eControl,eForm,sCommand)
+HTMLFormData.prototype.ensureControlTriggers = function(eControl,eForm,sCommand)
 {
 	for(var n in this.handlers) {
-		if (caplin.dom.HTMLFormData.HANDLERS[n] == "command" && sCommand && this.triggers[n] == undefined) {
+		if (HTMLFormData.HANDLERS[n] == "command" && sCommand && this.triggers[n] == undefined) {
 			this.triggers[n] =	this.handlers[n].call(eForm,this.namespace,sCommand,this.instance,eControl);
 		}
-		if (caplin.dom.HTMLFormData.HANDLERS[n] == "element" && this.triggers[n] == undefined) {
+		if (HTMLFormData.HANDLERS[n] == "element" && this.triggers[n] == undefined) {
 			this.triggers[n] =	this.handlers[n].call(eForm,this.namespace,this.name,this.instance,eControl);
 		}
 	}	
 }; 
 
 /** @private */
-caplin.dom.HTMLFormData.prototype.fireTrigger = function(sAction,oThis,mEntry,v1,v2,v3)
+HTMLFormData.prototype.fireTrigger = function(sAction,oThis,mEntry,v1,v2,v3)
 {
 	if (mEntry == undefined) mEntry = this.values[this.full];
 	var sEvent = sAction.indexOf("_")>=0? sAction.substring(sAction.indexOf("_")+1) : sAction; 
 	
-	switch(caplin.dom.HTMLFormData.HANDLERS[sEvent]) {
+	switch(HTMLFormData.HANDLERS[sEvent]) {
 		case "data":
 		case "related":	
 			if (mEntry && mEntry.triggers[sAction]) return mEntry.triggers[sAction].call(oThis,v1,v2,v3);
@@ -374,11 +368,11 @@ caplin.dom.HTMLFormData.prototype.fireTrigger = function(sAction,oThis,mEntry,v1
  * @param {HTMLElement} eControl
  * @param {HTMLFormElement} eForm
  */
-caplin.dom.HTMLFormData.prototype.ensureControlData = function(eControl,mNames)
+HTMLFormData.prototype.ensureControlData = function(eControl,mNames)
 {
 	if (eControl.data) return;
 	
-	var oControlData = eControl.data = new caplin.dom.HTMLFormData(this.instance,this.handlers);
+	var oControlData = eControl.data = new HTMLFormData(this.instance,this.handlers);
 	oControlData.namespace = mNames.namespace;
 	oControlData.name = mNames.name;
 	oControlData.full = mNames.full;
@@ -392,7 +386,7 @@ caplin.dom.HTMLFormData.prototype.ensureControlData = function(eControl,mNames)
 /**
  * 
  */
-caplin.dom.HTMLFormData.prototype.setDataName = function(mNames)
+HTMLFormData.prototype.setDataName = function(mNames)
 {
 	this.namespace = mNames.namespace;
 	this.name = mNames.name;
@@ -402,7 +396,7 @@ caplin.dom.HTMLFormData.prototype.setDataName = function(mNames)
 /**
  * 
  */
-caplin.dom.HTMLFormData.prototype.setDataList = function(sAttribute,mNames)
+HTMLFormData.prototype.setDataList = function(sAttribute,mNames)
 {
 	var pList = this[sAttribute] = [];
 	for(var i=0,n; n = mNames.names[i]; ++i) {
@@ -420,7 +414,7 @@ caplin.dom.HTMLFormData.prototype.setDataList = function(sAttribute,mNames)
  * @param {String} sName
  * @param {Map} mReflection { implementation, element, target, source } 
  */
-caplin.dom.HTMLFormData.prototype.addReflection = function(mNames, mReflection) 
+HTMLFormData.prototype.addReflection = function(mNames, mReflection) 
 {
 	//TODO var pDepends = eClone.data.values[mNames.full].depends = mNames.depends;
 
@@ -437,7 +431,7 @@ caplin.dom.HTMLFormData.prototype.addReflection = function(mNames, mReflection)
  * 
  * @param {Map} mNames Set of names to mark
  */
-caplin.dom.HTMLFormData.prototype.markChanged = function(mNames)
+HTMLFormData.prototype.markChanged = function(mNames)
 {
 	if (typeof mNames == "string") {
 		this.namespaces[arguments[0]][arguments[1]].queued = true;
@@ -449,7 +443,7 @@ caplin.dom.HTMLFormData.prototype.markChanged = function(mNames)
 		
 };
 
-caplin.dom.HTMLFormData.prototype._triggerReflection = function(mEntry)
+HTMLFormData.prototype._triggerReflection = function(mEntry)
 {
 	function mapIt(vValue,mEntry,oPart,oForm) {
 		if (oPart && oPart.mapping) {
@@ -494,7 +488,7 @@ caplin.dom.HTMLFormData.prototype._triggerReflection = function(mEntry)
 	mEntry.queued = false;
 };
 
-caplin.dom.HTMLFormData.prototype.triggerQueuedReflections = function()
+HTMLFormData.prototype.triggerQueuedReflections = function()
 {
 	for(var sFullName in this.values) {
 		var mEntry = this.values[sFullName];
@@ -520,7 +514,7 @@ caplin.dom.HTMLFormData.prototype.triggerQueuedReflections = function()
  * @param {String} sNotify Notification method name (set or editdone)
  * @param {HTMLElement} eSource Source element which will not be updated as it should already be up-to-date or refresh itself
  */
-caplin.dom.HTMLFormData.prototype.set = function(sNamespace,mValues,pFields,sNotify,eSource)
+HTMLFormData.prototype.set = function(sNamespace,mValues,pFields,sNotify,eSource)
 {
 	var eForm = null;//TODO
 	
@@ -573,7 +567,7 @@ caplin.dom.HTMLFormData.prototype.set = function(sNamespace,mValues,pFields,sNot
 };
 
 /** @private */
-caplin.dom.HTMLFormData.prototype.reset = function()
+HTMLFormData.prototype.reset = function()
 {
 	//TODO implement	
 };

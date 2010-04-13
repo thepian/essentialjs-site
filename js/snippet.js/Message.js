@@ -1,36 +1,31 @@
-caplin.namespace("caplin.dom");
-
-caplin.include("caplin.core.Error");
-caplin.include("caplin.dom.HTMLTemplate",true);
-
 /**
  * @beta
  * @param {Object} vMessage
  * @param {Object} mOptions
  */
-caplin.dom.HTMLMessage = function(vMessage,mOptions)
+HTMLMessage = function(vMessage,mOptions)
 {
     caplin.dom.HTMLTemplate.apply(this,arguments);
 };
-caplin.implement(caplin.dom.HTMLMessage, caplin.dom.HTMLTemplate);
+caplin.implement(HTMLMessage, caplin.dom.HTMLTemplate);
 
 /**
  * @private
  */
-caplin.dom.HTMLMessage.CACHE = {};
+HTMLMessage.CACHE = {};
 
 /** @private */
-caplin.dom.HTMLMessage.DEFAULTS = {};
+HTMLMessage.DEFAULTS = {};
 
 /**
  * Messages will be looked up on this document by default
  */
-caplin.dom.HTMLMessage.defaultDocument = document;
+HTMLMessage.defaultDocument = document;
 
 /**
  * @private
  */
-caplin.dom.HTMLMessage._get = function(sName,oDocument,mCache)
+HTMLMessage._get = function(sName,oDocument,mCache)
 {
     if (mCache[sName]) {
         return mCache[sName];
@@ -40,7 +35,7 @@ caplin.dom.HTMLMessage._get = function(sName,oDocument,mCache)
         if (t.getAttribute("name") == sName) {
             var mOptions = {};
             if (t.getAttribute("substitute")) { mOptions["substitute"] = true; }
-            mCache[sName] = new caplin.dom.HTMLMessage(t,mOptions);
+            mCache[sName] = new HTMLMessage(t,mOptions);
             return mCache[sName];
         }
     }
@@ -52,14 +47,14 @@ caplin.dom.HTMLMessage._get = function(sName,oDocument,mCache)
  * @param {Object} sName Name of the template
  * @param {Object} oDocument Optional document to fetch from
  */
-caplin.dom.HTMLMessage.get = function(sName,oDocument)
+HTMLMessage.get = function(sName,oDocument)
 {
-    oDocument = oDocument || caplin.dom.HTMLMessage.defaultDocument;
+    oDocument = oDocument || HTMLMessage.defaultDocument;
     var mCache = this.CACHE[oDocument];
     if (mCache == undefined) { 
         mCache = this.CACHE[oDocument] = {};
         //TODO if there is a "default" template in the document use that
-        mCache["default"] = new caplin.dom.HTMLMessage(""); 
+        mCache["default"] = new HTMLMessage(""); 
     }
     var oMessage = this._get(sName,oDocument,mCache);
     if (oMessage) return oMessage;
@@ -73,9 +68,9 @@ caplin.dom.HTMLMessage.get = function(sName,oDocument)
  * @param {String} sHtml HTML
  * @param {Map} mOptions Map of HTMLMessage options
  */
-caplin.dom.HTMLMessage.setDefaultTranslate = function(sCode,sHtml,mOptions)
+HTMLMessage.setDefaultTranslate = function(sCode,sHtml,mOptions)
 {
-    this.DEFAULTS[sCode] = new caplin.dom.HTMLMessage(sHtml,mOptions || {});
+    this.DEFAULTS[sCode] = new HTMLMessage(sHtml,mOptions || {});
 };
 
 /**
@@ -96,15 +91,15 @@ caplin.dom.HTMLMessage.setDefaultTranslate = function(sCode,sHtml,mOptions)
  * @return DOM Fragment with toString & toHtml functions
  * @beta
  */
-caplin.dom.HTMLMessage.translate = function(sHtml,sText,sCode,sDefault,mValues)
+HTMLMessage.translate = function(sHtml,sText,sCode,sDefault,mValues)
 {
     mValues = mValues || {};
-	var oDocument = caplin.dom.HTMLMessage.defaultDocument;
+	var oDocument = HTMLMessage.defaultDocument;
     var mCache = this.CACHE[oDocument];
     if (mCache == undefined) { 
         mCache = this.CACHE[oDocument] = {};
         //TODO if there is a "default" template in the document use that
-        mCache["default"] = new caplin.dom.HTMLMessage(""); 
+        mCache["default"] = new HTMLMessage(""); 
     }
     
     function text2html(sText,mValues) {
@@ -155,7 +150,7 @@ caplin.dom.HTMLMessage.translate = function(sHtml,sText,sCode,sDefault,mValues)
             sHtml = text2html(sText,mValues);
         }
         var sTemplate = sHtml || sDefault;
-        oMessage = mCache[sKey] = new caplin.dom.HTMLMessage(sTemplate,{ substitute:true });
+        oMessage = mCache[sKey] = new HTMLMessage(sTemplate,{ substitute:true });
     }
     
     return oMessage.render({},{},mValues);
@@ -171,7 +166,7 @@ caplin.dom.HTMLMessage.translate = function(sHtml,sText,sCode,sDefault,mValues)
  * @return DOM Fragment with toString & toHtml functions
  * @beta
  */
-caplin.dom.HTMLMessage.translateHtml = function(sMessage,sDefault,mValues)
+HTMLMessage.translateHtml = function(sMessage,sDefault,mValues)
 {
     if (arguments.length == 2 && typeof sDefault == "object") {
         return this.translate(sMessage,null,null,null,sDefault);
@@ -189,7 +184,7 @@ caplin.dom.HTMLMessage.translateHtml = function(sMessage,sDefault,mValues)
  * @return DOM Fragment with toString & toHtml functions
  * @beta
  */
-caplin.dom.HTMLMessage.translateText = function(sMessage,sDefault,mValues)
+HTMLMessage.translateText = function(sMessage,sDefault,mValues)
 {
     if (arguments.length == 2 && typeof sDefault == "object") {
         return this.translate(null,sMessage,null,null,sDefault);
@@ -210,7 +205,7 @@ caplin.dom.HTMLMessage.translateText = function(sMessage,sDefault,mValues)
  * @return DOM Fragment with toString & toHtml functions
  * @beta
  */
-caplin.dom.HTMLMessage.translateCode = function(sCode,sDefault,mValues)
+HTMLMessage.translateCode = function(sCode,sDefault,mValues)
 {
     return this.translate(null,null,sCode,sDefault,mValues);
 };
@@ -227,7 +222,7 @@ caplin.dom.HTMLMessage.translateCode = function(sCode,sDefault,mValues)
 caplin.dom.HTMLTemplate.ATTRIBUTES["translate"] = function(pStack,mExtras,sAttrName,sCode)
 {
 	try {
-	    var oMessage = caplin.dom.HTMLMessage.get(sCode);
+	    var oMessage = HTMLMessage.get(sCode);
 
 		// instantiate handler the clone of mElements['form'].handlers
 		return function(mElements,mTextNodes,mValues,eClone) {

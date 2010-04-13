@@ -1,17 +1,10 @@
-caplin.namespace("caplin.dom");
-
-caplin.include("caplin.core.Error");
-caplin.include("caplin.dom.HTMLTemplate",true);
-caplin.include("caplin.dom.HTMLImplementation");
-caplin.include("caplin.dom.HTMLFormData");
-
 /**
  * Forms are normally constructed and managed by the HTMLForm.get function
  * 
  * @param {HTMLTemplate} oTemplate Template instance
  * @param {Map} mOptions Map of options, normally shared with the template constructor
  */
-caplin.dom.HTMLForm = function(oTemplate,mOptions)
+HTMLForm = function(oTemplate,mOptions)
 {
 	this.m_oTemplate = oTemplate;
 	this.m_mOptions = mOptions;
@@ -26,11 +19,11 @@ caplin.dom.HTMLForm = function(oTemplate,mOptions)
  * 
  * @return Form Element to be added to DOM
  */
-caplin.dom.HTMLForm.prototype.render = function(mHandlers,mOptions)
+HTMLForm.prototype.render = function(mHandlers,mOptions)
 {
 	mOptions = mOptions || {};
 	mHandlers = mHandlers || {};
-	var oFormData = new caplin.dom.HTMLFormData(mOptions.instance,mHandlers,this.m_oTemplate.m_mExtras);
+	var oFormData = new HTMLFormData(mOptions.instance,mHandlers,this.m_oTemplate.m_mExtras);
 	var eForm = this._createForm(mOptions.tag || "form", mOptions.attributes || {}, oFormData,	mHandlers, mOptions.instance);
 	oFormData.block.set = true;
 	oFormData.block.reflect = true;
@@ -79,7 +72,7 @@ caplin.dom.HTMLForm.prototype.render = function(mHandlers,mOptions)
  * 
  * @private
  */
-caplin.dom.HTMLForm.prototype._createForm = function(sTag,mAttributes,oFormData,mHandlers,oInstance)
+HTMLForm.prototype._createForm = function(sTag,mAttributes,oFormData,mHandlers,oInstance)
 {
 	var eForm = document.createElement(sTag);
 	
@@ -108,7 +101,7 @@ caplin.dom.HTMLForm.prototype._createForm = function(sTag,mAttributes,oFormData,
 	eForm.htmlForm = this;
 	
 	// Add form element methods
-	var ELEMENT_METHODS = caplin.dom.HTMLForm.ELEMENT_METHODS
+	var ELEMENT_METHODS = HTMLForm.ELEMENT_METHODS
 	for(var n in ELEMENT_METHODS) {
 		if (eForm[n]) {
 			eForm["_" + n] = eForm[n];
@@ -141,7 +134,7 @@ caplin.dom.HTMLForm.prototype._createForm = function(sTag,mAttributes,oFormData,
 };
 
 /** @private */
-caplin.dom.HTMLForm.ELEMENT_METHODS = {
+HTMLForm.ELEMENT_METHODS = {
 	forget: function() {
 		// undecorates implementations on elements
 		// unbinds all renderers on elements
@@ -216,29 +209,29 @@ caplin.dom.HTMLForm.ELEMENT_METHODS = {
 /**
  * @private
  */
-caplin.dom.HTMLForm.CACHE = {};
+HTMLForm.CACHE = {};
 
 /**
  * Class being instantiated by the get function
  * This should only be overridden in exceptional circumstances
  */
-caplin.dom.HTMLForm.CLASS = caplin.dom.HTMLForm;
+HTMLForm.CLASS = HTMLForm;
 
 /**
  * Forms will be looked up on the HTMLTemplate default by default
  */
-caplin.dom.HTMLForm.defaultDocument = null;
+HTMLForm.defaultDocument = null;
 
 /**
  * @private
  */
-caplin.dom.HTMLForm._get = function(sName,oDocument,mCache)
+HTMLForm._get = function(sName,oDocument,mCache)
 {
     if (mCache[sName]) {
         return mCache[sName];
     }
 	var oTemplate = caplin.dom.HTMLTemplate._get(sName,oDocument);
-	var oForm = new caplin.dom.HTMLForm.CLASS(oTemplate, oTemplate? oTemplate.m_mOptions : null);
+	var oForm = new HTMLForm.CLASS(oTemplate, oTemplate? oTemplate.m_mOptions : null);
 	 
    return oForm;
 };
@@ -249,9 +242,9 @@ caplin.dom.HTMLForm._get = function(sName,oDocument,mCache)
  * @param {String} sName
  * @param {Object} oDocument
  */ 
-caplin.dom.HTMLForm.get = function(sName,oDocument)
+HTMLForm.get = function(sName,oDocument)
 {
-    oDocument = oDocument || caplin.dom.HTMLForm.defaultDocument;
+    oDocument = oDocument || HTMLForm.defaultDocument;
 	
     var oForm = this._get(sName,oDocument,this.CACHE);
 	if (oForm && oForm.m_oTemplate) {
@@ -281,7 +274,7 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-namespace"] = function(pStack,mExtras,s
  * @private
  * Tags that support command attribute
  */
-caplin.dom.HTMLForm.COMMAND_TAGS = {
+HTMLForm.COMMAND_TAGS = {
 	"input":true,
 	"INPUT":true,
 	"button":true,
@@ -294,7 +287,7 @@ caplin.dom.HTMLForm.COMMAND_TAGS = {
  * @private
  * Tags that support data-action attribute
  */
-caplin.dom.HTMLForm.DATA_ACTION_TAGS = {
+HTMLForm.DATA_ACTION_TAGS = {
 	"input":true,
 	"button":true,
 	"INPUT":true,
@@ -305,14 +298,14 @@ caplin.dom.HTMLForm.DATA_ACTION_TAGS = {
  * @private
  * Handlers supported for data-action attribute
  */
-caplin.dom.HTMLForm.DATA_ACTIONS = {
+HTMLForm.DATA_ACTIONS = {
 	"reset":true,
 	"increase":true,
 	"decrease":true,
 	"toggle":true
 };
 
-caplin.dom.HTMLForm._addToElements = function(mElements,mNames,eClone)
+HTMLForm._addToElements = function(mElements,mNames,eClone)
 {
 	if (mElements[mNames.full] == undefined) {
 		mElements[mNames.full] = [];
@@ -323,9 +316,9 @@ caplin.dom.HTMLForm._addToElements = function(mElements,mNames,eClone)
 };
 
 /** @private */
-caplin.dom.HTMLForm.COMMAND_LISTENERS = {};
+HTMLForm.COMMAND_LISTENERS = {};
 
-caplin.dom.HTMLForm.COMMAND_LISTENERS.click = function(e) {
+HTMLForm.COMMAND_LISTENERS.click = function(e) {
 	// specific to control
 	var eForm = this.form; // TODO
 	this.data.fireTrigger("command",eForm);
@@ -340,13 +333,13 @@ caplin.dom.HTMLForm.COMMAND_LISTENERS.click = function(e) {
 caplin.dom.HTMLTemplate.ATTRIBUTES["command"] = function(pStack,mExtras,sAttrName,sCommand)
 {
 	// Only on supported HTML tags
-	if (!caplin.dom.HTMLForm.COMMAND_TAGS[this.tagName]) return;
+	if (!HTMLForm.COMMAND_TAGS[this.tagName]) return;
 
-	var oTemplateImplementation = caplin.dom.HTMLImplementation.get(this);
+	var oTemplateImplementation = HTMLImplementation.get(this);
 	if (this.tagName.toLowerCase() == "button") {
 		this.setAttribute("type","button"); // ignore default of "submit"
 	}
-	var mNames = caplin.dom.HTMLFormData.makeNames(pStack);
+	var mNames = HTMLFormData.makeNames(pStack);
 
 	// instantiate handler the clone of mElements['form'].handlers
 	return function(mElements,mTextNodes,mValues,eClone) {
@@ -357,7 +350,7 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["command"] = function(pStack,mExtras,sAttrNam
 			eClone.implementation = oTemplateImplementation.makeControlImplementation(eClone,eForm,mNames);
 		}
 		eClone.data.ensureControlTriggers(eClone,eForm,sCommand);
-		eClone.implementation.addEventListeners(eClone,caplin.dom.HTMLForm.COMMAND_LISTENERS,false);
+		eClone.implementation.addEventListeners(eClone,HTMLForm.COMMAND_LISTENERS,false);
 	};
 };
 
@@ -366,17 +359,17 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-default"] = function(pStack,mExtras,sAt
 	if (mExtras.mDefaults == undefined) mExtras.mDefaults = {};
 	
 	var sDataName = this.getAttribute("data-name");
-	var mNames = caplin.dom.HTMLFormData.makeNames(pStack,sDataName);
+	var mNames = HTMLFormData.makeNames(pStack,sDataName);
 	if (sDataDefault != undefined && mNames.name) {
 		if (sDataDefault != undefined) mExtras.mDefaults[mNames.full] = caplin.dom.HTMLTemplate.parseConstantString(sDataDefault);
 	}
 };
 
 /** @private */
-caplin.dom.HTMLForm.DATA_NAME_LISTENERS = {};
+HTMLForm.DATA_NAME_LISTENERS = {};
 
 /** @private */
-caplin.dom.HTMLForm.DATA_NAME_LISTENERS.change = function(oEvent)
+HTMLForm.DATA_NAME_LISTENERS.change = function(oEvent)
 {
 	var oData = this.data;
 	var oEntry = oData.values[oData.full];
@@ -393,7 +386,7 @@ caplin.dom.HTMLForm.DATA_NAME_LISTENERS.change = function(oEvent)
 	this.data.set(oData.namespace,oData.name,vValue,"editdone");
 };
 
-caplin.dom.HTMLForm.DATA_NAME_LISTENERS.keypress = function(oEvent)
+HTMLForm.DATA_NAME_LISTENERS.keypress = function(oEvent)
 {
 	var oData = this.data;
 	var oEntry = oData.values[oData.full];
@@ -420,15 +413,15 @@ caplin.dom.HTMLForm.DATA_NAME_LISTENERS.keypress = function(oEvent)
  */
 caplin.dom.HTMLTemplate.ATTRIBUTES["data-name"] = function(pStack,mExtras,sAttrName,sDataName)
 {
-	var oTemplateImplementation = caplin.dom.HTMLImplementation.get(this);
+	var oTemplateImplementation = HTMLImplementation.get(this);
 	var sDataAction = this.getAttribute("data-action");
 	var sDataLookup = this.getAttribute("data-lookup");
 	if (sDataAction || sDataLookup) return null; // no renderer binding TODO refactor
 	
 	var sStatic = oTemplateImplementation.getFormattedNative(this);
 	// only set html value if !action & !lookup
-	var mNames = caplin.dom.HTMLFormData.makeNames(pStack,sDataName,sStatic);
-	caplin.dom.HTMLFormData.register(mExtras,mNames);
+	var mNames = HTMLFormData.makeNames(pStack,sDataName,sStatic);
+	HTMLFormData.register(mExtras,mNames);
 	//TODO pass template element value to model as initial value
 	
 	// decorate the clone
@@ -461,7 +454,7 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-name"] = function(pStack,mExtras,sAttrN
 			});
 		}
 		
-		caplin.dom.HTMLForm._addToElements(mElements,mNames,eClone);
+		HTMLForm._addToElements(mElements,mNames,eClone);
 
 		eClone.data.ensureControlTriggers(eClone,eForm);
 		if (oImplementation.handleOnChange) {
@@ -471,7 +464,7 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-name"] = function(pStack,mExtras,sAttrN
 //				eClone.onfocus = onFocus;
 			}
 			eClone.data.ensureDataTriggers("editdone",eForm);
-			eClone.implementation.addEventListeners(eClone,caplin.dom.HTMLForm.DATA_NAME_LISTENERS,false);
+			eClone.implementation.addEventListeners(eClone,HTMLForm.DATA_NAME_LISTENERS,false);
 		}
 	};
 };
@@ -484,11 +477,11 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-name"] = function(pStack,mExtras,sAttrN
  */
 caplin.dom.HTMLTemplate.ATTRIBUTES["data-readonly"] = function(pStack,mExtras,sAttrName,sDataName)
 {
-	var oTemplateImplementation = caplin.dom.HTMLImplementation.get(this);
+	var oTemplateImplementation = HTMLImplementation.get(this);
 
 	var bStatic = oTemplateImplementation.getReadOnly(this);
-	var mNames = caplin.dom.HTMLFormData.makeNames(pStack,sDataName,bStatic);
-	caplin.dom.HTMLFormData.register(mExtras,mNames);
+	var mNames = HTMLFormData.makeNames(pStack,sDataName,bStatic);
+	HTMLFormData.register(mExtras,mNames);
 
 	// decorate the clone
 	return function(mElements,mTextNodes,mValues,eClone) {
@@ -506,15 +499,15 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-readonly"] = function(pStack,mExtras,sA
 			target: "readonly",
 			source: "value"
 		});
-		caplin.dom.HTMLForm._addToElements(mElements,mNames,eClone);
+		HTMLForm._addToElements(mElements,mNames,eClone);
 	};
 };
 
 /** @private */
-caplin.dom.HTMLForm.DATA_ACTION_LISTENERS = {};
+HTMLForm.DATA_ACTION_LISTENERS = {};
 
 /** @private */
-caplin.dom.HTMLForm.DATA_ACTION_LISTENERS.click = function(oEvent)
+HTMLForm.DATA_ACTION_LISTENERS.click = function(oEvent)
 {
 	var oData = this.data;
 	var oEntry = oData["data-action"][0]? oData["data-action"][0].entry : null;
@@ -556,8 +549,8 @@ caplin.dom.HTMLForm.DATA_ACTION_LISTENERS.click = function(oEvent)
 };
 
 if (navigator.userAgent.indexOf("Trident/") > -1) {
-	caplin.dom.HTMLForm.DATA_ACTION_LISTENERS.dblclick =
-	caplin.dom.HTMLForm.DATA_ACTION_LISTENERS.click;
+	HTMLForm.DATA_ACTION_LISTENERS.dblclick =
+	HTMLForm.DATA_ACTION_LISTENERS.click;
 }
 
 /**
@@ -568,11 +561,11 @@ if (navigator.userAgent.indexOf("Trident/") > -1) {
  */
 caplin.dom.HTMLTemplate.ATTRIBUTES["data-action"] = function(pStack,mExtras,sAttrName,sAction)
 {
-	var oTemplateImplementation = caplin.dom.HTMLImplementation.get(this);
+	var oTemplateImplementation = HTMLImplementation.get(this);
 	
 	// Only on supported HTML tags
-	if (!caplin.dom.HTMLForm.DATA_ACTION_TAGS[this.tagName]) return;
-	if (!caplin.dom.HTMLForm.DATA_ACTIONS[sAction]) return;
+	if (!HTMLForm.DATA_ACTION_TAGS[this.tagName]) return;
+	if (!HTMLForm.DATA_ACTIONS[sAction]) return;
 	if (this.tagName.toLowerCase() == "button") {
 		this.setAttribute("type","button"); // ignore default of "submit"
 	}
@@ -582,9 +575,9 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-action"] = function(pStack,mExtras,sAtt
 	
 	// Determine full name from "data-name" attribute	
 	var sDataName = this.getAttribute("data-name");
-	var mNames = caplin.dom.HTMLFormData.makeNames(pStack,sDataName);
+	var mNames = HTMLFormData.makeNames(pStack,sDataName);
 	if (mNames.name) {
-		caplin.dom.HTMLFormData.register(mExtras,mNames);
+		HTMLFormData.register(mExtras,mNames);
 	}
 	// Else namespace?
 	
@@ -603,15 +596,15 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-action"] = function(pStack,mExtras,sAtt
 		eClone.data.ensureDataTriggers(sAction,eForm);
 		eClone.data.ensureDataTriggers("editbegin", eForm);
 		eClone.data.ensureDataTriggers("editdone", eForm);
-		eClone.implementation.addEventListeners(eClone,caplin.dom.HTMLForm.DATA_ACTION_LISTENERS,false);
+		eClone.implementation.addEventListeners(eClone,HTMLForm.DATA_ACTION_LISTENERS,false);
 	};
 };
 
 /** @private */
-caplin.dom.HTMLForm.DATA_LOOKUP_LISTENERS = {};
+HTMLForm.DATA_LOOKUP_LISTENERS = {};
 
 /** @private */
-caplin.dom.HTMLForm.DATA_LOOKUP_LISTENERS.mouseup = function(oEvent)
+HTMLForm.DATA_LOOKUP_LISTENERS.mouseup = function(oEvent)
 {
 	var oData = this.data;
 	var oEntry = oData["data-lookup"][0].entry;
@@ -626,19 +619,19 @@ caplin.dom.HTMLForm.DATA_LOOKUP_LISTENERS.mouseup = function(oEvent)
 };
 
 ///** @private */
-//caplin.dom.HTMLForm.DATA_LOOKUP_LISTENERS.mousedown = function(oEvent)
+//HTMLForm.DATA_LOOKUP_LISTENERS.mousedown = function(oEvent)
 //{
 //	caplin.core.Logger.log(caplin.core.LogLevel.INFO, "mouse down lookup");
 //};	
 
 ///** @private */
-//caplin.dom.HTMLForm.DATA_LOOKUP_LISTENERS.mouseup = function(oEvent)
+//HTMLForm.DATA_LOOKUP_LISTENERS.mouseup = function(oEvent)
 //{
 //	caplin.core.Logger.log(caplin.core.LogLevel.INFO, "mouse up lookup");
 //};	
 
 /** @private */
-caplin.dom.HTMLForm.DATA_LOOKUP_LISTENERS.change = function(oEvent)
+HTMLForm.DATA_LOOKUP_LISTENERS.change = function(oEvent)
 {
 	var oData = this.data;
 	var oEntry = oData["data-lookup"][0].entry;
@@ -677,21 +670,21 @@ caplin.dom.HTMLForm.DATA_LOOKUP_LISTENERS.change = function(oEvent)
  */
 caplin.dom.HTMLTemplate.ATTRIBUTES["data-lookup"] = function(pStack,mExtras,sAttrName,sLookup)
 {
-	var oTemplateImplementation = caplin.dom.HTMLImplementation.get(this);
+	var oTemplateImplementation = HTMLImplementation.get(this);
 	
 	if (this.tagName.toLowerCase() == "button") {
 		this.setAttribute("type","button"); // ignore default of "submit"
 	}
 	// Determine full name from "data-name" attribute	
 	var sDataName = this.getAttribute("data-name");
-	var mNames = caplin.dom.HTMLFormData.makeNames(pStack,sDataName);
+	var mNames = HTMLFormData.makeNames(pStack,sDataName);
 	if (mNames.name) {
-		caplin.dom.HTMLFormData.register(mExtras,mNames);
+		HTMLFormData.register(mExtras,mNames);
 	}
 	// Else namespace?
 	
 	var sDataDepends = this.getAttribute("data-depends");
-	var mDataDepends = caplin.dom.HTMLFormData.makeNames(pStack,sDataDepends);
+	var mDataDepends = HTMLFormData.makeNames(pStack,sDataDepends);
 
 	// decorate the clone
 	return function(mElements,mTextNodes,mValues,eClone) {
@@ -710,7 +703,7 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-lookup"] = function(pStack,mExtras,sAtt
 		eClone.data.ensureDataTriggers("editbegin", eForm);
 		eClone.data.ensureDataTriggers("editdone", eForm);
 		eClone.data.ensureLookupTrigger("lookup",eForm, sLookup);
-		eClone.implementation.addEventListeners(eClone,caplin.dom.HTMLForm.DATA_LOOKUP_LISTENERS,false);
+		eClone.implementation.addEventListeners(eClone,HTMLForm.DATA_LOOKUP_LISTENERS,false);
 
 		eForm.data.addReflection(mNames, {
 			implementation: eClone.implementation,
@@ -747,13 +740,13 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-lookup"] = function(pStack,mExtras,sAtt
  */
 caplin.dom.HTMLTemplate.ATTRIBUTES["data-enabled"] = function(pStack,mExtras,sAttrName,sEnabledName)
 {
-	var oTemplateImplementation = caplin.dom.HTMLImplementation.get(this);
+	var oTemplateImplementation = HTMLImplementation.get(this);
 
 	var bStatic = oTemplateImplementation.getEnabled(this);
-	var mNames = caplin.dom.HTMLFormData.makeNames(pStack,sEnabledName,bStatic);
-	caplin.dom.HTMLFormData.register(mExtras,mNames);
+	var mNames = HTMLFormData.makeNames(pStack,sEnabledName,bStatic);
+	HTMLFormData.register(mExtras,mNames);
 //	var sDataName = this.getAttribute("data-name");
-//	var mDataNames = caplin.dom.HTMLFormData.makeNames(pStack,sDataName);
+//	var mDataNames = HTMLFormData.makeNames(pStack,sDataName);
 
 	// decorate the clone
 	return function(mElements,mTextNodes,mValues,eClone) {
@@ -773,7 +766,7 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-enabled"] = function(pStack,mExtras,sAt
 			target: "enabled",
 			source: "value"
 		});
-		caplin.dom.HTMLForm._addToElements(mElements,mNames,eClone);
+		HTMLForm._addToElements(mElements,mNames,eClone);
 	};
 };
 
@@ -785,10 +778,10 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-enabled"] = function(pStack,mExtras,sAt
  */
 caplin.dom.HTMLTemplate.ATTRIBUTES["data-visible"] = function(pStack,mExtras,sAttrName,sDataName)
 {
-	var oTemplateImplementation = caplin.dom.HTMLImplementation.get(this);
+	var oTemplateImplementation = HTMLImplementation.get(this);
 	var sStatic = this.style.visibility || "visibility";
-	var mNames = caplin.dom.HTMLFormData.makeNames(pStack,sDataName,sStatic);
-	caplin.dom.HTMLFormData.register(mExtras,mNames);
+	var mNames = HTMLFormData.makeNames(pStack,sDataName,sStatic);
+	HTMLFormData.register(mExtras,mNames);
 
 	// decorate the clone
 	return function(mElements,mTextNodes,mValues,eClone) {
@@ -807,7 +800,7 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-visible"] = function(pStack,mExtras,sAt
 			target: "style.visible",
 			source: "value"
 		});
-		caplin.dom.HTMLForm._addToElements(mElements,mNames,eClone);
+		HTMLForm._addToElements(mElements,mNames,eClone);
 	};
 };
 
@@ -819,10 +812,10 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-visible"] = function(pStack,mExtras,sAt
  */
 caplin.dom.HTMLTemplate.ATTRIBUTES["data-display"] = function(pStack,mExtras,sAttrName,sDataName)
 {
-	var oTemplateImplementation = caplin.dom.HTMLImplementation.get(this);
+	var oTemplateImplementation = HTMLImplementation.get(this);
 	var sStatic = this.style.display;
-	var mNames = caplin.dom.HTMLFormData.makeNames(pStack,sDataName,sStatic);
-	caplin.dom.HTMLFormData.register(mExtras,mNames);
+	var mNames = HTMLFormData.makeNames(pStack,sDataName,sStatic);
+	HTMLFormData.register(mExtras,mNames);
 
 	// decorate the clone
 	return function(mElements,mTextNodes,mValues,eClone) {
@@ -841,7 +834,7 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-display"] = function(pStack,mExtras,sAt
 			target: "style.display",
 			source: "value"
 		});
-		caplin.dom.HTMLForm._addToElements(mElements,mNames,eClone);
+		HTMLForm._addToElements(mElements,mNames,eClone);
 	};
 };
 
@@ -853,10 +846,10 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-display"] = function(pStack,mExtras,sAt
  */
 caplin.dom.HTMLTemplate.ATTRIBUTES["data-class"] = function(pStack,mExtras,sAttrName,sDataName)
 {
-	var oTemplateImplementation = caplin.dom.HTMLImplementation.get(this);
+	var oTemplateImplementation = HTMLImplementation.get(this);
 	var sStatic = oTemplateImplementation.getClass(this);
-	var mNames = caplin.dom.HTMLFormData.makeNames(pStack,sDataName,sStatic);
-	caplin.dom.HTMLFormData.register(mExtras,mNames);
+	var mNames = HTMLFormData.makeNames(pStack,sDataName,sStatic);
+	HTMLFormData.register(mExtras,mNames);
 
 	// decorate the clone
 	return function(mElements,mTextNodes,mValues,eClone) {
@@ -874,6 +867,6 @@ caplin.dom.HTMLTemplate.ATTRIBUTES["data-class"] = function(pStack,mExtras,sAttr
 			target: "class",
 			source: "setset"
 		});
-		caplin.dom.HTMLForm._addToElements(mElements,mNames,eClone);
+		HTMLForm._addToElements(mElements,mNames,eClone);
 	};
 };

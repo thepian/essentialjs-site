@@ -1,11 +1,3 @@
-caplin.namespace("caplin.dom");
-
-caplin.include("caplin.core.Error");
-caplin.include("caplin.core.StringBuilder");
-caplin.include("caplin.dom.Browser");
-caplin.include("caplin.dom.Utility");
-caplin.include("caplin.core.ArrayUtility");
-
 /*
  * The implementation is functional with tests, but lacks key extensions needed before it can be used by the element library
  * 
