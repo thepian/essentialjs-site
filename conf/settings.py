@@ -18,6 +18,9 @@ RECAPTCHA_PRIVATE_KEY =''
 ADMINS = structure.ADMINS
 MANAGERS = ADMINS
 
+COUCHDB_DATABASES = (
+    ('pagespec.pagespec', 'http://127.0.0.1:5984/pagespec'),
+)
 if DEVELOPING:        
     DATABASE_ENGINE = 'sqlite3'
     DATABASE_NAME = join(structure.PROJECT_DIR,'testdb')
@@ -134,26 +137,18 @@ INSTALLED_APPS = (
     'theapps.media',
     'theapps.sitemaps',
     
-    #'notification',
     'extensions',
-    #'friends',
     'mailer',
-    #'messages',
-    #'announcements',
     'django_openid',
     'oembed',
     #'gravatar', # This needs to go before threadedcomments.
-    'threadedcomments',
     'timezones',
     'feedutil',
     
-    'django_evolution',
     'theapps.tagging',
     'theapps.blog',
     
     'about',
-    'theapps.account',
-    # openidconsumer openidserver recapcha debug
 )
 
 #TODO fox this with proper url /account/profile ?
@@ -168,11 +163,11 @@ ABSOLUTE_URL_OVERRIDES = {
 EMAIL_HOST = 'localhost'
 SERVER_EMAIL = "server@thepia.net"
 
-DEFAULT_FROM_EMAIL = 'confirmations@skeleton.com'
+DEFAULT_FROM_EMAIL = 'confirmations@essentialjs.com'
 
 EMAIL_CONFIRMATION_DAYS = 2
 EMAIL_DEBUG = DEBUG
-CONTACT_EMAIL = "feedback@skeleton.com"
+CONTACT_EMAIL = "feedback@essentialjs.com"
 LOGIN_URL = "/account/login"
 
 LOGGING_OUTPUT_ENABLED = True
