@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>CSS Styles Test</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<script type="text/javascript" src="../../../../jspp?config=test&namespace=caplin.bootstrap.*"></script>
+<script type="text/javascript" id="sl4b" src="../../../../modules/caplin/sl4b/sl4b/index.js" enableautoloading="false"></script>
+
+<script type="text/javascript">
+	// Template/Message tags
+	document.createElement("template");
+	document.createElement("message");
+	document.createElement("dialog");
+	document.createElement("header");
+	document.createElement("footer");
+	document.createElement("section");
+	
+</script>	
+
+<!-- dependencies -->
+<script type="text/javascript" src="../../../../modules/extjs/extjs/extjs/ext-all.js"></script>
+<script type="text/javascript" src="../../../../jspp?config=test&namespace=caplin.core.*"></script>
+<script type="text/javascript" src="../../../../jspp?config=test&namespace=caplin.dom.*"></script>
+
+<!-- FORM DEMO -->
+<script type="text/javascript">
+
+</script>
+
+<link rel="stylesheet" type="text/css" href="../reset.css">
+<link rel="stylesheet" type="text/css" href="CSSTest.css">
+
+</head>
+
+<body>
+	<div class="canonical-html">
+		<h2>Canonical Field Sets</h2>
+		<fieldset>
+			<legend>Styling form controls</legend>
+			<p>Since discussions about applying CSS to form controls continuously crop up, new versions of browsers and operating systems, and entirely new browsers have been released since September 2004, it was time for an update. In addition to that, my original articles did not include all types of form controls.
+				<a href="http://www.456bereastreet.com/archive/200701/styling_form_controls_with_css_revisited/">Full Article</a>
+			</p>
+		</fieldset>
+
+		<p>Fields can be split into columns by using absolute position for all but the last columns.</p>
+		
+		<fieldset>
+			<legend>Fieldset Legend</legend>
+			<dl class="left-side">
+				<dt><label for="text-input">Enter text:</label></dt>
+				<dd><input name="text-input" type="text" size=20 value="some text">
+				<p class="validation">You have to specify the text.</p>
+				</dd>
+				<dt><label for="password-input">Enter password:</label></dt>
+				<dd><input name="password-input" type="password" size=20 value="text"></dd>
+				<dt><label for="number-input">Enter number:</label></dt>
+				<dd><input name="number-input" type="number" size=20 value="10"></dd>
+			</dl>
+			<dl class="right-side">
+				<dt><label for="text-input">Enter text:</label></dt>
+				<dd><input name="text-input" type="text" size=20 value="">
+				</dd>
+				<dt><label for="text-input">Enter word:</label></dt>
+				<dd><input name="word-input" type="word" size=20 value="hopeful">
+				<p class="explanation">Specify one word</p>
+				</dd>
+				<dt><label for="comment">Comment:</label></dt>
+				<dd><textarea name="comment" type="text"  rows=3 size=80></textarea></dd>
+			</dl>
+		</fieldset>
+		
+		<p>Using Definition Lists to layout canonical form entry. DT and DD are aligned vertically.</p>
+
+		<div class="aligned-definitions">
+			
+			<dl class="left-side">
+				<dt><label for="text-input">Enter text:</label></dt>
+				<dd><input name="text-input" type="text" size=20 value="some text">
+				<p class="validation">You have to specify the text.</p>
+				</dd>
+				<dt><label for="password-input">Enter password:</label></dt>
+				<dd><input name="password-input" type="password" size=20 value="text"></dd>
+				<dt><label for="number-input">Enter number:</label></dt>
+				<dd><input name="number-input" type="number" size=20 value="10"></dd>
+			</dl>
+			<dl class="right-side">
+				<dt><label for="spin-input">Spin number:</label></dt>
+				<dd><input name="spin-input" type="text" size=20 value="">
+				<span class="spin-buttons">
+					<button class="top"><em>-</em></button>
+					<button class="bottom"><em>+</em></button>
+				</span>
+				</dd>
+				<dt><label for="text-input">Enter word:</label></dt>
+				<dd><input name="word-input" type="word" size=20 value="hopeful">
+				<p class="explanation">Specify one word</p>
+				</dd>
+				<dt><label for="comment">Comment:</label></dt>
+				<dd><textarea name="comment" type="text"  rows=3 size=80></textarea></dd>
+			</dl>
+
+			<fieldset class="just-line">
+				<legend>Second part</legend>
+				<dl class="left-side">
+					<dt><label for="text-input">Enter text:</label></dt>
+					<dd><input name="text-input" type="text" size=20 value="some text">
+					<p class="validation">You have to specify the text.</p>
+					</dd>
+					<dt><label for="password-input">Enter password:</label></dt>
+					<dd><input name="password-input" type="password" size=20 value="text"></dd>
+					<dt><label for="number-input">Enter number:</label></dt>
+					<dd><input name="number-input" type="number" size=20 value="10"></dd>
+				</dl>
+				<dl class="right-side">
+					<dt><label for="spin-input">Spin number:</label></dt>
+					<dd><input name="spin-input" type="text" size=20 value="">
+					<span class="spin-buttons">
+						<button class="top"><em>-</em></button>
+						<button class="bottom"><em>+</em></button>
+					</span>
+					</dd>
+					<dt><label for="text-input">Enter word:</label></dt>
+					<dd><input name="word-input" type="word" size=20 value="hopeful">
+					<p class="explanation">Specify one word</p>
+					</dd>
+					<dt><label for="comment">Comment:</label></dt>
+					<dd><textarea name="comment" type="text"  rows=3 size=80></textarea></dd>
+				</dl>
+			</fieldset>
+		</div>
+		
+	</div>
+	
+</body>
+
+</html>

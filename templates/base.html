@@ -1,6 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 {% load i18n %}
-{% load assets %}
 <html lang="en">
 <head>
     <title>{% block title %}main{% endblock %}{% block sitetitle %} - {{ SITE_TITLE }}{% endblock %}</title>
@@ -72,7 +71,6 @@
 
 <script src="{{ MEDIA_URL }}/js/jquery.js" type="text/javascript"></script>
 <script src="{{ MEDIA_URL }}/js/jquery.ui.js" type="text/javascript"></script>
-<script src="{{ MEDIA_URL }}/js/ajaxforms.js" type="text/javascript"></script>
 {% block bodyscripts %}{% endblock %}
 </body>
 </html>
