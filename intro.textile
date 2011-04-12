@@ -1,0 +1,25 @@
+---
+layout: master
+rooturi: http://essentialjs.com
+---
+h2. Why Essential JS
+
+JavaScript + HTML + CSS is well suited for making good interactive websites.
+
+As you add richness to your site you use JS libraries to manage the extra complexity.
+
+The same technologies can make great webapps
+and rich sophisticated sites, but you need some extra essentials.
+
+
+h2. How tos
+
+make shared objects in the overall app
+
+client/server central messaging tunnel multiplexing messages
+
+loosely coupled notifications and collaborating components
+
+write tests for singleton recreating it for each test
+
+allow switching in implementation for abstract object only programming against the abstract
