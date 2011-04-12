@@ -1,4 +1,4 @@
-destination: publish
+destination: _site
 lsi: false
 pygments: true
 markdown: maruku
