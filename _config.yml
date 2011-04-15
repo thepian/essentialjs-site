@@ -1,12 +1,17 @@
+url: http://www.essentialjs.com
+img_url: http://www.essentialjs.com/images
+title: Essential JavaScript
+description: Just the essentials for a great web application.
+email: henrik@thepia.com
+analytics_id: UA-22749258-1
+    
 destination: _site
 lsi: false
 pygments: true
 markdown: maruku
-permalink: /:year/:month/:day/:title.html
+permalink: /:categories/:title.html
 maruku:
   use_tex: false
   use_divs: false
   png_dir: images/latex
   png_url: /images/latex
-url: http://www.essentialjs.com
-img_url: http://www.essentialjs.com/images

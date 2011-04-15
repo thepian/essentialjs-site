@@ -2,30 +2,12 @@
 layout: master
 rooturi: http://essentialjs.com
 ---
-		<div class="width75" style="float: left;">
-		    <div class="tweet"></div>
 
-		    <h1 style="margin-top: 1em;">Bloggings</h1>
+Welcome to your <a href="http://jekyllrb.com">Jekyll</a> + <a href="http://960.gs">960.gs</a> powered web site.
 
-		    {% for post in site.posts %}
+To start with edit the <code>_config.yml</code> and change the default <code>author</code>, <code>url</code> and <code>email</code> fields to 
+to your own.
 
-		        <div class="postBlock">
-		            <table cellspacing="0" cellpadding="0">
-		                <tr>
-		                    <td class="date">{{post.date | date_to_string}}</td>
-		                    <td>
-		                        <a class="title" href="{{post.url}}">{{post.title}}</a>
-
-		                        {% for category in post.categories %}
-		                        <span class="category">{{category}}</span>
-		                        {% endfor %}
-		                    </td>
-		                </tr>
-		            </table>
-		        </div>
-
-		    {% endfor %}
-
-		    <!-- { if forloop.index < page.full_posts } -->
-		</div>
+Next, add a text file under <code>_posts</code>, say <code>2010-01-24-hello-world.html</code> and run <code>jekyll</code>. The blog post
+should show up below.
 
