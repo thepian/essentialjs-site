@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Essential JavaScript Coming Soon
+author: Henrik Vendelbo
 category:
   - news
 ---
