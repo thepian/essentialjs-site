@@ -5,4 +5,10 @@ This is the Jekyll source for the EssentialJS website.
 
 The content of the site (blog posts and page content) is licensed under a Creative Commons Attribution license (you may use it, but must give attribution).
 
+run locally:
+* `sudo macport install ruby rb-rubygems`
+* `sudo gem install jekyll RedCloth`
+* `sudo port install py26-pygments`
+* `jekyll --server --auto`
+
 Copyright (c) 2011 Henrik Vendelbo. Rights reserved as indicated above.
