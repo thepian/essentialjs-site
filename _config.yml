@@ -9,7 +9,7 @@ destination: _site
 lsi: false
 pygments: true
 markdown: maruku
-permalink: /:categories/:title.html
+permalink: pretty
 maruku:
   use_tex: false
   use_divs: false
