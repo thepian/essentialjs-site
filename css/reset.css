@@ -17,8 +17,12 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-header, nav, section, article, aside, footer
+article, aside, figure, footer, header, 
+hgroup, menu, nav, section, menu,
+time, mark, audio, video
 {border: 0; margin: 0; outline: 0; padding: 0; background: transparent; vertical-align: baseline;}
+
+html, body { height: 100%;}
 
 blockquote, q {quotes: none;}
 blockquote:before,blockquote:after,q:before,q:after {content: ''; content: none;}

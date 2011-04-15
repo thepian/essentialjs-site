@@ -1,4 +1,6 @@
+@import url("reset.css");
 @import url("960gs/960.css");
+@import url("960gs/fixes.css");
 
 /* http://www.levien.com/type/myfonts/inconsolata.html */
 @font-face
@@ -24,6 +26,12 @@ body
   font-size:87.5%;   /* 16px * 0.875 = 14px */
   line-height: 137.5%; /* 16px * 1.375  = 22px */
 }
+
+#wrap > header {
+    margin: 0px 0px 20px;
+    padding: 20px 0px 0px;
+}
+
 a
 {
   text-decoration: none;
