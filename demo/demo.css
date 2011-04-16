@@ -3,16 +3,6 @@ body,h1,h2,h3,p,quote,small,form,input,ul,li,ol,label{
 	padding:0px;
 }
 
-h2.tut{
-	color:white;
-	font-family:"Myriad Pro",Arial,Helvetica,sans-serif;
-	font-size:16px;
-	padding:12px 0 0 58px;
-	text-transform:uppercase;
-	
-	text-shadow:2px 1px 6px #333;
-}
-
 a, a:visited {
 	color:#00BBFF;
 	text-decoration:none;
@@ -21,10 +11,6 @@ a, a:visited {
 
 a:hover{
 	text-decoration:underline;
-}
-
-#loading{
-	margin:100px 95px;
 }
 
 /* The styles below are only necessary for the demo page */

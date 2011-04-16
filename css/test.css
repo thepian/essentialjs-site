@@ -29,6 +29,20 @@ nav {
 	color: #494949;
 }
 
+footer {
+    color: #ccc;
+}
+footer .copyright {
+    font-size: 10px;
+    line-height:1.6;
+}
+footer .copyright a {
+    color: white;
+}
+footer .copyright img {
+    vertical-align: -4px;
+}
+
 /* ** ** Header Styles ** ** */
 section h2 a, section h3 a, section h4 a, section h5 a,
 section h2, section h3, section h4, section h5 {

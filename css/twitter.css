@@ -11,6 +11,10 @@
 	border-radius:6px;
 
 	text-align:left;
+	
+	overflow: visible;
+	margin-top: 26px;
+	margin-bottom: 20px;
 }
 
 #twitter-ticker .tweet-container{
@@ -76,4 +80,20 @@
 #twitter-ticker .tweet .user{
 	font-weight:bold;
 }
+
+#twitter-ticker header h2 {
+	color:white;
+	font-family:"Myriad Pro",Arial,Helvetica,sans-serif;
+	font-size:16px;
+	padding:12px 0 0 58px;
+	text-transform:uppercase;
+	
+	text-shadow:2px 1px 6px #333;
+}
+
+#twitter-ticker .loading{
+	margin:100px 95px;
+}
+
+
 
