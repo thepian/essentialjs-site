@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>A jQuery Twitter Ticker | Tutorialzine demo</title>
+
+<link rel="stylesheet" type="text/css" href="/css/reset.css" />
+<link rel="stylesheet" type="text/css" href="demo.css" />
+<link rel="stylesheet" type="text/css" href="/css/twitter.css" />
+<link rel="stylesheet" type="text/css" href="/css/jScrollPane.css" />
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="/js/jScrollPane-1.2.3.min.js"></script>
+<script type="text/javascript" src="/js/tweettick.js"></script>
+
+<!--[if lt IE 7]>
+<style type="text/css">
+div.tweet {
+	background:none;
+    border:none;
+}
+
+div#twitIcon{
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=/images/twitter_64.png, sizingMethod=crop);
+}
+
+div#twitIcon img{
+	display:none;
+}
+</style>
+<![endif]-->
+
+</head>
+
+<body>
+
+<div id="main">
+
+  <h1>A jQuery Twitter Ticker</h1>
+  <p>Displays tweets, combines accounts, pure jQuery &amp; CSS</p>
+  
+  <div id="twitter-ticker">
+    <header>
+      <figure><img src="/images/twitter_64.png" width="64" height="64" alt="Twitter icon" /></figure>
+       <h2 class="tut">My tweets</h2>
+     </header>
+        
+     <div class="tweet-container"><img id="loading" src="/images/loading.gif" width="16" height="11" alt="Loading.." /></div>
+        
+     <div id="scroll"></div>
+  </div>
+    
+    <p>This is a tutorialzine demo. View the <a href="http://tutorialzine.com/2009/10/jquery-twitter-ticker/" target="_blank">original tutorial</a>, or download the <a href="demo.zip">source files</a>.</p>
+</div>
+
+</body>
+</html>

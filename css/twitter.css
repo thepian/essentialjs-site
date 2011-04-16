@@ -1,0 +1,79 @@
+#twitter-ticker{
+	width:200px;
+	height:300px;
+	background:url(/images/slickbg.png) no-repeat #f5f5f5;
+	color:#666666;
+	display:none;
+	
+	-moz-border-radius:10px 10px 6px 6px;
+	-khtml-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius:6px;
+
+	text-align:left;
+}
+
+#twitter-ticker .tweet-container{
+	height:230px;
+	width:auto;
+	overflow:hidden;
+}
+
+#twitter-ticker header{
+	height:45px;
+	background:url(/images/top_bar.png) repeat-x;
+	border-bottom:1px solid white;
+	position:relative;
+	margin-bottom:8px;
+	
+	-moz-border-radius:6px 6px 0 0;
+}
+
+#twitter-ticker header figure{
+	position:absolute;
+	top:-25px;
+	left:-10px;
+	width:64px;
+	height:64px;
+}
+
+#twitter-ticker .tweet{
+	padding:5px;
+	margin:0 8px 8px;
+	
+	border:1px solid #F0F0F0;
+	background:url(img/transparent.png);
+	
+	width:auto;
+	overflow:hidden;
+}
+
+#twitter-ticker .tweet .avatar,
+#twitter-ticker .tweet .user,
+#twitter-ticker .tweet .time{
+	float:left;
+}
+
+#twitter-ticker .tweet .time{
+	text-transform:uppercase;
+	font-size:10px;
+	color:#AAAAAA;
+	white-space:nowrap;
+}
+
+
+#twitter-ticker .tweet .avatar img{
+	width:36px;
+	height:36px;
+	border:2px solid #eeeeee;
+	margin:0 5px 5px 0;
+}
+
+#twitter-ticker .tweet .txt{
+	clear:both;
+}
+
+#twitter-ticker .tweet .user{
+	font-weight:bold;
+}
+

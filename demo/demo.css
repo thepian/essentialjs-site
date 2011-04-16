@@ -1,0 +1,58 @@
+body,h1,h2,h3,p,quote,small,form,input,ul,li,ol,label{
+	margin:0px;
+	padding:0px;
+}
+
+h2.tut{
+	color:white;
+	font-family:"Myriad Pro",Arial,Helvetica,sans-serif;
+	font-size:16px;
+	padding:12px 0 0 58px;
+	text-transform:uppercase;
+	
+	text-shadow:2px 1px 6px #333;
+}
+
+a, a:visited {
+	color:#00BBFF;
+	text-decoration:none;
+	outline:none;
+}
+
+a:hover{
+	text-decoration:underline;
+}
+
+#loading{
+	margin:100px 95px;
+}
+
+/* The styles below are only necessary for the demo page */
+
+p{
+	padding-top:7px;
+}
+
+#twitter-ticker{
+	margin:40px auto 20px;
+}
+
+body{
+	color:white;
+	font-size:13px;
+	background: #333333;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+#main{
+	margin:40px auto;
+	text-align:center;
+	width:420px;
+}
+
+h1{
+	color:white;
+	font-size:36px;
+	font-weight:bold;
+	font-family:"Trebuchet MS",Arial, Helvetica, sans-serif;
+}
