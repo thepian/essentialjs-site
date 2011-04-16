@@ -22,23 +22,23 @@
     <script src="/js/html5.js" />
   <![endif]-->
   <!-- All JavaScript at the bottom, except for Modernizr. -->
-  <script src="js/modernizr-1.7.min.js"></script>
+  <script src="/js/modernizr-1.7.min.js"></script>
 
 
   <!-- Place favicon.ico and apple-touch-icon.png in the root of your domain and delete these references -->
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="">
 
-  <link rel="stylesheet" type="text/css" href="css/reset.css" media="screen" title="html5doctor.com Reset Stylesheet" />
+  <link rel="stylesheet" type="text/css" href="/css/reset.css" media="screen" title="html5doctor.com Reset Stylesheet" />
   
   <!-- in the CSS3 stylesheet you will find examples of some great new features CSS has to offer -->
-  <link rel="stylesheet" type="text/css" href="css/css3.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="/css/css3.css" media="screen" />
   
   <!-- general stylesheet contains some default styles, you do not need this, but it helps you keep a uniform style -->
-  <link rel="stylesheet" type="text/css" href="css/general.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="/css/general.css" media="screen" />
   
   <!-- grid's will help you keep your website appealing to your users, view 52framework.com website for documentation -->
-  <link rel="stylesheet" type="text/css" href="css/grid.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="/css/grid.css" media="screen" />
   
   <link rel="stylesheet" type="text/css" media="screen, projection" charset="utf-8" href="/css/test.css" />
 
@@ -82,14 +82,14 @@
 
 	<div class="fullwidth">
 	<section class="row">
-	<div class="col_16 col alpha omega">
+	<div class="col_16 col">
 	{{ content }}
 	</div>
 	</section>
 	</div>
 	
 	<footer class="row">
-	<div class="col_8 alpha">
+	<div class="col_8">
 	  <p>
 	    {% if site.author %}{{site.author}} {% endif %}<br/>
 	     {% if site.email %}{{site.email}} {% endif %}<br/>
@@ -100,7 +100,7 @@
 	    <a href="http://twitter.com/">twitter.com</a><br />
 	  </p>
 	</div>
-	<div class="col_4 omega">
+	<div class="col_4">
 	  <a href="{{site.url}}/atom.xml" class="noul">
 	    <img src="/images/rss.png" alt="Subscribe to RSS Feed" />
 	  </a>

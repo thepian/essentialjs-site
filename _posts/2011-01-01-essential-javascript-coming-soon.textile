@@ -9,6 +9,4 @@ Later in the year I will add a great little library for making great web applica
 
 It is based on ideas gathered during more than 5 years full time WebApp development.
 
-Stay tuned,
-
-Henrik Vendelbo
+Stay tuned

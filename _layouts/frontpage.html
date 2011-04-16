@@ -7,10 +7,18 @@ guesswho: itsme
   <ul class="posts">
     {% for post in site.posts %}
       <li>
-		<h4><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></h4>
+		<figure class="postdate">
+			<!-- 
+			<span class="postweekday">{{ post.date | date: "%w" }}</span>
+			-->
+			<span class="postmonth">{{ post.date | date: "%b" }}</span>
+			<span class="postday">{{ post.date | date: "%d" }}</span>
+		</figure>
+		<h4><a href="{{ post.url }}">{{ post.title }}</a>
+			<br><small style="color:#888;">by {{ post.author }}</small>
+			</h4>
 			
-			{{ post.content }}
-			<small>by {{ post.author }}</small>
+		{{ post.content }}
 	</li>
     {% endfor %}
   </ul>

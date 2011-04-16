@@ -1,6 +1,6 @@
 div.fullwidth > header {padding-top:25px; border-bottom:1px solid #ccc; padding-bottom:20px;}
 div.fullwidth > header .logo {font-size:3.52em;}
-div.fullwidth > header nav ul li {float:left; margin-top:12px;}
+div.fullwidth > header nav ul li {float:left; margin-top:12px; }
 div.fullwidth > header nav ul li a {display:block; padding:5px 15px; border-right:1px solid #eee; font-size:1.52em; font-family:Georgia, "Times New Roman", Times, serif; text-decoration:none;}
 div.fullwidth > header nav ul li a:hover {background-color:#eee; border-right:1px solid #ccc; text-shadow:-1px -1px 0px #fff;}
 div.fullwidth > header nav ul li.last a {border-right:none;}
@@ -38,5 +38,35 @@ section h2, section h3, section h4, section h5 {
 a { color: #226666;}
 header a {	color:#525252; text-decoration:none; }
 
+.posts { margin: 0;}
+.posts li { list-style: none; margin-left: 0; padding-left:55px; text-indent:0;}
 .posts li { margin-top:3em; }
 
+.postdate {
+    position:absolute;
+    left:0px;
+    width:41px;
+    height:41px;
+    background-image: url("../images/calendar24.gif");
+}
+
+.postmonth {
+    display:block;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color:white;
+}
+.postday {
+    display:block;
+    font-size: 18px;
+    line-height: 1.5;
+    text-align: center;
+    color: #333;
+}
+
+.posts h4,
+.posts p { 
+font-family:Georgia, "Times New Roman", Times, serif;
+    }
