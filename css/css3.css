@@ -2,8 +2,8 @@
 /* CSS3 52framework */
 @font-face {
 	font-family: 'PTSansRegular';
-	src: url('PT_Sans-webfont.eot');
-	src: local('☺'), url('PT_Sans-webfont.woff') format('woff'), url('PT_Sans-webfont.ttf') format('truetype'), url('PT_Sans-webfont.svg#webfont6MwxiJev') format('svg');
+	src: url('/fonts/PT_Sans-webfont.eot');
+	src: local('☺'), url('/fonts/PT_Sans-webfont.woff') format('woff'), url('/fonts/PT_Sans-webfont.ttf') format('truetype'), url('/fonts/PT_Sans-webfont.svg#webfont6MwxiJev') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
