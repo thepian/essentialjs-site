@@ -4,8 +4,8 @@ title: Essential JavaScript
 description: Just the essentials for a great web application.
 email: henrik@thepia.com
 analytics_id: UA-22749258-1
-    
-exclude: ['_design','README.textile', 'demo', 'Rakefile']
+
+exclude: _design, README.textile, demo, Rakefile
 destination: _site
 lsi: false
 pygments: true
