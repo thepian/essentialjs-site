@@ -1,0 +1,87 @@
+---
+layout: nil
+---
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Verify scripting behaviour</title>
+		<style>
+		#results dd td { width:5em; }
+		#results dd thead { background-color: #ddd; }
+		#results dd tbody td.lead { background-color: #ddd; }
+		#results dd tbody td { border-bottom: 1px dotted #888;}
+		</style>
+
+		<script type="text/javascript">
+			var values = ["undefined","null","false","new Boolean(false)","0",'""','[]','[null]','[0]','[0,0]','[1]','1','true'];
+			var operations = {
+				"==" : function(left,right) { 
+						return (eval(left +" == "+ right))?  "yes":"&nbsp;"; 
+					},
+				"if" : function(left,right) {
+						var _if = false;
+						eval("if ("+right+") _if = true; ");
+						return _if?  "yes":"&nbsp;"
+					},
+				"if !" : function(left,right) {
+						var _if = false;
+						eval("if (!"+right+") _if = true; ");
+						return _if?  "yes":"&nbsp;"
+					},
+				"+" : function(left,right) {
+						return eval(left+" + "+right);
+					},
+				"*" : function(left,right) {
+						return eval(left+" * "+right);
+					},
+				"-" : function(left,right) {
+						return eval(left+" - "+right);
+					},
+				"/" : function(left,right) {
+						return eval(left+" / "+right);
+					},
+				"||" : function(left,right) {
+						return eval(left+" || "+right);
+					},
+				"|" : function(left,right) {
+						return eval(left+" | "+right);
+					}
+			};
+			function do_comparisons()
+			{
+				var results = [];
+				
+				for(var op in operations) {
+					results.push("<dt>"+op+"</dt><dd>");
+					
+					results.push("<table><thead><tr><td>&nbsp;</td>");
+					for(var j=0;j<values.length;++j) results.push( '<td>' + values[j] + "</td>");
+					results.push("</tr></thead><tbody>");	
+
+					for(var i=0;i<values.length;++i)
+					{
+						results.push("<tr><td  class='lead''>"+values[i]+"</td>");
+						for(var j=0;j<values.length;++j)
+							results.push("<td>"+operations[op](values[i],values[j])+"</td>");
+						results.push("</tr>");
+					}
+
+					
+					results.push("</tbody></table></dd>");
+				}
+				
+				return results.join("");
+			}
+		</script>
+	</head>
+	<body>
+	<dl id="results">
+	</dl>
+	<script type="text/javascript">
+		var r = do_comparisons();
+		document.getElementById("results").innerHTML = r; 
+		//document.write(r);
+	</script>
+	</body>
+</html>
