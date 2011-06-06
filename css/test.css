@@ -77,7 +77,7 @@ header a {	color:#525252; text-decoration:none; }
     left:0px;
     width:41px;
     height:41px;
-    background-image: url("../images/calendar24.gif");
+    background-image: url("/images/calendar24.gif");
 }
 
 .postmonth {

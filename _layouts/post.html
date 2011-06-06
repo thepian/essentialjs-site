@@ -7,6 +7,15 @@ guesswho: itsme
         <h1>
             <a href='{{page.url}}'>{{page.title}}</a></h1>
             <div class="date">
+	
+				<figure class="postdate">
+					<!-- 
+					<span class="postweekday">{{ post.date | date: "%w" }}</span>
+					-->
+					<span class="postmonth">{{ post.date | date: "%b" }}</span>
+					<span class="postday">{{ post.date | date: "%d" }}</span>
+				</figure>
+	
                 {{page.date | date_to_string}}
                 {% for category in page.categories %}
                 <span class="category">{{category}}</span>
