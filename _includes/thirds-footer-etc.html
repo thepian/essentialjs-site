@@ -1,0 +1,53 @@
+<nav class="thirds-content etc normal-read">
+	<div class="third">
+			<section class="posts">
+				<h2>Recent Posts</h2>
+
+				{% for post in site.posts limit:4 %}
+			  <h6><a href="{{ post.url }}">{{ post.title }}</a>
+			  <time>{{ post.date | date:"%b %d" }}</time>
+			  </h6>
+				<p>
+				  {{ post.summary | truncatewords:20 }}
+				  <a href="{{ post.url }}">more</a>
+				</p>
+				{% endfor %}
+
+			</section>
+	</div>
+
+	<div class="third">
+			<section>{% include footer-demo-links.html %}
+			</section>
+	</div>
+
+	<div class="third">
+			<section>
+				<h2>Subscribe to our mailing list</h2>
+				<form>
+					<fieldset>
+					<dl>	
+					<dt><label>Name</label></dt><dd><input name="name" type="text" size="15"></dd>
+					<dt><label>E-Mail</label></dt><dd><input name="email" type="email" size="15"></dd>
+					<dd class="buttons-left"><button type="submit">Join List</button></dd>
+					</dl>
+					</fieldset>
+				</form>
+				
+				<ul>
+					<li class="grid-baseline"><a href="" rel="Pale Serif" class="styleswitch">Pale Serif</a></li>
+					<li class="grid-column"><a href="" rel="Night Sans" class="styleswitch">Night Sans</a></li>
+					<li class="grid-baseline-column"><a href="" rel="Demo Theme" class="styleswitch">Demo Theme</a></li>
+					<li class="grid-remove"><a href="" rel="remove" class="styleswitch">Remove Theme</a></li>
+				</ul>
+			</section>
+	</div>
+	<div class="third">
+		<section>
+								<h2>About Fresh Translation</h2>
+								<p>
+								Fresh Translation is a newly started company founded by Caterine Apruzzese and its aim is to provide a translation service that is accessible and tailored to our customers' specific needs. Originally from Venezuela, I lived and studied in the city of Oporto in Portugal for ten years and in 2007 I moved to London to complete my education.
+			</p>
+		</section>
+	</div>
+</nav>

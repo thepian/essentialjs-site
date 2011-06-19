@@ -1,0 +1,27 @@
+The Test site for Essential JavaScript
+==================
+
+This is the Jekyll source for the HTML5 Tests website.
+
+Git Pages may be used for html5.thepian.org and html5.thepia.com
+
+run locally:
+* `sudo port install ruby rb-rubygems`
+* `sudo gem install jekyll RedCloth less`
+* `sudo port install py26-pygments nodejs`
+* `sudo npm install less`
+* `jekyll --server --auto`
+
+git clone http://github.com/isaacs/npm.git
+cd npm
+sudo make install
+
+set:
+* export NODE_PATH=/opt/local/bin/node
+* path+ /opt/local/lib/node_modules/npm/bin
+
+sudo npm install -g express
+
+http://shapeshed.com/journal/setting-up-nodejs-and-npm-on-mac-osx/
+
+Copyright (c) 2011 Henrik Vendelbo. Rights all reserved.

@@ -1,0 +1,15 @@
+<script type="text/javascript">
+	window.onorientationchange =
+	window.onresize = function() {
+		var vars = document.body.getElementsByTagName("var");
+		for(var i=0,v; v=vars[i]; ++i) {
+			var elemProp = v.getAttribute("data-parent-prop");
+			var p = v.offsetParent;
+			if (elemProp && p) {
+				if (p.tagName == "CODE") p = p.parentNode;
+				v.innerHTML = p[elemProp];
+			}
+		}
+	};
+setTimeout(window.onresize,200);
+</script>

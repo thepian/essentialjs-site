@@ -1,0 +1,349 @@
+/**
+ * Pale colored Serif font theme
+ */
+
+/** 
+*  @author: Henrik Vendelbo
+*  @website: essentialjs.com
+*/
+
+@import "../dev-time/flawless/css/flawless/core/production/framework.less";
+@import "../dev-time/css3-mixins/main.less";
+@import "addons.less";
+
+/* ================== SETUP THE FRAMEWORK  ==================
+ * Here you can see the basic three setup variables that most
+ * websites will need to set in order to use the framework.
+ *
+ * it is also important to set up those vars here so that all
+ * imported .less files you create build upon this foundation
+ */
+ 
+/* Tell the framework where it is relative to the html file  */
+@setup_framework_path: "dev-time/flawless/css/flawless/core/production";
+
+@setup_images_path: "images";
+@setup_resources_path: "css";
+
+.font-face('CaviarDreamsRegular','/fonts/CaviarDreams-webfont','webfontdHSnsI35');
+
+/**
+ * Sizes
+ */
+@top-edge-height: 20px;
+@header_height: 80px;
+@bottom-edge-height: 20px;
+@page-menu-button-width: 32px;
+@page-menu-button-height: 32px;
+@sidebar-button-width: 48px;
+@sidebar-button-height: 48px;
+
+@article_aside1_height: 250px;
+@article_aside2_height: 250px;
+@etc_height: 275px;
+@left_overhang: 80px; 
+
+/* TODO page header overlap with article in next part */
+
+/**
+ * Typefaces
+ */
+@body-family: Georgia,"Times New Roman", Times, serif;
+@heading-family: CaviarDreamsRegular, Helvetica, Arial, sans-serif;
+@blockquote-family: Helvetica, Arial, sans-serif;
+
+/**
+ * Colors
+ */
+
+@regular-color: #333;
+@alternate-color: #036;
+@regular_anchor_color: @pink-color;
+@regular_anchor_hover_color: #036;
+@figure-background-color: white;
+@figure-border: 1px solid #ccc;
+@shadow-color: #999;
+
+/**
+ * Specific parameters
+ */
+@page_header_background_color: white;
+
+@nav_background_color: transparent;
+@overhang_background_color: @nav_background_color;
+@article_background_color: #e8e8e8;
+@effective_article_background_color: @article_background_color; /* If transparent replace with page background */
+@main_background: #f0f0f0;
+
+@code_background_color: #666;
+@code_color: #aaa;
+@code-family: Monospace, mono-space, monospace;
+
+@article_color: @regular-color;
+@mark_background: rgba(255, 255, 0, 0.4);
+@title_underline_color: #000;
+@article_mark_background: @mark_background;
+@article_title_underline_color: @title_underline_color;
+@article_figure_background_color: @figure-background-color;
+@article_figure_border: @figure-border;
+
+@asides_color : @regular-color;
+@asides_alternate_color: @alternate-color;
+@asides_mark_background: @mark_background;
+@asides_title_underline_color: @title_underline_color;
+
+@asides_background_color: #ddd;
+@aside1_background_color: @asides_background_color;
+@aside2_background_color: @asides_background_color;
+
+@page_footer_mark_background: @mark_background;
+@page_footer_title_underline_color: @title_underline_color;
+
+@page_footer_background_color: #ddeeee;
+@page_footer_color: @regular-color;
+@page_footer_anchor_color: @regular_anchor_color;
+
+@etc_color: lighten(@page_footer_color,10%); 
+@etc_anchor_color: lighten(@page_footer_anchor_color,10%);
+
+@copyright_color: lighten(@page_footer_color,20%); 
+@copyright_anchor_color: lighten(@page_footer_anchor_color,20%); 
+
+@page_background_color: @page_footer_background_color;
+
+@table-border-color: #000;
+@table-odd-background: rgba(0, 0, 0, 0.035);
+
+
+/* The vertical rhythm is used to give your webpages a consistent
+ * look. The whole grid system relies on this value to calculate
+ * gaps, spans and so on. Basically this defines the row-height of
+ * the grid in pixels and aligns all elements in the flow of the grid. 
+ */
+@normal_read_vertical_rhythm: 1.5;
+@light_read_vertical_rythm: 2;
+@dense_read_vertical_rythm: 1.2;
+
+/* Here you can control the overall font size. Not that this value 
+ * strongly correlates with the vertical rhythm. If you make these
+ * two values too different your text flow will look ugly
+ */
+@theme_font_size: 13;
+
+/* Tell the framework where it is relative to the html file  */
+@setup_resources_path: "css";
+
+body {
+    /** Define vertical rythm of text in normal/light/dense read areas */
+    .body_rhythm();
+    
+    .normal-read {
+        .normal_rhythm();
+    }
+    
+    .comments-list .odd, .comments-list .even, .asides, .etc, .secondary-read {
+        .normal-read &,
+        &.normal-read {
+            .secondary_rhythm();
+        }
+    }
+
+    background-color: @page_background_color;
+	/* this adds the standard typography theme with custom families and colors */
+	.regular_body_theme(@body-family, @heading-family, @regular-color, @alternate-color, url(/images/dashed_line_1px_grey.png));
+    .regular_anchor_theme(@regular_anchor_color, @regular_anchor_hover_color);
+	.regular_inline_flow(@mark_background, @code-family, @title_underline_color);
+	
+    h1,h2 {
+        text-shadow: 0 1px 1px @shadow-color;
+    }
+    
+    /*
+    background-image: url(/images/bg-footer.gif);
+    background-position: center bottom;
+    background-repeat: repeat-x;
+    */
+
+    > header {
+        padding-top: .3em;
+        text-align:left;
+/*        overflow: hidden;*/
+        padding-top: @top-edge-height;
+        height: @header_height;
+        background-color: @page_header_background_color;
+        // blog theme changed
+    }
+
+    > footer {
+    
+        padding-bottom: @bottom-edge-height;
+    
+        .regular_inline_flow(@page_footer_mark_background, @code-family, @page_footer_title_underline_color); 
+        .regular_figure_theme(@article_figure_background_color,@article_figure_border);
+        .regular_table_theme(@table-border-color,@table-odd-background);          
+    
+        background: url("/images/footer.png") no-repeat scroll 50% 0% transparent;  
+        
+        .copyright {
+            margin-top: 20px;
+            margin-bottom:.5em;
+
+            font-size: 10px;
+            color: @copyright_color;
+
+            a {
+                color: @copyright_anchor_color;
+            }
+            img {
+                margin-top: 10px;
+                vertical-align: -4px;
+                padding-right: 5px;
+            }
+        }
+    } 
+}
+
+section,
+.with-link-hints {
+    .theme_external_link(2px, "/images/external-http.png", 12px, 0px, right);
+    .theme_external_email(2px, "/images/external-http.png", 12px, 0px, right);
+}
+
+.main {
+    background: @main_background;
+}
+
+footer .etc {
+    min-height: @etc_height;
+    
+    color: @etc_color;
+
+    section {
+        padding-top: 10px;
+    }
+    
+    a {
+        color: @etc_color;
+    }
+    .posts h6 a {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+        color: white;
+    }
+}
+
+nav.top-overhang {
+	/* these are the colors for the states - normal, hover, active */
+	.nav-background(#E3E3E3, @nav_background_color, @nav_background_color);
+	.nav-text-color(black, black, black);
+}
+
+section, article aside, .links-bar {
+    
+    .normal_list_rhythm();
+    .regular_list_theme();
+}
+
+article {
+    color: @article_color;
+    background-color: @article_background_color;
+    
+    //.regular_blob_theme(#333, #F4F4F4, #DEDEDE); 
+    .regular_quotes_theme(#e0e0e0,@shadow-color,40px);
+    
+    .overhang-base {
+        .overhang_base();
+    }
+    .left-overhang {
+        .left_overhang();
+    }
+
+    &.with-overhang, .with-overhang {
+        padding-left: @left_overhang;
+    }
+}
+
+
+article header, article footer, article aside, section {
+    .regular_inline_flow(@article_mark_background, @code-family, @article_title_underline_color); 
+    .regular_figure_theme(@article_figure_background_color,@article_figure_border);
+    .regular_table_theme(@table-border-color,@table-odd-background);   
+
+    .postbadge {
+        .post_badge();
+    }
+}
+
+article header {
+    .postinfo {
+        .posts_info();
+    }
+}    
+
+section.comments {
+    .comments_gradient_background_theme(@effective_article_background_color,1px solid #bbb)
+}
+
+.thirds-content > aside,
+.fourths-content > aside,
+.content > aside {
+    color: @asides_color;
+    background-color: @asides_background_color;
+
+}
+aside.sidebar-1 {
+	background-color: @aside1_background_color; /* add background color */
+}
+
+aside.sidebar-2 {
+	background-color: @aside2_background_color; /* add background color */
+}
+.asides-background {
+    position:absolute;
+    background-color: @asides_background_color;
+    height:100%;
+    background-image: url("/images/sitting-pencil-2.png");
+    background-position: bottom right;
+    background-repeat: no-repeat;
+}
+
+blockquote {
+    font-family: @blockquote-family;
+}
+
+.no-debug-styles();
+
+/* Top Edge buttons */
+nav.page-menu {
+    
+    .regular_page_menu(@page-menu-button-width, @page-menu-button-height, url('/images/buttons/top-edge.png'));
+}
+
+.links-bar {
+    background: @main_background;
+    ul.breadcrumb a {
+        color: darken(@main_background,20%);
+    }
+}
+.links-bar:hover {
+    background: black;
+    ul.breadcrumb a {
+        color: white;
+    }
+    .opacity(.5);
+}
+
+/* Sidebar Site buttons */
+aside fieldset {
+    
+    .sidebar_buttons(@sidebar-button-width, @sidebar-button-height, url('/images/buttons/site-48.png'))
+}
+
+body aside fieldset.search {
+    .sidebar_search_fieldset(@page-menu-button-width, @page-menu-button-height, url('/images/buttons/top-edge.png'));
+}
+
+.tri-posts details {
+    padding: 15px 25px 25px 25px;
+}

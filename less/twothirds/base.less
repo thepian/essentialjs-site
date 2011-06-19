@@ -1,0 +1,135 @@
+/* Here we define the standard styles that are applied all screens  */
+@left_overhang: 80px;
+
+
+/* Base layout SuperVGA and up */
+.split-thirds {
+    
+    .divide_width_twothirds(1600px,1024px, @left_overhang);
+    
+    .right-third {
+        position:absolute;
+        top:0;
+        height:100%;
+        
+        .restricted-width {
+            position:absolute;
+            top:0;
+        }
+    }
+}
+
+.four-columns {
+    .divide_four_columns(1600px,1024px);
+}
+
+.two-columns {
+    .divide_two_columns(1600px,1024px);
+}
+
+
+/* Slightly smaller than SuperVGA */
+@media only screen and (max-width: 1024px) and (min-width: 768px) {
+	
+    .split-thirds {
+        .divide_width_twothirds(1200px,900px, @left_overhang);
+    }
+    
+    .four-columns {
+        .divide_four_columns(1200px,900px);
+    }
+
+    footer .copyright {
+        position:relative;
+        text-align: center;
+        overflow: hidden;
+
+        .centered_block(900px,@left_overhang);
+        margin-top: 20px;
+        margin-bottom:.5em;
+
+        img {
+            margin-top: 10px;
+            vertical-align: -4px;
+        }
+    }
+}
+
+body {
+    position: relative; // Otherwise bottom-edge doesn't work
+    overflow-x: hidden; // for rounding errors of percentages
+    
+    > header {
+        margin: 0;
+        padding-top: .3em;
+        text-align:left;
+        overflow: hidden;
+    }
+}
+
+/** Used within the article to place a zero height positioning base around the overhang*/
+.overhang-base {
+    position: absolute;
+}
+
+/** Overhang left of the article body can be used within a section or within a header */
+.left-overhang {
+    position: absolute;
+    left: e(%("-%spx",@left_overhang));
+    width: @left_overhang;
+    text-align: center;
+    
+    address, time, label, output {
+        margin: 0 auto;
+    }
+    
+    .vertical-text-100 {
+        .rotate(1);
+        position: relative;
+        line-height: 2;
+        font-size: 1.15em;
+        padding: 2px 8px;
+        border: 1px solid #bbb;
+        color: white;
+        left: -8px;
+        width: 100px;
+    }
+}
+
+
+nav.top-overhang {
+    .nav_top_overhang();
+}
+
+article.main {
+    overflow:visible; /* allow top-overhang navigation to be visible */
+    
+    .restricted-width {
+        padding-top:10px; /* vert gap */
+    }
+
+    .asides {
+        aside {
+            margin-top:10px;
+        }    
+    }
+}
+
+.top-edge {
+    position:absolute;
+    top:0; left:0; width:100%;
+    overflow: visible;
+    
+    .normal_list_rhythm();
+}
+
+.bottom-edge {
+    // relies on body position relative
+    position:absolute;
+    bottom:0; left:0; width:100%;
+}
+	
+body form {
+    .forms_dl_level(75px);    
+}
+

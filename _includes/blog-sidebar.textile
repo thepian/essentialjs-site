@@ -1,0 +1,23 @@
+<fieldset><a href="http://uk.linkedin.com/in/apruzzese" class="linked-in" title="Fresh Translation on LinkedIn"></a><a href="http://www.facebook.com/pages/Fresh-Translation-Right-Here-Inc/224427857583632" class="facebook-logo" title="Fresh Translation on Facebook"></a><a href="http://twitter.com/#!/freshtranslatio" class="twitter-bird" title="@essentialjs"></a><a href="http://feedburner.com/essentialjs/onaquest/" class="rss-clear" title="Subscribe to Blog"></a><a href="mailto:katty@essentialjs.com" title="Email Fresh Translation" class="email-clear"></a> 
+</fieldset>
+
+<iframe src="http://www.facebook.com/plugins/like.php?app_id=176178315769197&amp;href=essentialjs.com&amp;send=true&amp;layout=standard&amp;width=300&amp;show_faces=true&amp;action=like&amp;colorscheme=dark&amp;font=trebuchet+ms&amp;height=25" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100%; height:25px;" allowTransparency="true"></iframe>
+<fieldset class="search">
+<input name="search" placeholder="Search" size="35"><button class="search-base submit"></button>
+</fieldset>
+News Personal On-A-Quest Comments Tweets
+<hr>
+<h2>Other Posts</h2>
+
+{% for post in site.related_posts limit:10 %}
+<details>
+	<summary>
+	  <a href="{{ post.url }}">{{ post.title }}</a>
+		<time class="postdate">
+			<span class="postmonth">{{ post.date | date: "%b" }}</span>
+			<span class="postday">{{ post.date | date: "%d" }}</span>
+		</time>
+	</summary>
+	<p>{{ post.summary | truncatewords:20 }}</p>
+</details>
+{% endfor %}

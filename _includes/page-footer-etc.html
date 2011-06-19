@@ -1,0 +1,41 @@
+<nav class="etc thirds-content normal-read">
+	<div class="third">
+			<section class="posts">
+				<h2>Recent Posts</h2>
+
+				{% for post in site.posts limit:4 %}
+			  <h6><a href="{{ post.url }}">{{ post.title }}</a>
+			  <time>{{ post.date | date:"%b %d" }}</time>
+			  </h6>
+				<p>
+				  {{ post.summary | truncatewords:20 }}
+				  <a href="{{ post.url }}">more</a>
+				</p>
+				{% endfor %}
+
+			</section>
+	</div>
+
+	<div class="third">
+			<section>
+				<h2>About Our Website</h2>
+				{{ site.lorem-ipsum | textilize }}
+			</section>
+		</div>
+	</div>
+
+	<div class="third">
+			<section>
+				<h2>Subscribe to our mailing list</h2>
+				<form>
+					<fieldset>
+					<dl>	
+					<dt><label>Name</label></dt><dd><input name="name" type="text" size="15"></dd>
+					<dt><label>E-Mail</label></dt><dd><input name="email" type="email" size="15"></dd>
+					<dd class="buttons-left"><button type="submit" class="big">Join List</button></dd>
+					</dl>
+					</fieldset>
+				</form>
+			</section>
+	</div>
+</nav>

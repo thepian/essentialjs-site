@@ -1,0 +1,74 @@
+---
+layout: default
+title: HTML5 Stuff
+header_title: HTML5 Stuff
+rooturi: http://essentialjs.com
+---
+h2. Pocket Friendly
+
+The tablets and smartphones are all around you. Today it is essential that your website works on both mobiles and desktops.
+While that may sound simple it changes fundamental design principles for the page.
+
+Text and buttons have to be somewhat larger to be useable on a smaller screen.
+Touch displays cannot respond to hovering the mouse over an element by changing the styling or information displayed. There is no mouse, only your finger which cannot be tracked when it doesn't touch the screen.
+
+Touch devices have a trick not normally used on the desktop; Pinch to zoom. Zooming in and out of information is a very powerful concept on handhelds, and can be used to just as much effect on desktops.
+
+The essentials line of themes are all made with handhelds in mind, so in several ways they will be different from themes that you otherwise find.
+
+h2. Search Engine Friendly HTML5
+
+Search engines do not yet pay special attention to the new semantic improvements in HTML5.
+It is however inevitable that they will in the future. The themes place the important page content in
+the best place possible within the document. This gives the best possible interpretation by the search
+engines. 
+The pages are made to load as fast as possible out of the box, and gives a checklist of tweaks for your
+production deployment, which gives you the fastest setup possible.
+The great speed is considered important by Google and will improve your ranking in search results.
+
+When you add plugins and shortcodes to your site, be careful not to slow down the page loading.
+
+h2. Paper vs Splash
+
+Blogs styling works best when the styling is kept simple and paper like. 
+Splash layouts can be used for your main site that presents your product or portfolio.
+The themes have blog pages that are based on a white or black variations. The other pages are intended 
+for your portfolio and gives you a range for setting up your main site.
+
+
+h2. Quality Tests
+
+* Is it usable on an iPhone 3GS
+* Does it work *well* on an iPad
+* Is it usable on IE7 with 1024x768
+* Does it work *well* on a 15" notebook
+
+
+h2. Page Layouts
+
+- "Two Thirds":/demo/twothirds/ := Appropriate for Articles,Blogs,News. Divides the page into thirds. 
+	Main content is place in the left two thirds with sidebars in the right third.
+	Content can also be divided in three equal columns.
+	<a href="/demo/twothirds/themes/">Themes</a>
+- "Fifty Fifty":/demo/fiftyfifty/ := 	Appropriate for Visual Spreads. Divides the page into two halves.
+		Either or both sides can be used for the main content.
+
+
+h2. Why HTML5
+
+JavaScript must be turned on in IE for HTML5 to work. Some see JavaScript being optional for web pages.
+	
+While I understand this view, I also think it’s a mistake. Three core technologies make the Web work: HTML, CSS and JavaScript. All desktop browsers support them (to some degree), so if any one of them off is disabled the user will have to expect a degraded experience. JavaScript is now fundamental to the user experience and while we should support users who turn off JavaScript, or have it turned off for them and have no chance to turn it on again as they don’t have the right to do so, I question just how far we should support them.
+
+Why Using JavaScript Makes Sense
+
+Yahoo gives compelling evidence that less than 1.5% of its users turn off JavaScript. My own research into this, ably assisted by Greig Daines at eConversions, puts the figure below 0.5% (based on millions of visitors to a UK retail website).
+
+Whilst it’s true that JavaScript should be separated from a site’s content, design and structure the reality is no longer black and white. I strongly believe that the benefits and opportunities HTML5 brings, together with related technologies such as CSS3 and media queries (both of which sometimes rely on JavaScript for cross-browser compatibility), is more than enough reason to use JavaScript to ‘force’ new elements to work in Internet Explorer. I am a passionate advocate for standards-based design that doesn’t rely on JavaScript; HTML5 is the one structural exception.
+	
+http://www.smashingmagazine.com/2011/02/22/using-html5-to-transform-wordpress-twentyten-theme/
+
+articles and sections
+
+http://html5doctor.com/the-article-element/
+

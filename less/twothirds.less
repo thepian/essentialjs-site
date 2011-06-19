@@ -1,0 +1,41 @@
+/** 
+ *  @author: Henrik Vendelbo
+ *  @website: essentialjs.com
+ */
+
+@import "../dev-time/flawless/css/flawless/core/production/framework.less";
+@import "../dev-time/css3-mixins/main.less";
+@import "addons.less";
+
+/* ================== SETUP THE FRAMEWORK  ==================
+ * Here you can see the basic three setup variables that most
+ * websites will need to set in order to use the framework.
+ *
+ * it is also important to set up those vars here so that all
+ * imported .less files you create build upon this foundation
+ */
+ 
+/* Tell the framework where it is relative to the html file  */
+@setup_framework_path: "dev-time/flawless/css/flawless/core/production";
+
+@setup_images_path: "images";
+@setup_resources_path: "css";
+
+
+@import "twothirds/defaults.less";
+
+/* The Flawless Reset is the most advanced reset mixin. You can also
+ * choose eric meyers or yui reset. But if you use html5 like in this
+ * example, then the flawless reset is best suited
+ */
+.reset_html5doctor();
+
+/* ================ SPLIT UP YOUR CODE ================
+ * It is highly recommended to split up your various parts
+ * of custom styles for your website to improve maintainance 
+ */
+
+@import "twothirds/base.less"; /* the base layout applied to all screen sizes */
+@import "twothirds/medium.less"; /* the changes applied to medium screen sizes */
+@import "twothirds/small.less"; /* changes applied to small screen sizes */
+

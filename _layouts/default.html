@@ -1,0 +1,30 @@
+---
+layout: master
+thirds: production
+flawless: production
+
+---
+{% unless page.no_header %}{% include page-header.html %}{% endunless %}
+<div class="main constrained">
+	<div class="thirds-content">
+			
+		<article class="two-thirds normal-read four-columns">
+{% if page.wrap-section %}<section>{% endif %}
+{{ content }}
+{% if page.wrap-section %}</section>{% endif %}
+{% include article-nav.html %}
+		</article>
+		
+		<aside class="third normal-read two-columns">
+			{% include page-sidebar.html %}
+			{% unless page.no_tabs %}{% include sidebar-nav.html %}{% endunless %}
+		</aside>
+</div></div> 
+
+<footer class="constrained">
+	{% include page-footer-etc.html %}
+	{% if page.show_offset_info %}
+	<code class="info">Etc (<var data-parent-prop="offsetWidth"></var> x <var data-parent-prop="offsetHeight"></var>)</code>
+	{% endif %}
+	{% include page-footer-copyright.html %}
+</footer>

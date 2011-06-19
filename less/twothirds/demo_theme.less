@@ -1,0 +1,216 @@
+/**
+ * Odd colored Sans Serif font Demo theme
+ */
+
+/** 
+*  @author: Henrik Vendelbo
+*  @website: essentialjs.com
+*/
+
+
+@import "../../dev-time/flawless/css/flawless/core/production/framework.less";
+@import "../../dev-time/css3-mixins/main.less";
+@import "../addons.less";
+
+/* ================== SETUP THE FRAMEWORK  ==================
+ * Here you can see the basic three setup variables that most
+ * websites will need to set in order to use the framework.
+ *
+ * it is also important to set up those vars here so that all
+ * imported .less files you create build upon this foundation
+ */
+ 
+/* Tell the framework where it is relative to the html file  */
+@setup_framework_path: "dev-time/flawless/css/flawless/core/production";
+
+@setup_images_path: "images";
+@setup_resources_path: "css";
+
+@import "defaults.less";
+
+/**
+ * Typefaces
+ */
+@heading-family: Georgia,"Times New Roman", Times, serif;
+@body-family: Helvetica, Arial, sans-serif;
+@blockquote-family: Georgia,"Times New Roman", Times, serif;
+
+/**
+ * Colors
+ */
+@page_background_color: #646C5D;
+@page_header_background_color: white;
+@page_footer_color: #ccc;
+@nav_background_color: transparent;
+@article_background_color: #ccc;
+@asides_background_color: #4183C4;
+@aside1_background_color: #4183C4;
+@aside2_background_color: #4183C4;
+
+@code_background_color: #666;
+@code_color: #aaa;
+@code-family: Monospace, mono-space, monospace;
+
+@mark_background: rgba(255, 255, 0, 0.4);
+@title_underline_color: black;
+
+body {
+    /** Define vertical rythm of text in normal/light/dense read areas */
+    .body_rhythm();
+    
+    .normal-read {
+        .normal_rhythm();
+    }
+    
+    background-color: @page_background_color;
+	/* this adds the standard typography theme with custom families and colors */
+	.regular_body_theme(@type-family, @type-head-family, #333, #036, url(/images/dashed_line_1px_grey.png));
+	
+	.regular_inline_flow(@mark_background, @code-family, @title_underline_color);
+}
+
+body > header {
+    background-color: @page_header_background_color;
+}
+
+nav.top-overhang {
+	/* these are the colors for the states - normal, hover, active */
+	.nav_background(#E3E3E3, @nav_background_color, @nav_background_color);
+	.nav_text_color(black, black, black);
+}
+
+article.main {
+    
+    /* themed */
+    background-color: @article_background_color;
+    
+    .sections {
+        
+        section {
+            .normal_list_rhythm();
+        }
+    }
+    
+    .asides {
+        background-color: @asides_background_color;
+        
+        
+        aside {
+            .normal_list_rhythm();
+        }
+        
+        aside.sidebar-1 {
+        	background-color: @aside1_background_color; /* add background color */
+        }
+
+        aside.sidebar-2 {
+        	background-color: @aside2_background_color; /* add background color */
+        }
+    }
+}
+
+article {
+
+    .comments {
+        .secondary_rhythm();
+    }    
+}
+
+body > footer {
+    
+    .about {
+        .secondary_rhythm();
+    }
+}
+
+
+/* Slightly smaller than SuperVGA */
+@media only screen and (max-width: 1024px) and (min-width: 768px) {
+	
+	body { border-top: 3px solid red; }
+}
+
+
+.debug-styles();
+
+.asides {
+    aside {
+        border:1px solid black;
+    }
+}
+
+.thirds {
+    border-top: 3px solid blue;
+    
+    .left {
+        min-height: 100px;
+    }
+    .middle {
+        min-height: 100px;
+    }
+    .right {
+        min-height: 100px;
+    }
+}
+
+@media only screen and (max-width: 767px) and (min-width: 480px) {
+	
+	article {
+	    background: red !important;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	article {
+	    background: blue !important;
+	}
+}
+
+section {
+    
+     h3,p { /* TODO only first */
+        margin-top: 0;
+    }
+}
+
+.forms-demo blockquote {
+    line-height: 1.7;
+    font-style: italic;
+    color: #ccc;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+body > footer {
+    
+    .normal_list_rhythm();
+    .regular_list_theme();
+} 
+
+footer .copyright {
+    font-size: 10px;
+    line-height:1.6;
+}
+footer .copyright a {
+    color: white;
+}
+
+blockquote {
+    font-family: @blockquote-family;
+}
+
+/*
+.nice-flow {
+    .size_headers();
+    .size_blocks();
+    .nice_anchors();
+}
+*/
+
+/* Baseline Demo (TODO incorporate )*/
+hr						{ background: #c00; }
+#branding a				{ border: none; }
+nav ul					{ width: 100%; margin: 0; top: 0; float: left; }
+@media only screen and (max-device-width:480px) {
+	.layout-grid		{ background-image: url(/demo/images/baseline.png); }
+}
