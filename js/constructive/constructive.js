@@ -1,16 +1,64 @@
-function generator(fConstructor,sVariant)
+function resolver(global)
 {
-       var fVariant = fConstructor;
+    /**
+     * string with name to resolve and an optional boolean stating if the resolve can be undefined
+     *
+     * or
+     *
+     * { name: , generator: , allowUndefined: }
+     */
+    return function(name,allowUndefined) {
+        var _generator, names;
+        if (typeof name == "object") {
+            _generator = name.generator;
+            name = name.name;
+            names = name.split(".");
+            if (allowUndefined == undefined) allowUndefined = name.allowUndefined || name.allowNull;
+        }
+        else {
+            names = name.split(".");
+        }
+        var top = global;
+        for (var j = 0, n; n = names[j]; ++j) {
+            var prev_top = top;
+            top = top[n];
+            if (top == undefined) {
+                if (_generator) {
+                    top = prev_top[n] = _generator();
+                }
+                else {
+                    if (!allowUndefined) throw new Error("The '" + n + "' part of '" + name + "' couldn't be resolved.");
+                    return null;
+                }
+            }
+        }
+        return top;
+    };
+}
+resolver.top = {};
+
+var resolve = resolver(resolver.top);
+
+// if (typeof pGlobals == "object" && typeof pGlobals.length == "undefined") pGlobals = [pGlobals];
+// for (var i = 0, g; g = pGlobals[i]; ++i) {
+//     var fResolved = _resolve(g, pName, false);
+//     if (fResolved) return fResolved
+// }
+
+
+function generator(constr,variant)
+{
+       var variantConstr = constr;
        function generator(a,b,c,d,e,f,g,h,i,j,k,l) {
-              return new fVariant(a,b,c,d,e,f,g,h,i,j,k,l);
+              return new variantConstr(a,b,c,d,e,f,g,h,i,j,k,l);
        }
-       if (fConstructor.__id) {
-              var mConstructor = citadel.generator.VARIANTS[fConstructor.__id];
-              if (mConstructor && mConstructor[sVariant]) {
-                     fVariant = mConstructor[sVariant];
+       if (constr.__id) {
+              var mConstructor = citadel.generator.VARIANTS[constr.__id];
+              if (mConstructor && mConstructor[variant]) {
+                     variantConstr = mConstructor[variant];
               }
        }
-       generator.constructor = fVariant;
+       generator.constructor = variantConstr;
       
        return generator;
 };
@@ -19,29 +67,29 @@ generator.LAST_ID = 0;
  
 generator.VARIANTS = {};
  
-generator.setVariant = function(fConstructor,sVariant,fVariant)
+generator.setVariant = function(baseConstr,variant,variantConstr)
 {
-       if (fConstructor.__id == undefined) {
+       if (baseConstr.__id == undefined) {
               ++this.LAST_ID;
-              fConstructor.__id = this.LAST_ID;
+              baseConstr.__id = this.LAST_ID;
        }
-       citadel.generator.VARIANTS[fConstructor.__id] = citadel.generator.VARIANTS[fConstructor.__id] || {};
+       generator.VARIANTS[baseConstr.__id] = generator.VARIANTS[baseConstr.__id] || {};
  
-       citadel.generator.VARIANTS[fConstructor.__id][sVariant] = fVariant;
+       generator.VARIANTS[baseConstr.__id][variant] = variantConstr;
 };
  
-generator.setVariantGenerator = function(fConstructor,sVariant,fVariant)
+generator.setVariantGenerator = function(baseConstr,variant,variantConstr)
 {
-       if (fConstructor.__id == undefined) {
+       if (baseConstr.__id == undefined) {
               ++this.LAST_ID;
-              fConstructor.__id = this.LAST_ID;
+              baseConstr.__id = this.LAST_ID;
        }
-       citadel.generator.VARIANTS[fConstructor.__id] = citadel.generator.VARIANTS[fConstructor.__id] || {};
+       generator.VARIANTS[baseConstr.__id] = generator.VARIANTS[baseConstr.__id] || {};
  
-       citadel.generator.VARIANTS[fConstructor.__id][sVariant] = fVariant;
+       generator.VARIANTS[conbaseConstrstr.__id][variant] = variantConstr;
 };
 
-generator.setHandlers = function(fConstructor,mHandlers)
+generator.setHandlers = function(constr,mHandlers)
 {
        // morph arguments generator -> constructor
        // unknown variant
@@ -60,10 +108,10 @@ generator.setArguments = function(mFirst,mSecond)
 {
 };
  
-generator.setSingleton = function(fConstructor,sVariant)
+generator.setSingleton = function(constr,sVariant)
 {
 };
  
-generator.setPoolSize = function(fConstructor,sVariant,nSize)
+generator.setPoolSize = function(constr,sVariant,nSize)
 {
 };
