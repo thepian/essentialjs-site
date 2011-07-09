@@ -1,7 +1,7 @@
 ---
 layout: default
-title: HTML5 Stuff
-header_title: HTML5 Stuff
+title: Essential JavaScript Testing
+header_title: Essential JavaScript Testing
 rooturi: http://essentialjs.com
 ---
 h2. Pocket Friendly
@@ -28,30 +28,12 @@ The great speed is considered important by Google and will improve your ranking 
 
 When you add plugins and shortcodes to your site, be careful not to slow down the page loading.
 
-h2. Paper vs Splash
-
-Blogs styling works best when the styling is kept simple and paper like. 
-Splash layouts can be used for your main site that presents your product or portfolio.
-The themes have blog pages that are based on a white or black variations. The other pages are intended 
-for your portfolio and gives you a range for setting up your main site.
-
-
 h2. Quality Tests
 
 * Is it usable on an iPhone 3GS
 * Does it work *well* on an iPad
 * Is it usable on IE7 with 1024x768
 * Does it work *well* on a 15" notebook
-
-
-h2. Page Layouts
-
-- "Two Thirds":/demo/twothirds/ := Appropriate for Articles,Blogs,News. Divides the page into thirds. 
-	Main content is place in the left two thirds with sidebars in the right third.
-	Content can also be divided in three equal columns.
-	<a href="/demo/twothirds/themes/">Themes</a>
-- "Fifty Fifty":/demo/fiftyfifty/ := 	Appropriate for Visual Spreads. Divides the page into two halves.
-		Either or both sides can be used for the main content.
 
 
 h2. Why HTML5

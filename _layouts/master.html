@@ -35,7 +35,9 @@
 
 	{% unless page.no_themes %}
 	  <link rel="stylesheet" type="text/css" href="/css/pale_serif.css" media="screen" title="Pale Serif">
+	<!-- 
 	  <link rel="alternate stylesheet" type="text/css" href="/css/night_sans.css" media="screen" title="Night Sans">
+	-->
 	{% endunless %}
 
   {% include flawless_production.html %}
@@ -43,7 +45,9 @@
 
 	{% unless page.no_themes %}
 	  <link rel="stylesheet/less" type="text/css" href="/less/pale_serif.less" media="screen" title="pale_serif_css" preferred="Pale Serif">
+	<!-- 
 	  <link rel="stylesheet/less" type="text/css" href="/less/night_sans.less" media="screen" title="night_sans_css" alternate="Night Sans">
+	-->
 	{% endunless %}
   {% include flawless_development.html %}
 {% endcase %}
@@ -100,7 +104,8 @@
   <script type="text/javascript" src="/js/jQuery/jquery.cookie.js"></script>
   <script type="text/javascript" src="/js/jQuery/jquery.styleswitch.js"></script>
   <script type="text/javascript" src="/js/jScrollPane-1.2.3.min.js"></script>
-  <script type="text/javascript" src="/js/site.js"></script>
+
+  <script type="text/javascript" src="/js/constructive/constructive.js"></script>
 
   <script type="text/javascript" src="/js/jQuery/jquery.masonry.min.js"></script>
 <script> 

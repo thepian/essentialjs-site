@@ -46,47 +46,100 @@ var resolve = resolver(resolver.top);
 // }
 
 
-function generator(constr,variant)
+function generator(baseConstr,variant)
 {
-       var variantConstr = constr;
-       function generator(a,b,c,d,e,f,g,h,i,j,k,l) {
-              return new variantConstr(a,b,c,d,e,f,g,h,i,j,k,l);
-       }
-       if (constr.__id) {
-              var mConstructor = citadel.generator.VARIANTS[constr.__id];
-              if (mConstructor && mConstructor[variant]) {
-                     variantConstr = mConstructor[variant];
-              }
-       }
-       generator.constructor = variantConstr;
-      
-       return generator;
+	variant = variant || null; // defaults to null
+	
+	var info = { constructor: baseConstr, func: baseConstr, construction: [] };
+	
+	function newGenerator(a,b,c,d,e,f,g,h,i,j,k,l) {
+		// TODO map args using handler
+		
+		// args
+		for(var i=0,l=info.construction.length; i<l; ++i) {
+			//TODO call $_init
+		}
+		var object = new info.func(a,b,c,d,e,f,g,h,i,j,k,l);
+		
+		// setters and calls
+		for(var i=0,l=info.construction.length; i<l; ++i) {
+			//TODO call $_init
+		}
+		return object;
+	}
+
+	function singletonGenerator(a,b,c,d,e,f,g,h,i,j,k,l) {
+		if (info.singleton == null) {
+			info.singleton = new info.func(a,b,c,d,e,f,g,h,i,j,k,l); 
+		}
+		return info.singleton;
+	}
+	
+	if (baseConstr.generator_variants && baseConstr.generator_variants[variant]) {
+		info = baseConstr.generator_variants[variant];
+
+		// explicit generator function
+		if (info.generator) return info.generator;
+		
+		// singleton generator
+		if (info.singleton !== undefined) {
+			singletonGenerator.constructor = info.func;
+			return singletonGenerator;
+		}
+
+		// pooled generator
+		//TODO
+		
+		// regular new
+	}
+	newGenerator.constructor = info.func;
+	
+	return newGenerator;
 };
  
-generator.LAST_ID = 0;
- 
-generator.VARIANTS = {};
- 
-generator.setVariant = function(baseConstr,variant,variantConstr)
+generator.setBase = function(baseConstr,mHandlers,pConstruction,v1,v2,v3,v4)
 {
-       if (baseConstr.__id == undefined) {
-              ++this.LAST_ID;
-              baseConstr.__id = this.LAST_ID;
-       }
-       generator.VARIANTS[baseConstr.__id] = generator.VARIANTS[baseConstr.__id] || {};
- 
-       generator.VARIANTS[baseConstr.__id][variant] = variantConstr;
+	// ensure that variants map is present on base constructor
+	baseConstr.generator_variants = baseConstr.generator_variants || { };
+	
+	baseConstr.generator_variants[null] = {
+		func: baseConstr,
+		handlers: mHandlers	|| {},
+		construction: pConstruction || [],
+		additional: [v1,v2,v3,v4] 
+	};
 };
- 
-generator.setVariantGenerator = function(baseConstr,variant,variantConstr)
+
+generator.setVariant = function(baseConstr,variant,variantConstr,mHandlers,pConstruction,v1,v2,v3,v4)
 {
-       if (baseConstr.__id == undefined) {
-              ++this.LAST_ID;
-              baseConstr.__id = this.LAST_ID;
-       }
-       generator.VARIANTS[baseConstr.__id] = generator.VARIANTS[baseConstr.__id] || {};
+	variant = variant || null; // defaults to null
+	
+	// ensure that variants map is present on base constructor
+	baseConstr.generator_variants = baseConstr.generator_variants || {}; 
+
+	//TODO blend with previous config
+	baseConstr.generator_variants[variant] = { 
+		func: variantConstr,
+		handlers: mHandlers || {},
+		construction: pConstruction || [],
+		additional: [v1,v2,v3,v4] 
+	}; 
+};
+
  
-       generator.VARIANTS[conbaseConstrstr.__id][variant] = variantConstr;
+generator.setVariantGenerator = function(baseConstr,variant,fGenerator,mHandlers,pConstruction,v1,v2,v3,v4)
+{
+	variant = variant || null; // defaults to null
+	
+	// ensure that variants map is present on base constructor
+	baseConstr.generator_variants = baseConstr.generator_variants || {}; 
+
+	baseConstr.generator_variants[variant] = { 
+		generator: fGenerator,
+		handlers: mHandlers || {},
+		construction: pConstruction || [],
+		additional: [v1,v2,v3,v4] 
+	}; 
 };
 
 generator.setHandlers = function(constr,mHandlers)
@@ -108,10 +161,31 @@ generator.setArguments = function(mFirst,mSecond)
 {
 };
  
-generator.setSingleton = function(constr,sVariant)
+/**
+ * Configure the base constructor to generate a singleton of a specific variant
+ */
+generator.setSingleton = function(baseConstr,variant)
 {
+	// ensure that variants map is present on base constructor
+	baseConstr.generator_variants = fConstructor.generator_variants || {}; 
+	baseConstr.generator_variants[null] = fConstructor.generator_variants[null] || {};
+	
+	baseConstr.generator_variants[null].default_variant = variant || null; // defaults to null
+	baseConstr.generator_variants[null].singleton = null;
 };
+
  
-generator.setPoolSize = function(constr,sVariant,nSize)
+/**
+ * Configure the base constructor to generate a instances of a specific variant limited by a pool size
+ */
+generator.setPoolSize = function(baseConstr,variant,nSize)
 {
+	// ensure that variants map is present on base constructor
+	baseConstr.generator_variants = baseConstr.generator_variants || {}; 
+	baseConstr.generator_variants[null] = baseConstr.generator_variants[null] || {};
+	
+	baseConstr.generator_variants[null].default_variant = variant || null; // defaults to null
+	baseConstr.generator_variants[null].pool = {};
+	baseConstr.generator_variants[null].pool_size = nSize;
 };
+
