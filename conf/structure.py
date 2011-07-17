@@ -11,10 +11,12 @@ FEATURES = (
     'hosts', 'nginx'
 )
 
+MEDIASERVER_PORT = 8590
+
 CLUSTERS = {
     'live': { 'domains': ('essentialjs.com','essentialjs.net','essentialjs.thepia.net',), 
         'media':'media.essentialjs.thepia.net',
-        'upstream_protocol': 'fastcgi', 'upstream_port': '8881', 
+        'upstream_protocol': 'fastcgi', 'upstream_port': '8581', 
         'upstream_socket': '/tmp/essentialjs', 'email_host':'localhost',
         'shard_user':'thepian', 'shard_group':'thepian',
         'etc_user':'thepian', 'etc_group':'thepian',
@@ -22,7 +24,7 @@ CLUSTERS = {
         }, 
     'staged': { 'domains': ('essentialjs.staged.local',), 
         'media':'media.essentialjs.staged.local',
-        'upstream_protocol': 'fastcgi', 'upstream_port': '8881', 
+        'upstream_protocol': 'fastcgi', 'upstream_port': '8581', 
         'upstream_socket': '/tmp/essentialjs',
         'shard_user':'thepian', 'shard_group':'thepian',
         'etc_user':'thepian', 'etc_group':'thepian',

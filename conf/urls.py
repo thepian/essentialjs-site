@@ -7,11 +7,11 @@ website = [
 (r".*/$", DirectoryHandler),
 ]
 apisite = [
-    (r"/(\w+)/pagespec.js", PagespecJsHandler),
-    (r"/(\w+)/translated.js", TranslateJsHandler),
+    # (r"/(\w+)/pagespec.js", PagespecJsHandler),
+    # (r"/(\w+)/translated.js", TranslateJsHandler),
     
+    (r"^/(\w+)/([^\.]+)\.js$", JsPreProcessHandler),
 
-    (r"/(\w+\.js)", JsHandler),
 
     (r"/js/(\w+)/verify/assets/(\w+\.\w+)", VerifyAssetsHandler, { "path": structure.JS_DIR + "/"}),
     (r"/js/(\w+\.js)/verify/(.*)", JsVerifyHandler),
@@ -33,7 +33,6 @@ mediasite = [
     (r"/js/(\w+)/(\w+\.js)/verify/(.*)", JsVerifyDetailHandler),
     (r"/js/verify", JsVerifyAllHandler),
     (r"/js/(\w+\.js)", JsHandler),
-    (r"/js/(\w+\.jo)", JoHandler),
 
     (r".*/$", DirectoryHandler),
 ]
