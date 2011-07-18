@@ -11,7 +11,7 @@ apisite = [
     # (r"/(\w+)/translated.js", TranslateJsHandler),
     
     (r"^/constructive/all/selftest.html$", SelfTestHandler),
-    (r"^/(\w+)/all/(\w+)\.js$", JsExecuteAllHandler),
+    (r"^/(\w+)/all/(\w+)\.js$", JsExecuteAllHandler, { "core_api": structure.JS_DIR + "/pagespec-core.js" }),
     (r"^/(\w+)/([^\.]+)\.js$", JsPreProcessHandler),
 
     (r"/js/(\w+)/verify/assets/(\w+\.\w+)", VerifyAssetsHandler, { "path": structure.JS_DIR + "/"}),

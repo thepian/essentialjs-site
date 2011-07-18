@@ -1,16 +1,17 @@
 var {{ exec_name }} = (function() {
-    var r = function() {
-        debugger;
-        for(var i=0; e = r.all[i]; ++i) {
+    {{ core_api }}
+
+    function run() {
+        for(var i=0,e; e = run.all[i]; ++i) {
             try {
-                e.run();
+                e.run(pagespec);
             }
             catch(ex) {
                 alert(ex);
             }
         }
     };
-    r.all = [{% for entry in all_list %} { "id": "{{ entry["id"] }}", "run": {{ entry["run"] }} },{% end %}null];
-    r.all.length -= 1;
-    return r;
+    run.all = [{% for entry in all_list %} { "id": "{{ entry["id"] }}", "run": {{ entry["run"] }} },{% end %}null];
+    run.all.length -= 1;
+    return run;
 })();
