@@ -10,9 +10,9 @@ apisite = [
     # (r"/(\w+)/pagespec.js", PagespecJsHandler),
     # (r"/(\w+)/translated.js", TranslateJsHandler),
     
-    (r"^/constructive/all/selftest.html$", SelfTestHandler),
-    (r"^/(\w+)/all/(\w+)\.js$", JsExecuteAllHandler, { "core_api": structure.JS_DIR + "/pagespec-core.js" }),
-    (r"^/(\w+)/([^\.]+)\.js$", JsPreProcessHandler),
+    (r"^/essentialjs/constructive/all/selftest.html$", SelfTestHandler),
+    (r"^/(\w+)/(\w+)/all/(\w+)\.js$", JsExecuteAllHandler, { "core_api": structure.JS_DIR + "/pagespec-core.js" }),
+    (r"^/(\w+)/(\w+)/([^\.]+)\.js$", JsPreProcessHandler),
 
     (r"/js/(\w+)/verify/assets/(\w+\.\w+)", VerifyAssetsHandler, { "path": structure.JS_DIR + "/"}),
     (r"/js/(\w+\.js)/verify/(.*)", JsVerifyHandler),
