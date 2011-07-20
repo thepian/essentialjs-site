@@ -2,7 +2,7 @@ var {{ exec_name }} = (function() {
     function __run__() {
         {{ core_api }}
         
-        __pagespec__.run(__run__.all)
+        pagespec.run(__run__.all)
     };
     __run__.all = [{% for entry in all_list %} { "id": "{{ entry["id"] }}", "run": {{ entry["run"] }} },{% end %}null];
     __run__.all.length -= 1;
