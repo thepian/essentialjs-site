@@ -20,13 +20,13 @@ Spec.prototype.getCaption = function() {
     return this.spec_caption;
 };
 
-function Expectation(spec_constr,spec_caption,example_name, getVal,expression,clauses)
+function Expectation(current_step, getVal,expression,clauses)
 {
-    this.spec = pagespec.current_spec;
+    this.spec = current_step.current_spec;
+    this.spec_constr = current_step.spec_constr;
+    this.spec_caption = current_step.spec_caption;
+    this.example_name = current_step.name;
     
-    this.spec_constr = spec_constr;
-    this.spec_caption = spec_caption;
-    this.example_name = example_name;
     this.getVal = getVal;
     this.example_expression = expression;
     this.clauses = clauses;

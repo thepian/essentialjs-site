@@ -11,7 +11,9 @@ apisite = [
     
     (r"^/essentialjs/pagespec/all/selftest.html$", SelfTestHandler),
     (r"^/essentialjs/constructive/all/selftest.html$", SelfTestHandler),
-    (r"^/(\w+)/(\w+)/all/(\w+)\.js$", JsExecuteAllHandler, { "core_api": structure.JS_DIR + "/pagespec-core.js" }),
+    (r"^/(\w+)/(\w+)/all/(\w+)\.js$", JsExecuteAllHandler, { 
+        "core_api": structure.JS_DIR + "/pagespec-core.js",
+        "run_script": structure.JS_DIR + "/execute-all.js" }),
     (r"^/(\w+)/(\w+)/([^\.]+)\.js$", JsPreProcessHandler),
 ]
 
