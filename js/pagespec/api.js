@@ -56,7 +56,12 @@ function nextStep() {
     var step = pagespec.outstanding.shift();
     if (step) {
         pagespec.current_step = step;
-        step.run();
+        try {
+            step.run();
+            if (step.last) UploadInput.pushEnded(step.spec_id);
+        } catch(ex) {
+            UploadInput.pushException(ex);
+        }
         pagespec.current_step = null;
     }
     queueNext();
@@ -78,6 +83,6 @@ function queueNext() {
         }
     } else {
         UploadInput.prepare();
-        form.submit();
+        UploadInput.form.submit();
     }
 }

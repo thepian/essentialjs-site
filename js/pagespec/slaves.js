@@ -33,6 +33,9 @@ SlaveFrame.page = {};
 /* slaveframe type results */
 SlaveFrame.results = {};
 
+/* slaveframe type progress */
+SlaveFrame.progress = {};
+
 /* @private */
 SlaveFrame.nextLeft = 450;
 
@@ -95,6 +98,22 @@ SlaveFrame.prototype.resultsCreate = function(slave) {
 	(wall || document.body).appendChild(frame);
 	return frame;
 };    
+
+SlaveFrame.prototype.progressCreate = function(slave) {
+	var frame = window.document.createElement("IFRAME");
+	for(var name in SlaveFrame.frameMixin) {
+		if (SlaveFrame.frameMixin[name] !== undefined) frame[name] = SlaveFrame.frameMixin[name];
+	}
+	slave.width = 1;
+	slave.height = 1
+	frame.setInitialAttributes(slave);
+	frame.className = "specprogress";
+
+    var insideWall = [];
+	var wall = insideWall.length? insideWall[0] : null;
+	(wall || document.body).appendChild(frame);
+	return frame;
+};
 
 SlaveFrame.prototype.statusGet = function(id) {
     return document.getElementById(id);

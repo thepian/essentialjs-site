@@ -38,6 +38,9 @@ Expectation.prototype.testNow = function()
     for(var i=0,clause; op = this.clauses[i]; i += 3) {
         var clause = this.clauses[i+1], expr = this.clauses[i+2];
         var should = pagespec.should[op];
+        
+        // UploadInput.pushSubject = function(pagespec.current_step.spec_id,pagespec.current_step.name,expression,value)
+
         if (should) {
             var expected = clause? clause() : null;
             if (! should(val,expected)) {

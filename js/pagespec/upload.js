@@ -42,7 +42,7 @@ UploadInput.pushSubject = function(spec,example,subject,value) {
 };
 
 UploadInput.pushException = function(ex,template) {
-    conditional_debugger;
+    // conditional_debugger;
     if (current_names.spec_name) {
         if (current_names.example_name) this.pushExample(current_names.spec_name,current_names.example_name,ex,template || "textarea");
     }
@@ -58,6 +58,7 @@ UploadInput.pushEnded = function(script_name) {
 
 
 UploadInput.prepare = function(form) {
+    form = form || this.form;
     var inner = '';
     
     for(var i=0,e; e = this.inputs[i]; ++i) {

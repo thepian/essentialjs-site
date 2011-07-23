@@ -7,13 +7,15 @@
     @insert path "pagecore/builtin.js";
     @insert path "pagecore/options.js";
     @insert path "pagecore/scripts.js";
+    @insert path "pagecore/formatting.js";
+    @insert path "pagecore/mark.js";
     @insert path "pagespec/events.js";
     @insert path "pagespec/slaves.js";
     @insert path "pagespec/upload.js";
     @insert path "pagespec/api.js";
     @insert path "pagespec/spec.js";
 
-
+    // Populate outstanding steps
     var specs = [], examples = [], outstanding = [];
     for(var i=0,arg; arg = arguments[i]; ++i) {
         var parts = arg.describe(__expect__);
@@ -46,8 +48,15 @@
             };
             examples.push(example);
             outstanding.push(example);
+
+            example.last = true;
         }
     }
+    
+    // Make form and iframe for posting result
+    UploadInput.form = document.createElement("FORM");
+    var results_frame = SlaveFrame("__result__","progress",{ src: "javascript:void(0);" });
+    
 
     /* Can be registered as an onload listener or onclick for a manual button */
     function __run__() {
@@ -58,8 +67,8 @@
     __run__.examples = pagespec.examples = examples;
     pagespec.outstanding = outstanding;
     __run__.addOnLoad = function() {
-        if (window.addEventListener) window.addEventListener("load",__run__,false);
-        else if (window.attachEvent) window.attachEvent("onload",__run__);
+        if (window.addEventListener) window.addEventListener("load",whenLoaded,false);
+        else if (window.attachEvent) window.attachEvent("onload",whenLoaded);
         else window.onload = __run__;
     };
     __run__.script_name = @insert:script_name;
