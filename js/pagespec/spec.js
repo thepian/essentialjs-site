@@ -20,6 +20,39 @@ Spec.prototype.getCaption = function() {
     return this.spec_caption;
 };
 
+/*
+    Example instances are used in pagespec.examples, and as a step in pagespec.outstanding
+*/
+function Example(name,func,spec) {
+    
+    /* 
+    TODO support attributes
+    - loaded : example run on page loaded
+    */
+    this.spec_id = spec.id;
+    this.spec_constr = spec.constr;
+    this.spec_caption = spec.caption;
+    this.spec = spec;
+
+    this.title = name || "unspecified",
+    this.name = name;
+    this.example_name = name;
+    this.run = func;
+
+}
+
+Example.prototype.post_exception = function(ex) {
+    
+    UploadInput.pushException(this,ex);
+};
+
+Example.prototype.post_success = function() {
+    
+    if (this.last) UploadInput.pushEnded(this.spec_id);
+};
+
+
+
 function Expectation(current_step, getVal,expression,clauses)
 {
     this.spec = current_step.current_spec;

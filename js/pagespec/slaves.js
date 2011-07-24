@@ -34,7 +34,7 @@ SlaveFrame.page = {};
 SlaveFrame.results = {};
 
 /* slaveframe type progress */
-SlaveFrame.progress = {};
+SlaveFrame.submitter = {};
 
 /* @private */
 SlaveFrame.nextLeft = 450;
@@ -99,7 +99,7 @@ SlaveFrame.prototype.resultsCreate = function(slave) {
 	return frame;
 };    
 
-SlaveFrame.prototype.progressCreate = function(slave) {
+SlaveFrame.prototype.submitterCreate = function(slave) {
 	var frame = window.document.createElement("IFRAME");
 	for(var name in SlaveFrame.frameMixin) {
 		if (SlaveFrame.frameMixin[name] !== undefined) frame[name] = SlaveFrame.frameMixin[name];
@@ -107,7 +107,7 @@ SlaveFrame.prototype.progressCreate = function(slave) {
 	slave.width = 1;
 	slave.height = 1
 	frame.setInitialAttributes(slave);
-	frame.className = "specprogress";
+	frame.className = "specsubmitter";
 
     var insideWall = [];
 	var wall = insideWall.length? insideWall[0] : null;

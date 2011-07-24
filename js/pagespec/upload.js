@@ -1,3 +1,11 @@
+function makeUploadStep(spec_id) {
+    
+    return function() {
+        UploadInput.prepare(UploadInput.form);
+        UploadInput.form.submit();
+    };
+}
+
 // move this to a class file and implement at-include for scopes
 function UploadInput(name,value,template) {
 	this.name = name; this.value = value; 
@@ -41,10 +49,11 @@ UploadInput.pushSubject = function(spec,example,subject,value) {
     this.push(name,encodeURIComponent(value));
 };
 
-UploadInput.pushException = function(ex,template) {
+UploadInput.pushException = function(step,ex,template) {
     // conditional_debugger;
-    if (current_names.spec_name) {
-        if (current_names.example_name) this.pushExample(current_names.spec_name,current_names.example_name,ex,template || "textarea");
+    if (step.spec_id) {
+        if (step.example_name) this.pushExample(step.spec_id, step.example_name, ex,template || "textarea");
+        //TODO subject and spec
     }
 };
 
@@ -58,7 +67,6 @@ UploadInput.pushEnded = function(script_name) {
 
 
 UploadInput.prepare = function(form) {
-    form = form || this.form;
     var inner = '';
     
     for(var i=0,e; e = this.inputs[i]; ++i) {

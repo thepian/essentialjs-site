@@ -52,15 +52,27 @@ function whenLoaded() {
     
 }
 
+/* Step:
+
+Generalised interface used for UploadStep, delayed Expectations and Example
+pre (optional)
+run
+post (optional)
+post_success (optional)
+post_exception (optional)
+*/
+
+
 function nextStep() {
     var step = pagespec.outstanding.shift();
     if (step) {
         pagespec.current_step = step;
         try {
             step.run();
-            if (step.last) UploadInput.pushEnded(step.spec_id);
+            if (step.post) step.post();
+            if (step.post_success) step.post_success();
         } catch(ex) {
-            UploadInput.pushException(ex);
+            if (step.post_exception) step.post_exception(ex);
         }
         pagespec.current_step = null;
     }
@@ -82,7 +94,6 @@ function queueNext() {
             setTimeout(nextStep,delayMs);
         }
     } else {
-        UploadInput.prepare();
-        UploadInput.form.submit();
+        // nothing as the final action
     }
 }
