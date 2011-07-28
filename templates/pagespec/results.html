@@ -1,0 +1,56 @@
+{% extends "base.html"%}
+
+{% block title%}{{ title }}{% end %}
+
+{% block main %}
+<h1>{{ title }}</h1>
+<dl>
+{% for part in parts %}
+<dt>
+	{{ part["spec"] }}<br>
+	{{ part["example"] }}
+</dt><dd>
+	Subject {{ part["subject"] }}<br>
+{{ part["result"] }}
+</dd>
+{% end %}
+</dl>
+
+<a href='../verify/'>Run Again</a><br>
+<a href="../verify/?debug=yes">Debug Failures</a>
+
+<h3>Encoding the results</h3>
+<p>
+	Results are posted using a unique number in the url. This identifies the run in the browser.
+	A cookie can be used to track the running by specific browser/user/machine.
+	The useragent can be used to track the pass/fail on a particular browser type.
+	
+	For each script a pass/fail is queued
+	For each assertion that fails the specifics are queued
+	All queued entries are added to the results form and posted to the server.
+	
+	Exception
+	Assertion Failed
+	Passed
+</p>	
+
+<h3></h3>
+<p>
+	essentialjs/pagespec/nodes/123/runs
+	- list of ids for the runs
+
+	essentialjs/pagespec/nodes/123/runs/<id>
+	- list of spec results
+</p>
+{% end %}
+
+{% block bodyscripts %}
+<script type="text/javascript" >
+// location.replace("{{ reload_url }}");
+function beforeUnload() {
+	alert('...');
+	location.assign("../verify/");
+}
+// window.addEventListener("beforeunload",beforeUnload);
+</script>
+{% end %}

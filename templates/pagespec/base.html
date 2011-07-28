@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}Results{% end %}{% block sitetitle %} - {{ SITE_TITLE }}{% end %}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="{{ MEDIA_URL }}/css/screen.css" type="text/css" media="screen, projection">
+  <link rel="stylesheet" href="{{ MEDIA_URL }}/css/print.css" type="text/css" media="print">
+  <!--[if IE]><link rel="stylesheet" href="{{ MEDIA_URL }}/css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+  <link rel="stylesheet" href="{{ MEDIA_URL }}/css/common.css" type="text/css" media="screen, projection">
+  <style type="text/css" media="screen">{% block screenstyle %}{% end %}</style>
+  <style type="text/css" media="print">{% block printstyle %}{% end %}</style>
+{% block addhead %}{% end %}{% block extra_head %}{% end %}
+
+</head>
+<body>{% block body%}
+	
+<div id="page" class="container">
+
+    <div id="headlines">{% block headlines %}{% end %}</div>
+
+    <div id="content" class="column span-24">
+            {% if messages %}
+                <ul id="messages">
+                    {% for message in messages %}
+                    <li id="message_{{ forloop.counter }}"><a href="#" onclick="$('#message_{{ forloop.counter }}').fadeOut(); return false;"><small></small></a> {{ message }}</li>
+                    {% end %}
+                </ul>
+            {% end %}
+            
+      
+      {% block content %}
+		<div id="main" class="column span-18">{% block main_title %}{% end %}{% block main %}{% end %}</div>
+		<div id="sidebar" class="column span-6 last">{% block sidebar %}{% end %}</div>
+	  {% end %}
+    </div>
+</div>
+
+<div id="latest">
+	<div class="container">
+	{% block latest %}{% end %}
+	</div>
+</div>
+
+<div id="tail" class="container">{% block tail %}
+	<div id="footer" class="column span-24">
+	  {% block footer %}{% end %}{% block locale_switcher %}{% end %}
+	</div>
+
+{% end %}</div>
+
+{% end %}
+
+
+<script src="{{ MEDIA_URL }}/js/jquery.js" type="text/javascript"></script>
+{% block bodyscripts %}{% end %}
+</body>
+</html>

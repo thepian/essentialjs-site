@@ -9,11 +9,20 @@ website = [
 apisite = [
     (r"/(\w+)/(\w+)/pagespec-verify.js", PageSpecVerifyJsHandler),
     
-    (r"^/essentialjs/pagespec/all/selftest.html$", SelfTestHandler),
-    (r"^/essentialjs/constructive/all/selftest.html$", SelfTestHandler),
+    # Self Test pages
+    (r"^/(essentialjs)/(pagespec)/all/(selftest)\.html$", SelfTestHandler),
+    (r"^/(essentialjs)/(constructive)/all/(selftest)\.html$", SelfTestHandler),
+    
+    # Self Test test all JavaScript
     (r"^/(\w+)/(\w+)/all/(\w+)\.js$", JsExecuteAllHandler, { 
         "core_api": structure.JS_DIR + "/pagespec-core.js",
-        "run_script": structure.JS_DIR + "/execute-all.js" }),
+        "run_script": structure.JS_DIR + "/execute-all.js" 
+        }),
+        
+    # Self Test nodes
+    (r"^/(\w+)/(\w+)/nodes/([^\.]+)$", NodesHandler),
+        
+    # Individual specs preprocessed
     (r"^/(\w+)/(\w+)/([^\.]+)\.js$", JsPreProcessHandler),
 ]
 
