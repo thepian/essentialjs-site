@@ -4,16 +4,16 @@
     var RECEIVE_PREFIX = "pagestatus:"; // message from page to iframe
     var MESSAGE_ROOT = window.location.protocol + "//" + window.location.host; // postMessage origin
 
-    @insert path "pagecore/builtin.js";
-    @insert path "pagecore/options.js";
-    @insert path "pagecore/scripts.js";
-    @insert path "pagecore/formatting.js";
-    @insert path "pagecore/mark.js";
-    @insert path "pagespec/events.js";
-    @insert path "pagespec/slaves.js";
-    @insert path "pagespec/upload.js";
-    @insert path "pagespec/api.js";
-    @insert path "pagespec/spec.js";
+    @insert path raw "pagecore/builtin.js";
+    @insert path raw "pagecore/options.js";
+    @insert path raw "pagecore/scripts.js";
+    @insert path raw "pagecore/formatting.js";
+    @insert path raw "pagecore/mark.js";
+    @insert path raw "pagespec/events.js";
+    @insert path raw "pagespec/slaves.js";
+    @insert path raw "pagespec/upload.js";
+    @insert path raw "pagespec/api.js";
+    @insert path raw "pagespec/spec.js";
 
     // Populate outstanding steps
     var specs = [], examples = [], outstanding = [];
