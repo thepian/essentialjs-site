@@ -19,8 +19,12 @@ apisite = [
         "run_script": structure.JS_DIR + "/execute-all.js" 
         }),
         
-    # Self Test nodes
+    # Self Test nodes and runs
+    (r"^/(\w+)/(\w+)/nodes", NodesHandler),
     (r"^/(\w+)/(\w+)/nodes/([^\.]+)$", NodesHandler),
+    (r"^/(\w+)/(\w+)/runs$", NodesHandler),
+    (r"^/(\w+)/(\w+)/runs/([^\.]+)$", SpecificRunHandler),
+    (r"^/(\w+)/(\w+)/runs/([^\./]+)/$", SpecificRunHandler),
         
     # Individual specs preprocessed
     (r"^/(\w+)/(\w+)/([^\.]+)\.js$", JsPreProcessHandler),

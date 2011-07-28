@@ -1,8 +1,21 @@
 function makeUploadStep(spec_id) {
     
-    return function() {
-        UploadInput.prepare(UploadInput.form);
-        UploadInput.form.submit();
+    return {
+        run: function() {
+            // Make form and iframe for posting result
+            //TODO create this on DOM ready instead
+            if (UploadInput.form == undefined) {
+                UploadInput.form = document.createElement("FORM");
+                var results_frame = SlaveFrame("__submitter__","submitter",{ src: "javascript:void(0);" });
+                UploadInput.form.target = "__submitter__";
+                UploadInput.form.action = "../runs/" + String(unique_id) + "/";
+                UploadInput.form.method = "POST";
+                UploadInput.form.cssStyle = "display:none;";
+
+            }
+            UploadInput.prepare(UploadInput.form);
+            UploadInput.form.submit();
+        }
     };
 }
 

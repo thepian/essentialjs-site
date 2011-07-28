@@ -43,14 +43,6 @@
         outstanding.push(uploadStep);
     }
     
-    // Make form and iframe for posting result
-    UploadInput.form = document.createElement("FORM");
-    var results_frame = SlaveFrame("__submitter__","submitter",{ src: "javascript:void(0);" });
-    UploadInput.form.target = "__submitter__";
-    UploadInput.form.action = "more-results";
-    UploadInput.form.method = "POST";
-    UploadInput.form.cssStyle = "display:none;";
-    
 
     /* Can be registered as an onload listener or onclick for a manual button */
     function __run__() {
