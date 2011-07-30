@@ -100,33 +100,55 @@ ScriptTag.prototype.getText = function() {
 };
 
 function scanScriptTags() {
+    function makeTranslateScript() {
+        var translate = [];
+        for(var i=0,s; s = pagecore.otherScripts[i]; ++i) 
+            if (s.hasSpecs()){
+                translate.push("t"+i+"=" + s.getText());
+            }
+        if (translate.length) {
+            var translateScript = pagecore.translateScript = new ScriptTag({
+                src: pagecore.scriptPrefix + "translated.js?" + translate.join("&"),
+                type: "text/javascript"
+            });
+            return translateScript;
+        }
+        return null;
+    }
+
+    var results = {
+        /** url base for the script */
+        scriptPrefix: "",
+        
+        /** main script that loaded pagecore */
+        coreScript: null,
+        
+        /** the other scripts in the page at load time */
+        otherScripts: [],
+        
+        /** which mime type script tags to translate */
+        translateScriptTypes: {},
+        
+        options: new UrlOptions(),
+        pageOptions: new UrlOptions(),
+        scriptOptions: new UrlOptions(),
+
+        makeTranslateScript: makeTranslateScript
+    };        
+
 	var scripts = document.getElementsByTagName("SCRIPT"); 
 	for(var i=0, script;script = scripts[i];++i) {
 	    var tag = new ScriptTag(script);
 	    if (tag.isPagespecTag()) {
-	        pagecore.coreScript = tag;
-		    pagecore.scriptPrefix = tag.getPrefix();
-			pagecore.options.setLocation(tag.src);
-			pagecore.scriptOptions.setLocation(tag.src);
+	        results.coreScript = tag;
+		    results.scriptPrefix = tag.getPrefix();
+			results.options.setLocation(tag.src);
+			results.scriptOptions.setLocation(tag.src);
 	    } else {
-    	    pagecore.otherScripts.push(tag); 
+    	    results.otherScripts.push(tag); 
 	    }
 	}
     
+    return results;
 };
 
-function makeTranslateScript() {
-    var translate = [];
-    for(var i=0,s; s = pagecore.otherScripts[i]; ++i) 
-        if (s.hasSpecs()){
-            translate.push("t"+i+"=" + s.getText());
-        }
-    if (translate.length) {
-        var translateScript = pagecore.translateScript = new ScriptTag({
-            src: pagecore.scriptPrefix + "translated.js?" + translate.join("&"),
-            type: "text/javascript"
-        });
-        return translateScript;
-    }
-    return null;
-}

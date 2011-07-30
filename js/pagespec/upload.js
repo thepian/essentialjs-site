@@ -6,11 +6,12 @@ function makeUploadStep(spec_id) {
             //TODO create this on DOM ready instead
             if (UploadInput.form == undefined) {
                 UploadInput.form = document.createElement("FORM");
-                var results_frame = SlaveFrame("__submitter__","submitter",{ src: "javascript:void(0);" });
                 UploadInput.form.target = "__submitter__";
-                UploadInput.form.action = "../runs/" + String(unique_id) + "/";
+                UploadInput.form.action = Scripts.scriptPrefix + "../runs/" + String(unique_id) + "/";
                 UploadInput.form.method = "POST";
-                UploadInput.form.cssStyle = "display:none;";
+                UploadInput.form.style.cssText = "display:none;";
+                document.body.appendChild(UploadInput.form);
+                var results_frame = SlaveFrame("__submitter__","submitter",{ src: "javascript:void(0);", parent:UploadInput.form });
 
             }
             UploadInput.prepare(UploadInput.form);

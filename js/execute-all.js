@@ -44,6 +44,9 @@
         var uploadStep = makeUploadStep(spec.id);
         outstanding.push(uploadStep);
     }
+
+    //TODO consider loading it on DOM ready
+    var Scripts = scanScriptTags();
     
 
     /* Can be registered as an onload listener or onclick for a manual button */

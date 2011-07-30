@@ -111,7 +111,7 @@ SlaveFrame.prototype.submitterCreate = function(slave) {
 
     var insideWall = [];
 	var wall = insideWall.length? insideWall[0] : null;
-	(wall || document.body).appendChild(frame);
+	(slave.config.parent || wall || document.body).appendChild(frame);
 	return frame;
 };
 
