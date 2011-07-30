@@ -80,7 +80,7 @@ UploadInput.pushEnded = function(script_name) {
 
 
 UploadInput.prepare = function(form) {
-    var inner = '';
+    var inner = XSRF_INPUT_MARKUP;
     
     for(var i=0,e; e = this.inputs[i]; ++i) {
         if (form[e.name]) form[e.name].value = e.value;
