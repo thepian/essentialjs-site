@@ -23,8 +23,8 @@ apisite = [
     (r"^/(\w+)/(\w+)/nodes", NodesHandler),
     (r"^/(\w+)/(\w+)/nodes/([^\.]+)$", NodesHandler),
     (r"^/(\w+)/(\w+)/runs$", NodesHandler),
-    (r"^/(\w+)/(\w+)/runs/([^\.]+)$", SpecificRunHandler),
     (r"^/(\w+)/(\w+)/runs/([^\./]+)/$", SpecificRunHandler),
+    (r"^/(\w+)/(\w+)/runs/([^\./]+)$", SpecificRunHandler),
         
     # Individual specs preprocessed
     (r"^/(\w+)/(\w+)/([^\.]+)\.js$", JsPreProcessHandler),
