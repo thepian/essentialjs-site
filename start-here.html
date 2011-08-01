@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+<h2>Initial Page</h2>
+<p>The common way to run Specs is to execute in the loading page with the examples running in a hidden scope. The examples will have to leave the DOM unchanged, or restore them upon completion. The running will create a results IFRAME for posting the results.
+</p>
+<p>Specs can come bundled with head and body sections to be switched in during the run. It is usually best to mark them as mixins rather than replacements.</p>
+<button onclick="selftest();">Run Selftest</button>
+<script type="text/javascript" src="http://localhost:8590/essentialjs/pagespec/all/selftest.js"></script>
+<script type="text/javascript">selftest.addOnLoad();</script>
+</body>
+</html>

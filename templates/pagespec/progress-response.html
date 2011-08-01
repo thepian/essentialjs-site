@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}{{ title }}{% end %}{% block sitetitle %} - {{ SITE_TITLE }}{% end %}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <style type="text/css" media="screen">{% block screenstyle %}{% end %}</style>
+  <style type="text/css" media="print">{% block printstyle %}{% end %}</style>
+{% block addhead %}{% end %}{% block extra_head %}{% end %}
+
+</head>
+<body>{% block body%}
+  Run {{ run }} for {{ project }} by {{ account }} posted {{ no_results }} results.
+{% end %}
+{% block bodyscripts %}{% end %}
+</body>
+</html>
