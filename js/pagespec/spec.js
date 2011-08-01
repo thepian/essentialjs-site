@@ -25,6 +25,8 @@ Spec.prototype.getCaption = function() {
 */
 function Example(name,func,spec) {
     
+    this.expectation_number = 0; // Used by expectations to give sequence
+
     /* 
     TODO support attributes
     - loaded : example run on page loaded
@@ -43,22 +45,28 @@ function Example(name,func,spec) {
 
 Example.prototype.post_exception = function(ex) {
     
-    UploadInput.pushException(this,ex);
+    UploadInput.pushStepException(this,ex);
 };
 
+// Called after each example step
 Example.prototype.post_success = function() {
     
-    if (this.last) UploadInput.pushEnded(this.spec_id);
+    if (this.last) UploadInput.pushSpecEnded(this);
 };
 
 
 
 function Expectation(current_step, getVal,expression,clauses)
 {
+
+    // step values
+    this.spec_id = current_step.spec_id;
+    this.example_name = current_step.name;
+    this.expectation = String(current_step.expectation_number++);
+
     this.spec = current_step.current_spec;
     this.spec_constr = current_step.spec_constr;
     this.spec_caption = current_step.spec_caption;
-    this.example_name = current_step.name;
     
     this.getVal = getVal;
     this.example_expression = expression;
@@ -67,7 +75,13 @@ function Expectation(current_step, getVal,expression,clauses)
 
 Expectation.prototype.testNow = function()
 {
-    var val = this.getVal();
+    try {
+        var val = this.getVal();
+    }
+    catch(ex) {
+        this.failed = this.example_expression + " threw exception " + String(ex);
+        return;
+    }
     for(var i=0,clause; op = this.clauses[i]; i += 3) {
         var clause = this.clauses[i+1], expr = this.clauses[i+2];
         var should = pagespec.should[op];
@@ -75,9 +89,11 @@ Expectation.prototype.testNow = function()
         // UploadInput.pushSubject = function(pagespec.current_step.spec_id,pagespec.current_step.name,expression,value)
 
         if (should) {
+            // TODO catch exceptions 
             var expected = clause? clause() : null;
             if (! should(val,expected)) {
-                this.failed = this.example_expression + " should " + op + " " + expr;
+                this.failed = this.example_expression + " should " + op + " " + expr + ", it was "+val+"(a "+typeof(val)+")";
+                UploadInput.pushOutcome(this,"failed",this.failed);
             }
         }
     }

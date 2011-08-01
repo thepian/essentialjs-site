@@ -43,41 +43,37 @@ function sentence2name(sentence) {
 
 UploadInput.inputs = [];
 
-UploadInput.push = function(name,value,template) {
-    var input = new this(name,value,template);
-    this.inputs.push(input);
-};
-
-UploadInput.pushExample = function(spec,example,value,template) {
-    var name = sentence2name(spec)+"__"+sentence2name(example);
-    this.push(name,encodeURIComponent(value),template);
-};
-
-/*
-spec - Sentence
-example - Sentence
-subject - number
-*/
-UploadInput.pushSubject = function(spec,example,subject,value) {
-    var name = sentence2name(spec)+"__"+sentence2name(example)+"__"+sentence2name(subject);
-    this.push(name,encodeURIComponent(value));
-};
-
-UploadInput.pushException = function(step,ex,template) {
-    // conditional_debugger;
-    if (step.spec_id) {
-        if (step.example_name) this.pushExample(step.spec_id, step.example_name, ex,template || "textarea");
-        //TODO subject and spec
+UploadInput.pushOutcome = function(step,outcome,value,template) {
+    var name = sentence2name(step.spec_id);
+    if (step.example_name) {
+        name += "__"+sentence2name(step.example_name);
     }
+    if (step.expectation) {
+        name += "__"+sentence2name(step.expectation);
+    }
+    name += "__"+sentence2name(outcome);
+
+    this.inputs.push( new this(name,encodeURIComponent(value),template) );
 };
 
-UploadInput.pushPassed = function(script_name) {
-    this.push(script_name,"passed","text");
+UploadInput.pushStepException = function(step,ex,template) {
+    // conditional_debugger;
+    this.pushOutcome(step,"exception",ex,template || "textarea");
 };
 
-UploadInput.pushEnded = function(script_name) {
-    this.push(script_name,"ended","text");
-}
+UploadInput.pushPassed = function(step) {
+    this.pushOutcome(step,"passed","","text");
+};
+
+UploadInput.pushEnded = function(step) {
+    this.pushOutcome(step,"ended","","text");
+};
+
+UploadInput.pushSpecEnded = function(step) {
+    this.pushOutcome({
+        spec_id: (typeof step == "string")? step : step.spec_id
+    },"ended","ended","text");
+};
 
 
 UploadInput.prepare = function(form) {
