@@ -8,60 +8,18 @@
 	"buffers":
 	[
 		{
-			"contents": "Searching 247 files for \".render\"\n\n/Sites/essentialjs-site/testing.log:\n  888      getattr(self, self.request.method.lower())(*args, **kwargs)\n  889    File \"/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py\", line 97, in get\n  890:     self.render(\"pagespec/selftest.html\")\n  891    File \"/Sites/themaestro/src/tornado/tornado/web.py\", line 334, in render\n  892:     html = self.render_string(template_name, **kwargs)\n  893    File \"/Sites/themaestro/src/tornado/tornado/web.py\", line 424, in render_string\n  894      t = RequestHandler._templates[template_path].load(template_name)\n  ...\n  906      getattr(self, self.request.method.lower())(*args, **kwargs)\n  907    File \"/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py\", line 97, in get\n  908:     self.render(\"pagespec/selftest.html\")\n  909    File \"/Sites/themaestro/src/tornado/tornado/web.py\", line 334, in render\n  910:     html = self.render_string(template_name, **kwargs)\n  911    File \"/Sites/themaestro/src/tornado/tornado/web.py\", line 425, in render_string\n  912      t = RequestHandler._templates[template_path].load(template_name)\n  ...\n  923      getattr(self, self.request.method.lower())(*args, **kwargs)\n  924    File \"/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py\", line 97, in get\n  925:     self.render(\"pagespec/selftest.html\")\n  926    File \"/Sites/themaestro/src/tornado/tornado/web.py\", line 334, in render\n  927:     html = self.render_string(template_name, **kwargs)\n  928    File \"/Sites/themaestro/src/tornado/tornado/web.py\", line 425, in render_string\n  929      t = RequestHandler._templates[template_path].load(template_name)\n\n6 matches in 1 file\n\n\nSearching 729 files for \".render\"\n\n/Sites/essentialjs-site/testing.log:\n  888      getattr(self, self.request.method.lower())(*args, **kwargs)\n  889    File \"/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py\", line 97, in get\n  890:     self.render(\"pagespec/selftest.html\")\n  891    File \"/Sites/themaestro/src/tornado/tornado/web.py\", line 334, in render\n  892:     html = self.render_string(template_name, **kwargs)\n  893    File \"/Sites/themaestro/src/tornado/tornado/web.py\", line 424, in render_string\n  894      t = RequestHandler._templates[template_path].load(template_name)\n  ...\n  906      getattr(self, self.request.method.lower())(*args, **kwargs)\n  907    File \"/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py\", line 97, in get\n  908:     self.render(\"pagespec/selftest.html\")\n  909    File \"/Sites/themaestro/src/tornado/tornado/web.py\", line 334, in render\n  910:     html = self.render_string(template_name, **kwargs)\n  911    File \"/Sites/themaestro/src/tornado/tornado/web.py\", line 425, in render_string\n  912      t = RequestHandler._templates[template_path].load(template_name)\n  ...\n  923      getattr(self, self.request.method.lower())(*args, **kwargs)\n  924    File \"/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py\", line 97, in get\n  925:     self.render(\"pagespec/selftest.html\")\n  926    File \"/Sites/themaestro/src/tornado/tornado/web.py\", line 334, in render\n  927:     html = self.render_string(template_name, **kwargs)\n  928    File \"/Sites/themaestro/src/tornado/tornado/web.py\", line 425, in render_string\n  929      t = RequestHandler._templates[template_path].load(template_name)\n\n/Sites/themaestro/Library/maestro/BeautifulSoup.py:\n  593              space = (' ' * (indentTag-1))\n  594              indentContents = indentTag + 1\n  595:         contents = self.renderContents(encoding, prettyPrint, indentContents)\n  596          if self.hidden:\n  597              s = contents\n\n/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py:\n   14      \n   15      def get(self):\n   16:         self.render(\"mediahome.html\")\n   17          \n   18      def post(self):\n   ..\n   31              \"MEDIA_URL\": settings.MEDIA_URL\n   32          }\n   33:         self.render(\"directory.html\",**info)\n   34                  \n   35  class StaticFallbackHandler(tornado.web.RequestHandler):\n   ..\n   55              \"parts\": []\n   56          }\n   57:         self.render(\"pagespec/results.html\", **info)\n   58          \n   59      def split_part(self,key,val):\n   ..\n   88                  \"parts\": [self.split_part(key,val) for key,val in results]\n   89              }\n   90:             self.render(\"pagespec/results.html\",**info)\n   91          except Exception,e:\n   92              print e\n   ..\n  110              \"parts\": []\n  111          }\n  112:         self.render(\"pagespec/results.html\", **info)\n  113          \n  114      def split_part(self,key,val):\n  ...\n  144                  \"parts\": [self.split_part(key,val) for key,val in results]\n  145              }\n  146:             self.render(\"pagespec/results.html\",**info)\n  147          except Exception,e:\n  148              print e\n  ...\n  152  class SelfTestHandler(tornado.web.RequestHandler):\n  153      def get(self,account,project,exec_name):\n  154:         self.render(\"pagespec/selftest.html\")\n  155  \n\n/Sites/themaestro/Library/maestro/mediaserver/handlers/verify.py:\n   32              specs = VerifySource.list(src)\n   33              #TODO if index.html exists use that\n   34:             self.render(\"verify/index.html\", \n   35                  title=\"Specs for %s - %s\" % (file_name,test_path), \n   36                  reload_url='../verify/',\n   ..\n   60                  raise tornado.web.HTTPError(404)\n   61              \n   62:             self.write(verify.render(xsrf_token = self.xsrf_token, arguments = self.request.arguments))\n   63              VerifySource.discard(path,file_name[:-3]) #TODO configure in application settings, drop-js-cache\n   64          except Exception,e:\n   ..\n   93                  \"parts\": [self.split_part(key,val) for key,val in results]\n   94              }\n   95:             self.render(\"verify/results.html\",**info)\n   96          except Exception,e:\n   97              print e\n   ..\n  102      \n  103      def get(self):\n  104:         self.render(\"verify/all.html\")\n  105          \n  106  class VerifyAssetsHandler(tornado.web.StaticFileHandler):\n\n18 matches across 4 files\n\n\nSearching 729 files for \"xsrf_token\"\n\n/Sites/themaestro/Library/maestro/mediaserver/verify.py:\n  184                      \n  185                      \n  186:     def render(self,form_action=\"\",xsrf_token=\"\", arguments = {}):\n  187          \n  188          self.new_form[\"action\"] = form_action\n  189:         self.xsrf_input[\"value\"] = xsrf_token\n  190  \n  191          morphed = self.soup.prettify()\n\n/Sites/themaestro/Library/maestro/mediaserver/handlers/verify.py:\n   60                  raise tornado.web.HTTPError(404)\n   61              \n   62:             self.write(verify.render(xsrf_token = self.xsrf_token, arguments = self.request.arguments))\n   63              VerifySource.discard(path,file_name[:-3]) #TODO configure in application settings, drop-js-cache\n   64          except Exception,e:\n\n4 matches across 2 files\n\n\nSearching 815 files for \"xsrf_token\"\n\n/Sites/themaestro/Library/maestro/mediaserver/verify.py:\n  184                      \n  185                      \n  186:     def render(self,form_action=\"\",xsrf_token=\"\", arguments = {}):\n  187          \n  188          self.new_form[\"action\"] = form_action\n  189:         self.xsrf_input[\"value\"] = xsrf_token\n  190  \n  191          morphed = self.soup.prettify()\n\n/Sites/themaestro/Library/maestro/mediaserver/handlers/verify.py:\n   60                  raise tornado.web.HTTPError(404)\n   61              \n   62:             self.write(verify.render(xsrf_token = self.xsrf_token, arguments = self.request.arguments))\n   63              VerifySource.discard(path,file_name[:-3]) #TODO configure in application settings, drop-js-cache\n   64          except Exception,e:\n\n/Sites/themaestro/src/tornado/tornado/web.py:\n  597  \n  598      @property\n  599:     def xsrf_token(self):\n  600          \"\"\"The XSRF-prevention token for the current user/session.\n  601  \n  ...\n  607          See http://en.wikipedia.org/wiki/Cross-site_request_forgery\n  608          \"\"\"\n  609:         if not hasattr(self, \"_xsrf_token\"):\n  610              token = self.get_cookie(\"_xsrf\")\n  611              if not token:\n  ...\n  613                  expires_days = 30 if self.current_user else None\n  614                  self.set_cookie(\"_xsrf\", token, expires_days=expires_days)\n  615:             self._xsrf_token = token\n  616:         return self._xsrf_token\n  617  \n  618      def check_xsrf_cookie(self):\n  ...\n  631          if not token:\n  632              raise HTTPError(403, \"'_xsrf' argument missing from POST\")\n  633:         if self.xsrf_token != token:\n  634              raise HTTPError(403, \"XSRF cookie does not match POST argument\")\n  635  \n  ...\n  645          \"\"\"\n  646          return '<input type=\"hidden\" name=\"_xsrf\" value=\"' + \\\n  647:             escape.xhtml_escape(self.xsrf_token) + '\"/>'\n  648  \n  649      def static_url(self, path):\n\n10 matches across 3 files\n\n\nSearching 891 files for \"isPagespecTag\"\n\n/Sites/essentialjs-site/js/pagecore/scripts.js:\n   43  };\n   44  \n   45: ScriptTag.prototype.isPagespecTag = function() {\n   46      return (this.src.indexOf(CORE_SCRIPT_NAME) > -1);\n   47  };\n   ..\n  104  	for(var i=0, script;script = scripts[i];++i) {\n  105  	    var tag = new ScriptTag(script);\n  106: 	    if (tag.isPagespecTag()) {\n  107  	        pagecore.coreScript = tag;\n  108  		    pagecore.scriptPrefix = tag.getPrefix();\n\n2 matches in 1 file\n\n\nSearching 920 files for \"scriptPrefix\"\n\n/Sites/essentialjs-site/_site/js/constructive/core.js:\n    1  var pagecore = {\n    2      /** url base for the script */\n    3:     scriptPrefix: \"\",\n    4      \n    5      /** main script that loaded pagecore */\n\n/Sites/essentialjs-site/js/pagecore/scripts.js:\n  109          if (translate.length) {\n  110              var translateScript = pagecore.translateScript = new ScriptTag({\n  111:                 src: pagecore.scriptPrefix + \"translated.js?\" + translate.join(\"&\"),\n  112                  type: \"text/javascript\"\n  113              });\n  ...\n  119      var results = {\n  120          /** url base for the script */\n  121:         scriptPrefix: \"\",\n  122          \n  123          /** main script that loaded pagecore */\n  ...\n  142  	    if (tag.isPagespecTag()) {\n  143  	        results.coreScript = tag;\n  144: 		    results.scriptPrefix = tag.getPrefix();\n  145  			results.options.setLocation(tag.src);\n  146  			results.scriptOptions.setLocation(tag.src);\n\n/Sites/pagespec/js/pagecore/core.js:\n    1  var pagecore = {\n    2      /** url base for the script */\n    3:     scriptPrefix: \"\",\n    4      \n    5      /** main script that loaded pagecore */\n\n/Sites/pagespec/js/pagecore/scripts.js:\n  106  	    if (tag.isPagespecTag()) {\n  107  	        pagecore.coreScript = tag;\n  108: 		    pagecore.scriptPrefix = tag.getPrefix();\n  109  			pagecore.options.setLocation(tag.src);\n  110  			pagecore.scriptOptions.setLocation(tag.src);\n  ...\n  124      if (translate.length) {\n  125          var translateScript = pagecore.translateScript = new ScriptTag({\n  126:             src: pagecore.scriptPrefix + \"translated.js?\" + translate.join(\"&\"),\n  127              type: \"text/javascript\"\n  128          });\n\n/Sites/pagespec/js/pagecore/verify/scripts.html:\n   96  	expect(pagecore.coreScript).should_not_be(null);\n   97  	expect(pagecore.otherScripts.length).should_be(5);\n   98: 	expect(pagecore.scriptPrefix).should_be(\"http://\"+ location.host + \"/js/pagecore/verify/assets/\");\n   99  	expect(pagecore.scriptOptions.a).should_be(1);\n  100  	expect(pagecore.scriptOptions.b).should_be(2);\n\n8 matches across 5 files\n\n\nSearching 920 files for \"parts\"\n\n/Sites/essentialjs-site/.gitignore:\n   10  develop-eggs/\n   11  eggs/\n   12: parts/\n   13  downloads/\n   14  build/\n\n/Sites/essentialjs-site/_site/dev-time/flawless/css/style_dev.less:\n   48  \n   49  /* ================ SPLIT UP YOUR CODE ================\n   50:  * It is highly recommended to split up your various parts\n   51   * of custom styles for your website to improve maintainance \n   52   */\n\n/Sites/essentialjs-site/_site/dev-time/flawless/css/flawless/core/development/jquery-1.4.4.js:\n 1266  		}\n 1267  \n 1268: 		var parts = key.split(\".\");\n 1269: 		parts[1] = parts[1] ? \".\" + parts[1] : \"\";\n 1270  \n 1271  		if ( value === undefined ) {\n 1272: 			data = this.triggerHandler(\"getData\" + parts[1] + \"!\", [parts[0]]);\n 1273  \n 1274  			// Try to fetch any internally stored data first\n ....\n 1278  			}\n 1279  \n 1280: 			return data === undefined && parts[1] ?\n 1281: 				this.data( parts[0] ) :\n 1282  				data;\n 1283  \n ....\n 1285  			return this.each(function() {\n 1286  				var $this = jQuery( this ),\n 1287: 					args = [ parts[0], value ];\n 1288  \n 1289: 				$this.triggerHandler( \"setData\" + parts[1] + \"!\", args );\n 1290  				jQuery.data( this, key, value );\n 1291: 				$this.triggerHandler( \"changeData\" + parts[1] + \"!\", args );\n 1292  			});\n 1293  		}\n ....\n 3038  		prune = true,\n 3039  		contextXML = Sizzle.isXML( context ),\n 3040: 		parts = [],\n 3041  		soFar = selector;\n 3042  	\n ....\n 3049  			soFar = m[3];\n 3050  		\n 3051: 			parts.push( m[1] );\n 3052  		\n 3053  			if ( m[2] ) {\n ....\n 3058  	} while ( m );\n 3059  \n 3060: 	if ( parts.length > 1 && origPOS.exec( selector ) ) {\n 3061  \n 3062: 		if ( parts.length === 2 && Expr.relative[ parts[0] ] ) {\n 3063: 			set = posProcess( parts[0] + parts[1], context );\n 3064  \n 3065  		} else {\n 3066: 			set = Expr.relative[ parts[0] ] ?\n 3067  				[ context ] :\n 3068: 				Sizzle( parts.shift(), context );\n 3069  \n 3070: 			while ( parts.length ) {\n 3071: 				selector = parts.shift();\n 3072  \n 3073  				if ( Expr.relative[ selector ] ) {\n 3074: 					selector += parts.shift();\n 3075  				}\n 3076  				\n ....\n 3082  		// Take a shortcut and set the context if the root selector is an ID\n 3083  		// (but not if it'll be faster if the inner selector is an ID)\n 3084: 		if ( !seed && parts.length > 1 && context.nodeType === 9 && !contextXML &&\n 3085: 				Expr.match.ID.test(parts[0]) && !Expr.match.ID.test(parts[parts.length - 1]) ) {\n 3086  \n 3087: 			ret = Sizzle.find( parts.shift(), context, contextXML );\n 3088  			context = ret.expr ?\n 3089  				Sizzle.filter( ret.expr, ret.set )[0] :\n ....\n 3093  		if ( context ) {\n 3094  			ret = seed ?\n 3095: 				{ expr: parts.pop(), set: makeArray(seed) } :\n 3096: 				Sizzle.find( parts.pop(), parts.length === 1 && (parts[0] === \"~\" || parts[0] === \"+\") && context.parentNode ? context.parentNode : context, contextXML );\n 3097  \n 3098  			set = ret.expr ?\n ....\n 3100  				ret.set;\n 3101  \n 3102: 			if ( parts.length > 0 ) {\n 3103  				checkSet = makeArray( set );\n 3104  \n ....\n 3107  			}\n 3108  \n 3109: 			while ( parts.length ) {\n 3110: 				cur = parts.pop();\n 3111  				pop = cur;\n 3112  \n ....\n 3114  					cur = \"\";\n 3115  				} else {\n 3116: 					pop = parts.pop();\n 3117  				}\n 3118  \n ....\n 3125  \n 3126  		} else {\n 3127: 			checkSet = parts = [];\n 3128  		}\n 3129  	}\n ....\n 3351  	relative: {\n 3352  		\"+\": function(checkSet, part){\n 3353: 			var isPartStr = typeof part === \"string\",\n 3354: 				isTag = isPartStr && !/\\W/.test( part ),\n 3355: 				isPartStrNotTag = isPartStr && !isTag;\n 3356  \n 3357  			if ( isTag ) {\n ....\n 3363  					while ( (elem = elem.previousSibling) && elem.nodeType !== 1 ) {}\n 3364  \n 3365: 					checkSet[i] = isPartStrNotTag || elem && elem.nodeName.toLowerCase() === part ?\n 3366  						elem || false :\n 3367  						elem === part;\n ....\n 3369  			}\n 3370  \n 3371: 			if ( isPartStrNotTag ) {\n 3372  				Sizzle.filter( part, checkSet, true );\n 3373  			}\n ....\n 3376  		\">\": function( checkSet, part ) {\n 3377  			var elem,\n 3378: 				isPartStr = typeof part === \"string\",\n 3379  				i = 0,\n 3380  				l = checkSet.length;\n 3381  \n 3382: 			if ( isPartStr && !/\\W/.test( part ) ) {\n 3383  				part = part.toLowerCase();\n 3384  \n ....\n 3397  \n 3398  					if ( elem ) {\n 3399: 						checkSet[i] = isPartStr ?\n 3400  							elem.parentNode :\n 3401  							elem.parentNode === part;\n ....\n 3403  				}\n 3404  \n 3405: 				if ( isPartStr ) {\n 3406  					Sizzle.filter( part, checkSet, true );\n 3407  				}\n ....\n 5852  \n 5853  		// Matches an absolute URL, and saves the domain\n 5854: 		var parts = rurl.exec( s.url ),\n 5855: 			remote = parts && (parts[1] && parts[1].toLowerCase() !== location.protocol || parts[2].toLowerCase() !== location.host);\n 5856  \n 5857  		// If we're requesting a remote document\n ....\n 6469  \n 6470  				} else {\n 6471: 					var parts = rfxnum.exec(val),\n 6472  						start = e.cur() || 0;\n 6473  \n 6474: 					if ( parts ) {\n 6475: 						var end = parseFloat( parts[2] ),\n 6476: 							unit = parts[3] || \"px\";\n 6477  \n 6478  						// We need to compute starting value\n ....\n 6484  \n 6485  						// If a +=/-= token was provided, we're doing a relative animation\n 6486: 						if ( parts[1] ) {\n 6487: 							end = ((parts[1] === \"-=\" ? -1 : 1) * end) + start;\n 6488  						}\n 6489  \n\n/Sites/essentialjs-site/_site/dev-time/flawless/css/flawless/core/development/less-1.0.36.js:\n  482              // We try to extract a \\n delimited string,\n  483              // showing the line where the parse error occured.\n  484:             // We split it up into two parts (the part which parsed,\n  485              // and the part which didn't), so we can color them differently.\n  486              if (i < input.length - 1) {\n\n/Sites/essentialjs-site/_site/dev-time/flawless/css/flawless/core/development/less-1.1.3.js:\n  481              // We try to extract a \\n delimited string,\n  482              // showing the line where the parse error occured.\n  483:             // We split it up into two parts (the part which parsed,\n  484              // and the part which didn't), so we can color them differently.\n  485              if (i < input.length - 1) {\n\n/Sites/essentialjs-site/_site/dev-time/flawless/css/flawless/core/development/jquery-ui-1.8.6/jquery-ui-1.8.6.js:\n 5826  		}\n 5827  \n 5828: 		// called only when using activate(false) to close all parts programmatically\n 5829  		if ( !event.target ) {\n 5830  			if ( !options.collapsible ) {\n ....\n 6066  				hideProps[ prop ] = \"hide\";\n 6067  \n 6068: 				var parts = ( \"\" + $.css( options.toShow[0], prop ) ).match( /^([\\d+-.]+)(.*)$/ );\n 6069  				showProps[ prop ] = {\n 6070: 					value: parts[ 1 ],\n 6071: 					unit: parts[ 2 ] || \"px\"\n 6072  				};\n 6073  			});\n\n/Sites/essentialjs-site/_site/less/twothirds.less:\n   32  \n   33  /* ================ SPLIT UP YOUR CODE ================\n   34:  * It is highly recommended to split up your various parts\n   35   * of custom styles for your website to improve maintainance \n   36   */\n\n/Sites/essentialjs-site/js/execute-all.js:\n   21      var specs = [], examples = [], outstanding = [];\n   22      for(var i=0,arg; arg = arguments[i]; ++i) {\n   23:         var parts = arg.describe(__expect__);\n   24:         var current_caption = parts.pop();\n   25:         var current_constr = parts.pop();\n   26          \n   27          var spec = {\n   ..\n   32          specs.push(spec);\n   33          \n   34:         for(var i=0,name,func; name = parts[i]; i += 2){\n   35:             func = parts[i+1];\n   36              \n   37              var example = new Example(name,func,spec);\n\n/Sites/essentialjs-site/js/pagecore/options.js:\n   75   * @param {Map} oldOptions Old options from the exiting page running\n   76   * @param {Map} newOptions New options that extends/overrides existing\n   77:  * @return A map with resulting options and a toString that produces the URI search & hash parts\n   78   */\n   79  UrlOptions.prototype.clone = function(extra) {\n\n/Sites/essentialjs-site/js/pagecore/scripts.js:\n   82  \n   83          // refresh script\n   84:         var parts = tag.src.split(\"?\");\n   85          var r = /\\bpoll=(\\d+)\\b/;\n   86:         if (parts.length==2 && r.test(parts[1])) {\n   87:             var count = parts[1].match(r)[1];\n   88:             parts[1] = parts[1].replace(r,\"poll=\"+(parseInt(count)+1));\n   89:             tag.src = parts.join(\"?\");\n   90          } else {\n   91:             tag.src = parts[0] + \"?\" + (parts.length == 2? parts[1] + \"&poll=1\" : \"poll=1\");\n   92          }\n   93      }\n\n/Sites/essentialjs-site/templates/pagespec/results.html:\n    6  <h1>{{ title }}</h1>\n    7  <dl>\n    8: {% for part in parts %}\n    9  <dt>\n   10  	{{ part[\"spec\"] }}<br>\n\n/Sites/themaestro/Library/maestro/cssutils/__init__.py:\n   28      A few errata, mainly the definition of CHARSET_SYM tokens\n   29  `CSS3 Module: Syntax <http://www.w3.org/TR/css3-syntax/>`__\n   30:     Used in parts since cssutils 0.9.4. cssutils tries to use the features from\n   31      CSS 2.1 and CSS 3 with preference to CSS3 but as this is not final yet some\n   32:     parts are from CSS 2.1\n   33  `MediaQueries <http://www.w3.org/TR/css3-mediaqueries/>`__\n   34      MediaQueries are part of ``stylesheets.MediaList`` since v0.9.4, used in\n   ..\n   54  (W3C Working Draft 13 August 2003) <http://www.w3.org/TR/css3-syntax/>`__ which\n   55  itself is based on the CSS 2.1 tokenizer. It tries to be as compliant as\n   56: possible but uses some (helpful) parts of the CSS 2.1 tokenizer.\n   57  \n   58  I guess cssutils is neither CSS 2.1 nor CSS 3 compliant but tries to at least\n\n/Sites/themaestro/Library/maestro/cssutils/serialize.py:\n  279  \n  280  class CSSSerializer(object):\n  281:     \"\"\"Serialize a CSSStylesheet and its parts.\n  282  \n  283      To use your own serializing method the easiest is to subclass CSS\n\n/Sites/themaestro/Library/maestro/cssutils/css/cssvalue.py:\n  907      def _setCssText(self, cssText):\n  908          self._checkReadonly()\n  909:         # store: colorType, parts\n  910          wellformed, seq, store, unusedtokens = ProdParser().parse(cssText,\n  911                                                                    self._functionName,\n  ...\n  982                       match=lambda t, v: t in (types.NUMBER, types.PERCENTAGE),\n  983                       toSeq=lambda t, v: (CSSPrimitiveValue, CSSPrimitiveValue(v)),\n  984:                      toStore='parts'\n  985                       )\n  986          # COLOR PRODUCTION\n  ...\n 1005                                   )\n 1006                              )     \n 1007:         # store: colorType, parts\n 1008          wellformed, seq, store, unusedtokens = ProdParser().parse(cssText,\n 1009                                                              u'RGBColor',\n 1010                                                              colorprods,\n 1011                                                              keepS=True,\n 1012:                                                             store={'parts': []})\n 1013          \n 1014          if wellformed:\n\n/Sites/themaestro/Library/maestro/ecmatic/basic.ometa:\n   78  index = \"[\" expression:ex \"]\" -> [\"[]\",ex]\n   79  ternary = expression:ex1 \"?\" expression:ex2 \":\" expression:ex3 -> [\"?:\",ex1,ex2,ex3]\n   80: expression = skip (\".\" | index | parenthesis | ternary | expression_operator | name | literal | comment | mlcomment)+:parts -> parts\n   81  \n   82  \n   ..\n  105  \n  106  untilEndStatement = (~(';' | end | vspace) anything)+:bits -> ''.join(bits)\n  107: restStatement = (comment | mlcomment | string | regex | untilEndStatement)+:parts -> parts\n  108  \n  109  keywordStatement = ( token(\"debugger\") | token(\"continue\") | token(\"break\")):keyword \n\n/Sites/themaestro/Library/maestro/ecmatic/es.ometa:\n  171  //\n  172  \n  173: describe_macro = \"@describe\" opt_vspan name:constr opt_vspan \",\" opt_vspan string:caption opt_vspan \"{\" describe_parts:parts \"}\" -> [\"describe\", constr, caption, parts]\n  174:                | \"@describe\" opt_vspan string:caption opt_vspan \"{\" describe_parts:parts \"}\" -> [\"describe\", None, caption, parts]\n  175:                | \"@describe\" opt_vspan name:constr opt_vspan \"{\" describe_parts:parts \"}\" -> [\"describe\", constr, None, parts]\n  176  \n  177: describe_parts = (it_block | before_block | after_block | func_block | comment | slcomment | mlcomment | hspace | vspace )*\n  178  before_block = \"before all\" opt_vspan:span \"{\" statements:s \"}\" -> [\"beforeall\",span,s]\n  179               |\"before each\" opt_vspan:span \"{\" statements:s \"}\" -> [\"beforeeach\",span,s]\n\n/Sites/themaestro/Library/maestro/ecmatic/js_tests/mjsunit/README:\n    1  The tests in the 'source' subdirectory came from the V8 Javascript Engine\n    2  codebase. They have been ever-so-slightly modified, as a few of them were\n    3: originally using %-symbols as parts of function names, and object getters and\n    4  setters, which PyNarcissus is not supporting.\n    5  \n\n/Sites/themaestro/Library/maestro/mediaserver/verify.py:\n   41          results = []\n   42          for key in arguments.keys():\n   43:             parts = key.split(\"_\")\n   44:             if len(parts) > 1 and len(parts[0]) > 0:\n   45                  results.append((key,arguments[key][0]))\n   46              if key.endswith(\"-result\"):\n\n/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py:\n   53              \"title\": \"Results for %s %s : %s\" % (account,project,node),\n   54              \n   55:             \"parts\": []\n   56          }\n   57          self.render(\"pagespec/results.html\", **info)\n   ..\n   86                  \"reload_url\": \"../verify/\",\n   87                  \"title\": \"Results for %s %s\" % (directory,file_name),\n   88:                 \"parts\": [self.split_part(key,val) for key,val in results]\n   89              }\n   90              self.render(\"pagespec/results.html\",**info)\n   ..\n  108              \"title\": \"Results for %s %s : %s\" % (account,project,run),\n  109              \n  110:             \"parts\": []\n  111          }\n  112          self.render(\"pagespec/results.html\", **info)\n  ...\n  142                  \"reload_url\": \"../verify/\",\n  143                  \"title\": \"Results for %s %s : %s\" % (account,project,run),\n  144:                 \"parts\": [self.split_part(key,val) for key,val in results]\n  145              }\n  146              self.render(\"pagespec/results.html\",**info)\n\n/Sites/themaestro/Library/maestro/mediaserver/handlers/verify.py:\n   91                  \"reload_url\": \"../verify/\",\n   92                  \"title\": \"Results for %s %s\" % (directory,file_name),\n   93:                 \"parts\": [self.split_part(key,val) for key,val in results]\n   94              }\n   95              self.render(\"verify/results.html\",**info)\n\n/Sites/themaestro/Library/maestro/mediaserver/sources/js.py:\n   61                  pass\n   62              scope = self.get_scope(m.group(2))\n   63:             parts = insert_statement.split(scope,1)\n   64:             if parts:\n   65:                 include = self.decorated(parts[0]) + include + self.decorated(parts[1])\n   66              return line[:m.start(0)] + include + line[m.end(0):]\n   67          return line\n   ..\n  149              scope = source.scope or cls.read_scope(default_scope,basedir)\n  150              if scope:\n  151:                 parts = insert_statement.split(scope,1)\n  152:                 lines.insert(0,source.decorated(parts[0]))\n  153:                 lines.append(source.decorated(parts[1]))\n  154          return lines\n  155          \n  ...\n  160          lines = [self.decorated(line) for line in self.lines]\n  161          if scope:\n  162:             parts = insert_statement.split(scope,1)\n  163:             if parts:\n  164:                 lines.insert(0,self.decorated(parts[0]))\n  165:                 lines.append(self.decorated(parts[1]))\n  166              else:\n  167                  pass #TODO warning scope has no @insert statement\n\n/Sites/themaestro/Library/maestro/thepian/tickets/base.py:\n  189              \n  190      def _encode_affinity(self):\n  191:         parts = []\n  192          ip = socket.inet_aton(self.remote_addr)\n  193:         parts.append('200200000000000000000000')\n  194:         parts.append(binascii.hexlify(ip))\n  195  \n  196:         parts.append(\"%016x\" % self.first_time)\n  197  \n  198:         parts.append(\"%04x\" % self.number)\n  199  \n  200          # make a SHA checksum by combining with a secret key\n  201:         check = hashlib.sha1(''.join(parts + [self.get_secret(),])).hexdigest()\n  202:         parts.append(check)\n  203  \n  204:         return ''.join(parts), check\n  205  \n  206  \n\n/Sites/themaestro/Library/maestro/thepian/utils/EXIF.py:\n 1290  \n 1291      # Note is the data that comprises this MakerNote.  The MakerNote will\n 1292:     # likely have pointers in it that point to other parts of the file.  We'll\n 1293      # use self.offset as the starting point for most of those pointers, since\n 1294      # they are relative to the beginning of the file.\n\n/Sites/themaestro/src/tornado/demos/s3server/s3server.py:\n   79          self.set_header(\"Content-Type\", \"application/xml; charset=UTF-8\")\n   80          name = value.keys()[0]\n   81:         parts = []\n   82:         parts.append('<' + escape.utf8(name) +\n   83                       ' xmlns=\"http://doc.s3.amazonaws.com/2006-03-01\">')\n   84:         self._render_parts(value.values()[0], parts)\n   85:         parts.append('</' + escape.utf8(name) + '>')\n   86          self.finish('<?xml version=\"1.0\" encoding=\"UTF-8\"?>\\n' +\n   87:                     ''.join(parts))\n   88  \n   89:     def _render_parts(self, value, parts=[]):\n   90          if isinstance(value, (unicode, bytes_type)):\n   91:             parts.append(escape.xhtml_escape(value))\n   92          elif isinstance(value, int) or isinstance(value, long):\n   93:             parts.append(str(value))\n   94          elif isinstance(value, datetime.datetime):\n   95:             parts.append(value.strftime(\"%Y-%m-%dT%H:%M:%S.000Z\"))\n   96          elif isinstance(value, dict):\n   97              for name, subvalue in value.iteritems():\n   ..\n   99                      subvalue = [subvalue]\n  100                  for subsubvalue in subvalue:\n  101:                     parts.append('<' + escape.utf8(name) + '>')\n  102:                     self._render_parts(subsubvalue, parts)\n  103:                     parts.append('</' + escape.utf8(name) + '>')\n  104          else:\n  105              raise Exception(\"Unknown S3 value type %r\", value)\n\n/Sites/themaestro/src/tornado/tornado/auth.py:\n  180          locale = get_ax_arg(\"http://axschema.org/pref/language\").lower()\n  181          user = dict()\n  182:         name_parts = []\n  183          if first_name:\n  184              user[\"first_name\"] = first_name\n  185:             name_parts.append(first_name)\n  186          if last_name:\n  187              user[\"last_name\"] = last_name\n  188:             name_parts.append(last_name)\n  189          if name:\n  190              user[\"name\"] = name\n  191:         elif name_parts:\n  192:             user[\"name\"] = u\" \".join(name_parts)\n  193          elif email:\n  194              user[\"name\"] = email.split(\"@\")[0]\n  ...\n  916  \n  917      def _signature(self, args):\n  918:         parts = [\"%s=%s\" % (n, args[n]) for n in sorted(args.keys())]\n  919:         body = \"\".join(parts) + self.settings[\"facebook_secret\"]\n  920          if isinstance(body, unicode): body = body.encode(\"utf-8\")\n  921          return hashlib.md5(body).hexdigest()\n  ...\n 1067      See http://oauth.net/core/1.0/#signing_process\n 1068      \"\"\"\n 1069:     parts = urlparse.urlparse(url)\n 1070:     scheme, netloc, path = parts[:3]\n 1071      normalized_url = scheme.lower() + \"://\" + netloc.lower() + path\n 1072  \n ....\n 1090      See http://oauth.net/core/1.0a/#signing_process\n 1091      \"\"\"\n 1092:     parts = urlparse.urlparse(url)\n 1093:     scheme, netloc, path = parts[:3]\n 1094      normalized_url = scheme.lower() + \"://\" + netloc.lower() + path\n 1095  \n\n/Sites/themaestro/src/tornado/tornado/escape.py:\n  272                  proto_len = 0\n  273  \n  274:             parts = url[proto_len:].split(\"/\")\n  275:             if len(parts) > 1:\n  276                  # Grab the whole host part plus the first bit of the path\n  277                  # The path is usually not that interesting once shortened\n  278                  # (no more slug, etc), so it really just provides a little\n  279                  # extra indication of shortening.\n  280:                 url = url[:proto_len] + parts[0] + \"/\" + \\\n  281:                         parts[1][:8].split('?')[0].split('.')[0]\n  282  \n  283              if len(url) > max_len * 1.5:  # still too long\n\n/Sites/themaestro/src/tornado/tornado/httputil.py:\n  192      else:\n  193          footer_length = len(boundary) + 4\n  194:     parts = data[:-footer_length].split(b(\"--\") + boundary + b(\"\\r\\n\"))\n  195:     for part in parts:\n  196          if not part: continue\n  197          eoh = part.find(b(\"\\r\\n\\r\\n\"))\n  ...\n  240  \n  241      \"\"\"\n  242:     parts = _parseparam(';' + line)\n  243:     key = parts.next()\n  244      pdict = {}\n  245:     for p in parts:\n  246          i = p.find('=')\n  247          if i >= 0:\n\n/Sites/themaestro/src/tornado/tornado/iostream.py:\n   62              headers = {}\n   63              for line in data.split(\"\\r\\n\"):\n   64:                parts = line.split(\":\")\n   65:                if len(parts) == 2:\n   66:                    headers[parts[0].strip()] = parts[1].strip()\n   67              stream.read_bytes(int(headers[\"Content-Length\"]), on_body)\n   68  \n\n/Sites/themaestro/src/tornado/tornado/locale.py:\n  190              if not code: continue\n  191              code = code.replace(\"-\", \"_\")\n  192:             parts = code.split(\"_\")\n  193:             if len(parts) > 2:\n  194                  continue\n  195:             elif len(parts) == 2:\n  196:                 code = parts[0].lower() + \"_\" + parts[1].upper()\n  197              if code in _supported_locales:\n  198                  return cls.get(code)\n  199:             if parts[0].lower() in _supported_locales:\n  200:                 return cls.get(parts[0].lower())\n  201          return cls.get(_default_locale)\n  202  \n  ...\n  358              }\n  359  \n  360:     def list(self, parts):\n  361:         \"\"\"Returns a comma-separated list for the given list of parts.\n  362  \n  363          The format is, e.g., \"A, B and C\", \"A and B\" or just \"A\" for lists\n  ...\n  365          \"\"\"\n  366          _ = self.translate\n  367:         if len(parts) == 0: return \"\"\n  368:         if len(parts) == 1: return parts[0]\n  369          comma = u' \\u0648 ' if self.code.startswith(\"fa\") else u\", \"\n  370          return _(\"%(commas)s and %(last)s\") % {\n  371:             \"commas\": comma.join(parts[:-1]),\n  372:             \"last\": parts[len(parts) - 1],\n  373          }\n  374  \n  ...\n  378              return str(value)\n  379          value = str(value)\n  380:         parts = []\n  381          while value:\n  382:             parts.append(value[-3:])\n  383              value = value[:-3]\n  384:         return \",\".join(reversed(parts))\n  385  \n  386  class CSVLocale(Locale):\n\n/Sites/themaestro/src/tornado/tornado/simple_httpclient.py:\n   39  \n   40      This class implements an HTTP 1.1 client on top of Tornado's IOStreams.\n   41:     It does not currently implement all applicable parts of the HTTP\n   42      specification, but it does enough to work with major web service APIs\n   43      (mostly tested against the Twitter API so far).\n\n/Sites/themaestro/src/tornado/tornado/testing.py:\n    2  \"\"\"Support classes for automated testing.\n    3  \n    4: This module contains three parts:\n    5  \n    6  * `AsyncTestCase`/`AsyncHTTPTestCase`:  Subclasses of unittest.TestCase\n\n/Sites/themaestro/src/tornado/tornado/util.py:\n   12      True\n   13      \"\"\"\n   14:     parts = name.split('.')\n   15:     obj = __import__('.'.join(parts[:-1]), None, None, [parts[-1]], 0)\n   16:     return getattr(obj, parts[-1])\n   17  \n   18  # Fake byte literal support:  In python 2.6+, you can say b\"foo\" to get\n\n/Sites/themaestro/src/tornado/tornado/web.py:\n  387          if value is None: value = self.get_cookie(name)\n  388          if not value: return None\n  389:         parts = utf8(value).split(b(\"|\"))\n  390:         if len(parts) != 3: return None\n  391:         signature = self._cookie_signature(name, parts[0], parts[1])\n  392:         if not _time_independent_equals(parts[2], signature):\n  393              logging.warning(\"Invalid cookie signature %r\", value)\n  394              return None\n  395:         timestamp = int(parts[1])\n  396          if timestamp < time.time() - max_age_days * 86400:\n  397              logging.warning(\"Expired cookie %r\", value)\n  ...\n  399          if timestamp > time.time() + 31 * 86400:\n  400              # _cookie_signature does not hash a delimiter between the\n  401:             # parts of the cookie, so an attacker could transfer trailing\n  402              # digits from the payload to the timestamp without altering the\n  403              # signature.  For backwards compatibility, sanity-check timestamp\n  ...\n  405              logging.warning(\"Cookie timestamp in future; possible tampering %r\", value)\n  406              return None\n  407:         if parts[1].startswith(b(\"0\")):\n  408              logging.warning(\"Tampered cookie %r\", value)\n  409          try:\n  410:             return base64.b64decode(parts[0])\n  411          except Exception:\n  412              return None\n  413  \n  414:     def _cookie_signature(self, *parts):\n  415          self.require_setting(\"cookie_secret\", \"secure cookies\")\n  416          hash = hmac.new(utf8(self.application.settings[\"cookie_secret\"]),\n  417                          digestmod=hashlib.sha1)\n  418:         for part in parts: hash.update(utf8(part))\n  419          return utf8(hash.hexdigest())\n  420  \n  ...\n  758              locales = []\n  759              for language in languages:\n  760:                 parts = language.strip().split(\";\")\n  761:                 if len(parts) > 1 and parts[1].startswith(\"q=\"):\n  762                      try:\n  763:                         score = float(parts[1][2:])\n  764                      except (ValueError, TypeError):\n  765                          score = 0.0\n  766                  else:\n  767                      score = 1.0\n  768:                 locales.append((parts[0], score))\n  769              if locales:\n  770                  locales.sort(key=lambda (l, s): s, reverse=True)\n\n/Sites/themaestro/src/tornado/tornado/wsgi.py:\n  225              headers.append((\"Server\", \"TornadoServer/%s\" % tornado.version))\n  226  \n  227:         parts = [escape.utf8(\"HTTP/1.1 \" + data[\"status\"] + \"\\r\\n\")]\n  228          for key, value in headers:\n  229:             parts.append(escape.utf8(key) + b(\": \") + escape.utf8(value) + b(\"\\r\\n\"))\n  230:         parts.append(b(\"\\r\\n\"))\n  231:         parts.append(body)\n  232:         request.write(b(\"\").join(parts))\n  233          request.finish()\n  234          self._log(status_code, request)\n\n/Sites/themaestro/src/tornado/website/sphinx/overview.rst:\n  903  recommended to avoid bugs in older version's asynchronous interfaces),\n  904  but is more likely to be compatible with sites that exercise little-used\n  905: parts of the HTTP specification.\n  906  \n  907  Each of these clients is available in its own module\n\n/Sites/pagespec/js/pagecore/impl.js:\n 1104          	// *entry:mapping references decoding\n 1105              if (decorators[name].refs) { //TODO review the flag to filter on !!!\n 1106:             	var pParts = [];\n 1107          		var pNames = value.indexOf(\" \") >= 0? value.split(\" \") : value.split(\",\");\n 1108          		for(var i=0,n; n = pNames[i]; ++i) {\n 1109          			var pExpressAndMapping = n.split(\":\");\n 1110:         			pParts[i] = /([!+-]*)(.*)/.exec(pExpressAndMapping[0]);\n 1111:         			pParts[i].mapping = pExpressAndMapping[1]; // name of mapping for the data entry\n 1112:         			pParts[i].name = pNames[i] = pParts[i][2]; // third entry is the name\n 1113          		}\n 1114  \n 1115          		mAttribute.name = pNames[0];\n 1116:         		mAttribute.parts = pParts;\n 1117          		mAttribute.names = pNames;\n 1118              } \n\n/Sites/pagespec/js/pagecore/options.js:\n   75   * @param {Map} oldOptions Old options from the exiting page running\n   76   * @param {Map} newOptions New options that extends/overrides existing\n   77:  * @return A map with resulting options and a toString that produces the URI search & hash parts\n   78   */\n   79  UrlOptions.prototype.clone = function(extra) {\n\n/Sites/pagespec/js/pagecore/scripts.js:\n   82  \n   83          // refresh script\n   84:         var parts = tag.src.split(\"?\");\n   85          var r = /\\bpoll=(\\d+)\\b/;\n   86:         if (parts.length==2 && r.test(parts[1])) {\n   87:             var count = parts[1].match(r)[1];\n   88:             parts[1] = parts[1].replace(r,\"poll=\"+(parseInt(count)+1));\n   89:             tag.src = parts.join(\"?\");\n   90          } else {\n   91:             tag.src = parts[0] + \"?\" + (parts.length == 2? parts[1] + \"&poll=1\" : \"poll=1\");\n   92          }\n   93      }\n\n/Sites/pagespec/js/pagecore/state.js:\n  114  DataState.prototype.ensureAttributeMappings = function(context,attribute)\n  115  {\n  116:     var parts = attribute.parts || [];\n  117:     for(var i=0,p; p = parts[i]; ++i) {\n  118          if (p.mapping) {\n  119              var entry = { context: context, name: p.mapping, full:context+\".\"+p.mapping };\n  ...\n  340  \n  341  	for(var i=0,n; n = attribute.names[i]; ++i) {\n  342: 		var mReflection2 = { part: attribute.parts[i], names: attribute.names, parts: attribute.parts };\n  343  		for(var m in mReflection) mReflection2[m] = mReflection[m];\n  344  		this.contexts[context][n].reflections.push(mReflection2);\n  ...\n  394  			case \"setset\":\n  395  				var vValue = {};\n  396: 				for(var i2=0,pPart;pPart = r.parts[i2]; ++i2) {\n  397  					var sName = pPart[2];\n  398  					var mEntry2 = this.contexts[mEntry.context][sName];\n\n/Sites/pagespec/js/pagecore/verify/impl.html:\n  573  	expect(streamedTpl[0].attributes[\"test-refs\"].defaults[0]).should_be(\"d1\");\n  574  	expect(streamedTpl[0].attributes[\"test-refs\"].value).should_be(\"t1:m\");\n  575: 	expect(streamedTpl[0].attributes[\"test-refs\"].parts[0].name).should_be(\"t1\");\n  576: 	expect(streamedTpl[0].attributes[\"test-refs\"].parts[0].mapping).should_be(\"m\");\n  577  	expect(streamedTpl[0].context).should_be(\"context\");\n  578  	expect(streamedTpl[0].decorators.length).should_be(1);\n  ...\n  590  	expect(streamedTpl[0].attributes[\"test-simple\"].defaults[0]).should_be(\"d2\");\n  591  	expect(streamedTpl[0].attributes[\"test-simple\"].value).should_be(\"t2:m\");\n  592: 	expect(streamedTpl[0].attributes[\"test-simple\"].parts).should_be(undefined);\n  593  	expect(streamedTpl[0].context).should_be(\"context\");\n  594  	expect(streamedTpl[0].decorators.length).should_be(1);\n  ...\n  606  	expect(streamedTpl[0].attributes[\"test-context\"].defaults[0]).should_be(\"d3\");\n  607  	expect(streamedTpl[0].attributes[\"test-context\"].value).should_be(\"t3:m\");\n  608: 	expect(streamedTpl[0].attributes[\"test-context\"].parts).should_be(undefined);\n  609  	expect(streamedTpl[0].context).should_be(\"t3:m\");\n  610  	expect(streamedTpl[0].decorators.length).should_be(0);\n\n250 matches across 40 files\n\n\nSearching 920 files for \"parts\"\n\n/Sites/essentialjs-site/.gitignore:\n   10  develop-eggs/\n   11  eggs/\n   12: parts/\n   13  downloads/\n   14  build/\n\n/Sites/essentialjs-site/_site/dev-time/flawless/css/style_dev.less:\n   48  \n   49  /* ================ SPLIT UP YOUR CODE ================\n   50:  * It is highly recommended to split up your various parts\n   51   * of custom styles for your website to improve maintainance \n   52   */\n\n/Sites/essentialjs-site/_site/dev-time/flawless/css/flawless/core/development/jquery-1.4.4.js:\n 1266  		}\n 1267  \n 1268: 		var parts = key.split(\".\");\n 1269: 		parts[1] = parts[1] ? \".\" + parts[1] : \"\";\n 1270  \n 1271  		if ( value === undefined ) {\n 1272: 			data = this.triggerHandler(\"getData\" + parts[1] + \"!\", [parts[0]]);\n 1273  \n 1274  			// Try to fetch any internally stored data first\n ....\n 1278  			}\n 1279  \n 1280: 			return data === undefined && parts[1] ?\n 1281: 				this.data( parts[0] ) :\n 1282  				data;\n 1283  \n ....\n 1285  			return this.each(function() {\n 1286  				var $this = jQuery( this ),\n 1287: 					args = [ parts[0], value ];\n 1288  \n 1289: 				$this.triggerHandler( \"setData\" + parts[1] + \"!\", args );\n 1290  				jQuery.data( this, key, value );\n 1291: 				$this.triggerHandler( \"changeData\" + parts[1] + \"!\", args );\n 1292  			});\n 1293  		}\n ....\n 3038  		prune = true,\n 3039  		contextXML = Sizzle.isXML( context ),\n 3040: 		parts = [],\n 3041  		soFar = selector;\n 3042  	\n ....\n 3049  			soFar = m[3];\n 3050  		\n 3051: 			parts.push( m[1] );\n 3052  		\n 3053  			if ( m[2] ) {\n ....\n 3058  	} while ( m );\n 3059  \n 3060: 	if ( parts.length > 1 && origPOS.exec( selector ) ) {\n 3061  \n 3062: 		if ( parts.length === 2 && Expr.relative[ parts[0] ] ) {\n 3063: 			set = posProcess( parts[0] + parts[1], context );\n 3064  \n 3065  		} else {\n 3066: 			set = Expr.relative[ parts[0] ] ?\n 3067  				[ context ] :\n 3068: 				Sizzle( parts.shift(), context );\n 3069  \n 3070: 			while ( parts.length ) {\n 3071: 				selector = parts.shift();\n 3072  \n 3073  				if ( Expr.relative[ selector ] ) {\n 3074: 					selector += parts.shift();\n 3075  				}\n 3076  				\n ....\n 3082  		// Take a shortcut and set the context if the root selector is an ID\n 3083  		// (but not if it'll be faster if the inner selector is an ID)\n 3084: 		if ( !seed && parts.length > 1 && context.nodeType === 9 && !contextXML &&\n 3085: 				Expr.match.ID.test(parts[0]) && !Expr.match.ID.test(parts[parts.length - 1]) ) {\n 3086  \n 3087: 			ret = Sizzle.find( parts.shift(), context, contextXML );\n 3088  			context = ret.expr ?\n 3089  				Sizzle.filter( ret.expr, ret.set )[0] :\n ....\n 3093  		if ( context ) {\n 3094  			ret = seed ?\n 3095: 				{ expr: parts.pop(), set: makeArray(seed) } :\n 3096: 				Sizzle.find( parts.pop(), parts.length === 1 && (parts[0] === \"~\" || parts[0] === \"+\") && context.parentNode ? context.parentNode : context, contextXML );\n 3097  \n 3098  			set = ret.expr ?\n ....\n 3100  				ret.set;\n 3101  \n 3102: 			if ( parts.length > 0 ) {\n 3103  				checkSet = makeArray( set );\n 3104  \n ....\n 3107  			}\n 3108  \n 3109: 			while ( parts.length ) {\n 3110: 				cur = parts.pop();\n 3111  				pop = cur;\n 3112  \n ....\n 3114  					cur = \"\";\n 3115  				} else {\n 3116: 					pop = parts.pop();\n 3117  				}\n 3118  \n ....\n 3125  \n 3126  		} else {\n 3127: 			checkSet = parts = [];\n 3128  		}\n 3129  	}\n ....\n 3351  	relative: {\n 3352  		\"+\": function(checkSet, part){\n 3353: 			var isPartStr = typeof part === \"string\",\n 3354: 				isTag = isPartStr && !/\\W/.test( part ),\n 3355: 				isPartStrNotTag = isPartStr && !isTag;\n 3356  \n 3357  			if ( isTag ) {\n ....\n 3363  					while ( (elem = elem.previousSibling) && elem.nodeType !== 1 ) {}\n 3364  \n 3365: 					checkSet[i] = isPartStrNotTag || elem && elem.nodeName.toLowerCase() === part ?\n 3366  						elem || false :\n 3367  						elem === part;\n ....\n 3369  			}\n 3370  \n 3371: 			if ( isPartStrNotTag ) {\n 3372  				Sizzle.filter( part, checkSet, true );\n 3373  			}\n ....\n 3376  		\">\": function( checkSet, part ) {\n 3377  			var elem,\n 3378: 				isPartStr = typeof part === \"string\",\n 3379  				i = 0,\n 3380  				l = checkSet.length;\n 3381  \n 3382: 			if ( isPartStr && !/\\W/.test( part ) ) {\n 3383  				part = part.toLowerCase();\n 3384  \n ....\n 3397  \n 3398  					if ( elem ) {\n 3399: 						checkSet[i] = isPartStr ?\n 3400  							elem.parentNode :\n 3401  							elem.parentNode === part;\n ....\n 3403  				}\n 3404  \n 3405: 				if ( isPartStr ) {\n 3406  					Sizzle.filter( part, checkSet, true );\n 3407  				}\n ....\n 5852  \n 5853  		// Matches an absolute URL, and saves the domain\n 5854: 		var parts = rurl.exec( s.url ),\n 5855: 			remote = parts && (parts[1] && parts[1].toLowerCase() !== location.protocol || parts[2].toLowerCase() !== location.host);\n 5856  \n 5857  		// If we're requesting a remote document\n ....\n 6469  \n 6470  				} else {\n 6471: 					var parts = rfxnum.exec(val),\n 6472  						start = e.cur() || 0;\n 6473  \n 6474: 					if ( parts ) {\n 6475: 						var end = parseFloat( parts[2] ),\n 6476: 							unit = parts[3] || \"px\";\n 6477  \n 6478  						// We need to compute starting value\n ....\n 6484  \n 6485  						// If a +=/-= token was provided, we're doing a relative animation\n 6486: 						if ( parts[1] ) {\n 6487: 							end = ((parts[1] === \"-=\" ? -1 : 1) * end) + start;\n 6488  						}\n 6489  \n\n/Sites/essentialjs-site/_site/dev-time/flawless/css/flawless/core/development/less-1.0.36.js:\n  482              // We try to extract a \\n delimited string,\n  483              // showing the line where the parse error occured.\n  484:             // We split it up into two parts (the part which parsed,\n  485              // and the part which didn't), so we can color them differently.\n  486              if (i < input.length - 1) {\n\n/Sites/essentialjs-site/_site/dev-time/flawless/css/flawless/core/development/less-1.1.3.js:\n  481              // We try to extract a \\n delimited string,\n  482              // showing the line where the parse error occured.\n  483:             // We split it up into two parts (the part which parsed,\n  484              // and the part which didn't), so we can color them differently.\n  485              if (i < input.length - 1) {\n\n/Sites/essentialjs-site/_site/dev-time/flawless/css/flawless/core/development/jquery-ui-1.8.6/jquery-ui-1.8.6.js:\n 5826  		}\n 5827  \n 5828: 		// called only when using activate(false) to close all parts programmatically\n 5829  		if ( !event.target ) {\n 5830  			if ( !options.collapsible ) {\n ....\n 6066  				hideProps[ prop ] = \"hide\";\n 6067  \n 6068: 				var parts = ( \"\" + $.css( options.toShow[0], prop ) ).match( /^([\\d+-.]+)(.*)$/ );\n 6069  				showProps[ prop ] = {\n 6070: 					value: parts[ 1 ],\n 6071: 					unit: parts[ 2 ] || \"px\"\n 6072  				};\n 6073  			});\n\n/Sites/essentialjs-site/_site/less/twothirds.less:\n   32  \n   33  /* ================ SPLIT UP YOUR CODE ================\n   34:  * It is highly recommended to split up your various parts\n   35   * of custom styles for your website to improve maintainance \n   36   */\n\n/Sites/essentialjs-site/js/execute-all.js:\n   21      var specs = [], examples = [], outstanding = [];\n   22      for(var i=0,arg; arg = arguments[i]; ++i) {\n   23:         var parts = arg.describe(__expect__);\n   24:         var current_caption = parts.pop();\n   25:         var current_constr = parts.pop();\n   26          \n   27          var spec = {\n   ..\n   32          specs.push(spec);\n   33          \n   34:         for(var i=0,name,func; name = parts[i]; i += 2){\n   35:             func = parts[i+1];\n   36              \n   37              var example = new Example(name,func,spec);\n\n/Sites/essentialjs-site/js/pagecore/options.js:\n   75   * @param {Map} oldOptions Old options from the exiting page running\n   76   * @param {Map} newOptions New options that extends/overrides existing\n   77:  * @return A map with resulting options and a toString that produces the URI search & hash parts\n   78   */\n   79  UrlOptions.prototype.clone = function(extra) {\n\n/Sites/essentialjs-site/js/pagecore/scripts.js:\n   82  \n   83          // refresh script\n   84:         var parts = tag.src.split(\"?\");\n   85          var r = /\\bpoll=(\\d+)\\b/;\n   86:         if (parts.length==2 && r.test(parts[1])) {\n   87:             var count = parts[1].match(r)[1];\n   88:             parts[1] = parts[1].replace(r,\"poll=\"+(parseInt(count)+1));\n   89:             tag.src = parts.join(\"?\");\n   90          } else {\n   91:             tag.src = parts[0] + \"?\" + (parts.length == 2? parts[1] + \"&poll=1\" : \"poll=1\");\n   92          }\n   93      }\n\n/Sites/essentialjs-site/templates/pagespec/results.html:\n    6  <h1>{{ title }}</h1>\n    7  <dl>\n    8: {% for part in parts %}\n    9  <dt>\n   10  	{{ part[\"spec\"] }}<br>\n\n/Sites/themaestro/Library/maestro/cssutils/__init__.py:\n   28      A few errata, mainly the definition of CHARSET_SYM tokens\n   29  `CSS3 Module: Syntax <http://www.w3.org/TR/css3-syntax/>`__\n   30:     Used in parts since cssutils 0.9.4. cssutils tries to use the features from\n   31      CSS 2.1 and CSS 3 with preference to CSS3 but as this is not final yet some\n   32:     parts are from CSS 2.1\n   33  `MediaQueries <http://www.w3.org/TR/css3-mediaqueries/>`__\n   34      MediaQueries are part of ``stylesheets.MediaList`` since v0.9.4, used in\n   ..\n   54  (W3C Working Draft 13 August 2003) <http://www.w3.org/TR/css3-syntax/>`__ which\n   55  itself is based on the CSS 2.1 tokenizer. It tries to be as compliant as\n   56: possible but uses some (helpful) parts of the CSS 2.1 tokenizer.\n   57  \n   58  I guess cssutils is neither CSS 2.1 nor CSS 3 compliant but tries to at least\n\n/Sites/themaestro/Library/maestro/cssutils/serialize.py:\n  279  \n  280  class CSSSerializer(object):\n  281:     \"\"\"Serialize a CSSStylesheet and its parts.\n  282  \n  283      To use your own serializing method the easiest is to subclass CSS\n\n/Sites/themaestro/Library/maestro/cssutils/css/cssvalue.py:\n  907      def _setCssText(self, cssText):\n  908          self._checkReadonly()\n  909:         # store: colorType, parts\n  910          wellformed, seq, store, unusedtokens = ProdParser().parse(cssText,\n  911                                                                    self._functionName,\n  ...\n  982                       match=lambda t, v: t in (types.NUMBER, types.PERCENTAGE),\n  983                       toSeq=lambda t, v: (CSSPrimitiveValue, CSSPrimitiveValue(v)),\n  984:                      toStore='parts'\n  985                       )\n  986          # COLOR PRODUCTION\n  ...\n 1005                                   )\n 1006                              )     \n 1007:         # store: colorType, parts\n 1008          wellformed, seq, store, unusedtokens = ProdParser().parse(cssText,\n 1009                                                              u'RGBColor',\n 1010                                                              colorprods,\n 1011                                                              keepS=True,\n 1012:                                                             store={'parts': []})\n 1013          \n 1014          if wellformed:\n\n/Sites/themaestro/Library/maestro/ecmatic/basic.ometa:\n   78  index = \"[\" expression:ex \"]\" -> [\"[]\",ex]\n   79  ternary = expression:ex1 \"?\" expression:ex2 \":\" expression:ex3 -> [\"?:\",ex1,ex2,ex3]\n   80: expression = skip (\".\" | index | parenthesis | ternary | expression_operator | name | literal | comment | mlcomment)+:parts -> parts\n   81  \n   82  \n   ..\n  105  \n  106  untilEndStatement = (~(';' | end | vspace) anything)+:bits -> ''.join(bits)\n  107: restStatement = (comment | mlcomment | string | regex | untilEndStatement)+:parts -> parts\n  108  \n  109  keywordStatement = ( token(\"debugger\") | token(\"continue\") | token(\"break\")):keyword \n\n/Sites/themaestro/Library/maestro/ecmatic/es.ometa:\n  171  //\n  172  \n  173: describe_macro = \"@describe\" opt_vspan name:constr opt_vspan \",\" opt_vspan string:caption opt_vspan \"{\" describe_parts:parts \"}\" -> [\"describe\", constr, caption, parts]\n  174:                | \"@describe\" opt_vspan string:caption opt_vspan \"{\" describe_parts:parts \"}\" -> [\"describe\", None, caption, parts]\n  175:                | \"@describe\" opt_vspan name:constr opt_vspan \"{\" describe_parts:parts \"}\" -> [\"describe\", constr, None, parts]\n  176  \n  177: describe_parts = (it_block | before_block | after_block | func_block | comment | slcomment | mlcomment | hspace | vspace )*\n  178  before_block = \"before all\" opt_vspan:span \"{\" statements:s \"}\" -> [\"beforeall\",span,s]\n  179               |\"before each\" opt_vspan:span \"{\" statements:s \"}\" -> [\"beforeeach\",span,s]\n\n/Sites/themaestro/Library/maestro/ecmatic/js_tests/mjsunit/README:\n    1  The tests in the 'source' subdirectory came from the V8 Javascript Engine\n    2  codebase. They have been ever-so-slightly modified, as a few of them were\n    3: originally using %-symbols as parts of function names, and object getters and\n    4  setters, which PyNarcissus is not supporting.\n    5  \n\n/Sites/themaestro/Library/maestro/mediaserver/verify.py:\n   41          results = []\n   42          for key in arguments.keys():\n   43:             parts = key.split(\"_\")\n   44:             if len(parts) > 1 and len(parts[0]) > 0:\n   45                  results.append((key,arguments[key][0]))\n   46              if key.endswith(\"-result\"):\n\n/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py:\n   53              \"title\": \"Results for %s %s : %s\" % (account,project,node),\n   54              \n   55:             \"parts\": []\n   56          }\n   57          self.render(\"pagespec/results.html\", **info)\n   ..\n   86                  \"reload_url\": \"../verify/\",\n   87                  \"title\": \"Results for %s %s\" % (directory,file_name),\n   88:                 \"parts\": [self.split_part(key,val) for key,val in results]\n   89              }\n   90              self.render(\"pagespec/results.html\",**info)\n   ..\n  108              \"title\": \"Results for %s %s : %s\" % (account,project,run),\n  109              \n  110:             \"parts\": []\n  111          }\n  112          self.render(\"pagespec/results.html\", **info)\n  ...\n  142                  \"reload_url\": \"../verify/\",\n  143                  \"title\": \"Results for %s %s : %s\" % (account,project,run),\n  144:                 \"parts\": [self.split_part(key,val) for key,val in results]\n  145              }\n  146              self.render(\"pagespec/results.html\",**info)\n\n/Sites/themaestro/Library/maestro/mediaserver/handlers/verify.py:\n   91                  \"reload_url\": \"../verify/\",\n   92                  \"title\": \"Results for %s %s\" % (directory,file_name),\n   93:                 \"parts\": [self.split_part(key,val) for key,val in results]\n   94              }\n   95              self.render(\"verify/results.html\",**info)\n\n/Sites/themaestro/Library/maestro/mediaserver/sources/js.py:\n   61                  pass\n   62              scope = self.get_scope(m.group(2))\n   63:             parts = insert_statement.split(scope,1)\n   64:             if parts:\n   65:                 include = self.decorated(parts[0]) + include + self.decorated(parts[1])\n   66              return line[:m.start(0)] + include + line[m.end(0):]\n   67          return line\n   ..\n  149              scope = source.scope or cls.read_scope(default_scope,basedir)\n  150              if scope:\n  151:                 parts = insert_statement.split(scope,1)\n  152:                 lines.insert(0,source.decorated(parts[0]))\n  153:                 lines.append(source.decorated(parts[1]))\n  154          return lines\n  155          \n  ...\n  160          lines = [self.decorated(line) for line in self.lines]\n  161          if scope:\n  162:             parts = insert_statement.split(scope,1)\n  163:             if parts:\n  164:                 lines.insert(0,self.decorated(parts[0]))\n  165:                 lines.append(self.decorated(parts[1]))\n  166              else:\n  167                  pass #TODO warning scope has no @insert statement\n\n/Sites/themaestro/Library/maestro/thepian/tickets/base.py:\n  189              \n  190      def _encode_affinity(self):\n  191:         parts = []\n  192          ip = socket.inet_aton(self.remote_addr)\n  193:         parts.append('200200000000000000000000')\n  194:         parts.append(binascii.hexlify(ip))\n  195  \n  196:         parts.append(\"%016x\" % self.first_time)\n  197  \n  198:         parts.append(\"%04x\" % self.number)\n  199  \n  200          # make a SHA checksum by combining with a secret key\n  201:         check = hashlib.sha1(''.join(parts + [self.get_secret(),])).hexdigest()\n  202:         parts.append(check)\n  203  \n  204:         return ''.join(parts), check\n  205  \n  206  \n\n/Sites/themaestro/Library/maestro/thepian/utils/EXIF.py:\n 1290  \n 1291      # Note is the data that comprises this MakerNote.  The MakerNote will\n 1292:     # likely have pointers in it that point to other parts of the file.  We'll\n 1293      # use self.offset as the starting point for most of those pointers, since\n 1294      # they are relative to the beginning of the file.\n\n/Sites/themaestro/src/tornado/demos/s3server/s3server.py:\n   79          self.set_header(\"Content-Type\", \"application/xml; charset=UTF-8\")\n   80          name = value.keys()[0]\n   81:         parts = []\n   82:         parts.append('<' + escape.utf8(name) +\n   83                       ' xmlns=\"http://doc.s3.amazonaws.com/2006-03-01\">')\n   84:         self._render_parts(value.values()[0], parts)\n   85:         parts.append('</' + escape.utf8(name) + '>')\n   86          self.finish('<?xml version=\"1.0\" encoding=\"UTF-8\"?>\\n' +\n   87:                     ''.join(parts))\n   88  \n   89:     def _render_parts(self, value, parts=[]):\n   90          if isinstance(value, (unicode, bytes_type)):\n   91:             parts.append(escape.xhtml_escape(value))\n   92          elif isinstance(value, int) or isinstance(value, long):\n   93:             parts.append(str(value))\n   94          elif isinstance(value, datetime.datetime):\n   95:             parts.append(value.strftime(\"%Y-%m-%dT%H:%M:%S.000Z\"))\n   96          elif isinstance(value, dict):\n   97              for name, subvalue in value.iteritems():\n   ..\n   99                      subvalue = [subvalue]\n  100                  for subsubvalue in subvalue:\n  101:                     parts.append('<' + escape.utf8(name) + '>')\n  102:                     self._render_parts(subsubvalue, parts)\n  103:                     parts.append('</' + escape.utf8(name) + '>')\n  104          else:\n  105              raise Exception(\"Unknown S3 value type %r\", value)\n\n/Sites/themaestro/src/tornado/tornado/auth.py:\n  180          locale = get_ax_arg(\"http://axschema.org/pref/language\").lower()\n  181          user = dict()\n  182:         name_parts = []\n  183          if first_name:\n  184              user[\"first_name\"] = first_name\n  185:             name_parts.append(first_name)\n  186          if last_name:\n  187              user[\"last_name\"] = last_name\n  188:             name_parts.append(last_name)\n  189          if name:\n  190              user[\"name\"] = name\n  191:         elif name_parts:\n  192:             user[\"name\"] = u\" \".join(name_parts)\n  193          elif email:\n  194              user[\"name\"] = email.split(\"@\")[0]\n  ...\n  916  \n  917      def _signature(self, args):\n  918:         parts = [\"%s=%s\" % (n, args[n]) for n in sorted(args.keys())]\n  919:         body = \"\".join(parts) + self.settings[\"facebook_secret\"]\n  920          if isinstance(body, unicode): body = body.encode(\"utf-8\")\n  921          return hashlib.md5(body).hexdigest()\n  ...\n 1067      See http://oauth.net/core/1.0/#signing_process\n 1068      \"\"\"\n 1069:     parts = urlparse.urlparse(url)\n 1070:     scheme, netloc, path = parts[:3]\n 1071      normalized_url = scheme.lower() + \"://\" + netloc.lower() + path\n 1072  \n ....\n 1090      See http://oauth.net/core/1.0a/#signing_process\n 1091      \"\"\"\n 1092:     parts = urlparse.urlparse(url)\n 1093:     scheme, netloc, path = parts[:3]\n 1094      normalized_url = scheme.lower() + \"://\" + netloc.lower() + path\n 1095  \n\n/Sites/themaestro/src/tornado/tornado/escape.py:\n  272                  proto_len = 0\n  273  \n  274:             parts = url[proto_len:].split(\"/\")\n  275:             if len(parts) > 1:\n  276                  # Grab the whole host part plus the first bit of the path\n  277                  # The path is usually not that interesting once shortened\n  278                  # (no more slug, etc), so it really just provides a little\n  279                  # extra indication of shortening.\n  280:                 url = url[:proto_len] + parts[0] + \"/\" + \\\n  281:                         parts[1][:8].split('?')[0].split('.')[0]\n  282  \n  283              if len(url) > max_len * 1.5:  # still too long\n\n/Sites/themaestro/src/tornado/tornado/httputil.py:\n  192      else:\n  193          footer_length = len(boundary) + 4\n  194:     parts = data[:-footer_length].split(b(\"--\") + boundary + b(\"\\r\\n\"))\n  195:     for part in parts:\n  196          if not part: continue\n  197          eoh = part.find(b(\"\\r\\n\\r\\n\"))\n  ...\n  240  \n  241      \"\"\"\n  242:     parts = _parseparam(';' + line)\n  243:     key = parts.next()\n  244      pdict = {}\n  245:     for p in parts:\n  246          i = p.find('=')\n  247          if i >= 0:\n\n/Sites/themaestro/src/tornado/tornado/iostream.py:\n   62              headers = {}\n   63              for line in data.split(\"\\r\\n\"):\n   64:                parts = line.split(\":\")\n   65:                if len(parts) == 2:\n   66:                    headers[parts[0].strip()] = parts[1].strip()\n   67              stream.read_bytes(int(headers[\"Content-Length\"]), on_body)\n   68  \n\n/Sites/themaestro/src/tornado/tornado/locale.py:\n  190              if not code: continue\n  191              code = code.replace(\"-\", \"_\")\n  192:             parts = code.split(\"_\")\n  193:             if len(parts) > 2:\n  194                  continue\n  195:             elif len(parts) == 2:\n  196:                 code = parts[0].lower() + \"_\" + parts[1].upper()\n  197              if code in _supported_locales:\n  198                  return cls.get(code)\n  199:             if parts[0].lower() in _supported_locales:\n  200:                 return cls.get(parts[0].lower())\n  201          return cls.get(_default_locale)\n  202  \n  ...\n  358              }\n  359  \n  360:     def list(self, parts):\n  361:         \"\"\"Returns a comma-separated list for the given list of parts.\n  362  \n  363          The format is, e.g., \"A, B and C\", \"A and B\" or just \"A\" for lists\n  ...\n  365          \"\"\"\n  366          _ = self.translate\n  367:         if len(parts) == 0: return \"\"\n  368:         if len(parts) == 1: return parts[0]\n  369          comma = u' \\u0648 ' if self.code.startswith(\"fa\") else u\", \"\n  370          return _(\"%(commas)s and %(last)s\") % {\n  371:             \"commas\": comma.join(parts[:-1]),\n  372:             \"last\": parts[len(parts) - 1],\n  373          }\n  374  \n  ...\n  378              return str(value)\n  379          value = str(value)\n  380:         parts = []\n  381          while value:\n  382:             parts.append(value[-3:])\n  383              value = value[:-3]\n  384:         return \",\".join(reversed(parts))\n  385  \n  386  class CSVLocale(Locale):\n\n/Sites/themaestro/src/tornado/tornado/simple_httpclient.py:\n   39  \n   40      This class implements an HTTP 1.1 client on top of Tornado's IOStreams.\n   41:     It does not currently implement all applicable parts of the HTTP\n   42      specification, but it does enough to work with major web service APIs\n   43      (mostly tested against the Twitter API so far).\n\n/Sites/themaestro/src/tornado/tornado/testing.py:\n    2  \"\"\"Support classes for automated testing.\n    3  \n    4: This module contains three parts:\n    5  \n    6  * `AsyncTestCase`/`AsyncHTTPTestCase`:  Subclasses of unittest.TestCase\n\n/Sites/themaestro/src/tornado/tornado/util.py:\n   12      True\n   13      \"\"\"\n   14:     parts = name.split('.')\n   15:     obj = __import__('.'.join(parts[:-1]), None, None, [parts[-1]], 0)\n   16:     return getattr(obj, parts[-1])\n   17  \n   18  # Fake byte literal support:  In python 2.6+, you can say b\"foo\" to get\n\n/Sites/themaestro/src/tornado/tornado/web.py:\n  387          if value is None: value = self.get_cookie(name)\n  388          if not value: return None\n  389:         parts = utf8(value).split(b(\"|\"))\n  390:         if len(parts) != 3: return None\n  391:         signature = self._cookie_signature(name, parts[0], parts[1])\n  392:         if not _time_independent_equals(parts[2], signature):\n  393              logging.warning(\"Invalid cookie signature %r\", value)\n  394              return None\n  395:         timestamp = int(parts[1])\n  396          if timestamp < time.time() - max_age_days * 86400:\n  397              logging.warning(\"Expired cookie %r\", value)\n  ...\n  399          if timestamp > time.time() + 31 * 86400:\n  400              # _cookie_signature does not hash a delimiter between the\n  401:             # parts of the cookie, so an attacker could transfer trailing\n  402              # digits from the payload to the timestamp without altering the\n  403              # signature.  For backwards compatibility, sanity-check timestamp\n  ...\n  405              logging.warning(\"Cookie timestamp in future; possible tampering %r\", value)\n  406              return None\n  407:         if parts[1].startswith(b(\"0\")):\n  408              logging.warning(\"Tampered cookie %r\", value)\n  409          try:\n  410:             return base64.b64decode(parts[0])\n  411          except Exception:\n  412              return None\n  413  \n  414:     def _cookie_signature(self, *parts):\n  415          self.require_setting(\"cookie_secret\", \"secure cookies\")\n  416          hash = hmac.new(utf8(self.application.settings[\"cookie_secret\"]),\n  417                          digestmod=hashlib.sha1)\n  418:         for part in parts: hash.update(utf8(part))\n  419          return utf8(hash.hexdigest())\n  420  \n  ...\n  758              locales = []\n  759              for language in languages:\n  760:                 parts = language.strip().split(\";\")\n  761:                 if len(parts) > 1 and parts[1].startswith(\"q=\"):\n  762                      try:\n  763:                         score = float(parts[1][2:])\n  764                      except (ValueError, TypeError):\n  765                          score = 0.0\n  766                  else:\n  767                      score = 1.0\n  768:                 locales.append((parts[0], score))\n  769              if locales:\n  770                  locales.sort(key=lambda (l, s): s, reverse=True)\n\n/Sites/themaestro/src/tornado/tornado/wsgi.py:\n  225              headers.append((\"Server\", \"TornadoServer/%s\" % tornado.version))\n  226  \n  227:         parts = [escape.utf8(\"HTTP/1.1 \" + data[\"status\"] + \"\\r\\n\")]\n  228          for key, value in headers:\n  229:             parts.append(escape.utf8(key) + b(\": \") + escape.utf8(value) + b(\"\\r\\n\"))\n  230:         parts.append(b(\"\\r\\n\"))\n  231:         parts.append(body)\n  232:         request.write(b(\"\").join(parts))\n  233          request.finish()\n  234          self._log(status_code, request)\n\n/Sites/themaestro/src/tornado/website/sphinx/overview.rst:\n  903  recommended to avoid bugs in older version's asynchronous interfaces),\n  904  but is more likely to be compatible with sites that exercise little-used\n  905: parts of the HTTP specification.\n  906  \n  907  Each of these clients is available in its own module\n\n/Sites/pagespec/js/pagecore/impl.js:\n 1104          	// *entry:mapping references decoding\n 1105              if (decorators[name].refs) { //TODO review the flag to filter on !!!\n 1106:             	var pParts = [];\n 1107          		var pNames = value.indexOf(\" \") >= 0? value.split(\" \") : value.split(\",\");\n 1108          		for(var i=0,n; n = pNames[i]; ++i) {\n 1109          			var pExpressAndMapping = n.split(\":\");\n 1110:         			pParts[i] = /([!+-]*)(.*)/.exec(pExpressAndMapping[0]);\n 1111:         			pParts[i].mapping = pExpressAndMapping[1]; // name of mapping for the data entry\n 1112:         			pParts[i].name = pNames[i] = pParts[i][2]; // third entry is the name\n 1113          		}\n 1114  \n 1115          		mAttribute.name = pNames[0];\n 1116:         		mAttribute.parts = pParts;\n 1117          		mAttribute.names = pNames;\n 1118              } \n\n/Sites/pagespec/js/pagecore/options.js:\n   75   * @param {Map} oldOptions Old options from the exiting page running\n   76   * @param {Map} newOptions New options that extends/overrides existing\n   77:  * @return A map with resulting options and a toString that produces the URI search & hash parts\n   78   */\n   79  UrlOptions.prototype.clone = function(extra) {\n\n/Sites/pagespec/js/pagecore/scripts.js:\n   82  \n   83          // refresh script\n   84:         var parts = tag.src.split(\"?\");\n   85          var r = /\\bpoll=(\\d+)\\b/;\n   86:         if (parts.length==2 && r.test(parts[1])) {\n   87:             var count = parts[1].match(r)[1];\n   88:             parts[1] = parts[1].replace(r,\"poll=\"+(parseInt(count)+1));\n   89:             tag.src = parts.join(\"?\");\n   90          } else {\n   91:             tag.src = parts[0] + \"?\" + (parts.length == 2? parts[1] + \"&poll=1\" : \"poll=1\");\n   92          }\n   93      }\n\n/Sites/pagespec/js/pagecore/state.js:\n  114  DataState.prototype.ensureAttributeMappings = function(context,attribute)\n  115  {\n  116:     var parts = attribute.parts || [];\n  117:     for(var i=0,p; p = parts[i]; ++i) {\n  118          if (p.mapping) {\n  119              var entry = { context: context, name: p.mapping, full:context+\".\"+p.mapping };\n  ...\n  340  \n  341  	for(var i=0,n; n = attribute.names[i]; ++i) {\n  342: 		var mReflection2 = { part: attribute.parts[i], names: attribute.names, parts: attribute.parts };\n  343  		for(var m in mReflection) mReflection2[m] = mReflection[m];\n  344  		this.contexts[context][n].reflections.push(mReflection2);\n  ...\n  394  			case \"setset\":\n  395  				var vValue = {};\n  396: 				for(var i2=0,pPart;pPart = r.parts[i2]; ++i2) {\n  397  					var sName = pPart[2];\n  398  					var mEntry2 = this.contexts[mEntry.context][sName];\n\n/Sites/pagespec/js/pagecore/verify/impl.html:\n  573  	expect(streamedTpl[0].attributes[\"test-refs\"].defaults[0]).should_be(\"d1\");\n  574  	expect(streamedTpl[0].attributes[\"test-refs\"].value).should_be(\"t1:m\");\n  575: 	expect(streamedTpl[0].attributes[\"test-refs\"].parts[0].name).should_be(\"t1\");\n  576: 	expect(streamedTpl[0].attributes[\"test-refs\"].parts[0].mapping).should_be(\"m\");\n  577  	expect(streamedTpl[0].context).should_be(\"context\");\n  578  	expect(streamedTpl[0].decorators.length).should_be(1);\n  ...\n  590  	expect(streamedTpl[0].attributes[\"test-simple\"].defaults[0]).should_be(\"d2\");\n  591  	expect(streamedTpl[0].attributes[\"test-simple\"].value).should_be(\"t2:m\");\n  592: 	expect(streamedTpl[0].attributes[\"test-simple\"].parts).should_be(undefined);\n  593  	expect(streamedTpl[0].context).should_be(\"context\");\n  594  	expect(streamedTpl[0].decorators.length).should_be(1);\n  ...\n  606  	expect(streamedTpl[0].attributes[\"test-context\"].defaults[0]).should_be(\"d3\");\n  607  	expect(streamedTpl[0].attributes[\"test-context\"].value).should_be(\"t3:m\");\n  608: 	expect(streamedTpl[0].attributes[\"test-context\"].parts).should_be(undefined);\n  609  	expect(streamedTpl[0].context).should_be(\"t3:m\");\n  610  	expect(streamedTpl[0].decorators.length).should_be(0);\n\n250 matches across 40 files\n",
+			"file": "/Sites/essentialjs-site/js/pagespec/spec.js",
 			"settings":
 			{
-				"buffer_size": 74530,
-				"line_ending": "Unix",
-				"name": "Find Results",
-				"scratch": true
-			}
-		},
-		{
-			"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/verify.py",
-			"settings":
-			{
-				"buffer_size": 4212,
+				"buffer_size": 2697,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Sites/themaestro/Library/maestro/mediaserver/verify.py",
+			"file": "/Sites/essentialjs-site/testing.log",
 			"settings":
 			{
-				"buffer_size": 7462,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Sites/themaestro/Library/maestro/mediaserver/urls.py",
-			"settings":
-			{
-				"buffer_size": 866,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/old.py",
-			"settings":
-			{
-				"buffer_size": 5326,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/preprocessor.py",
-			"settings":
-			{
-				"buffer_size": 4205,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/henrikvendelbo/Desktop/Self test sample.html",
-			"settings":
-			{
-				"buffer_size": 726,
+				"buffer_size": 42737,
 				"line_ending": "Unix"
 			}
 		},
@@ -77,15 +35,7 @@
 			"file": "/Sites/essentialjs-site/js/pagespec/upload.js",
 			"settings":
 			{
-				"buffer_size": 3260,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Sites/essentialjs-site/testing.log",
-			"settings":
-			{
-				"buffer_size": 91578,
+				"buffer_size": 3141,
 				"line_ending": "Unix"
 			}
 		},
@@ -114,18 +64,141 @@
 			}
 		},
 		{
-			"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py",
-			"settings":
-			{
-				"buffer_size": 5058,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "/Sites/essentialjs-site/js/pagespec/slaves.js",
 			"settings":
 			{
 				"buffer_size": 9505,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/essentialjs-site/seed/essentialjs/pagespec/builtin.pagespec.js",
+			"settings":
+			{
+				"buffer_size": 482,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/essentialjs-site/templates/pagespec/progress-response.html",
+			"settings":
+			{
+				"buffer_size": 612,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/essentialjs-site/templates/pagespec/introduction.html",
+			"settings":
+			{
+				"buffer_size": 733,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/__init__.py",
+			"settings":
+			{
+				"buffer_size": 211,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/themaestro/Library/maestro/ecmatic/es.py",
+			"settings":
+			{
+				"buffer_size": 8277,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/nodes.py",
+			"settings":
+			{
+				"buffer_size": 3651,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/themaestro/Library/maestro/mediaserver/results.py",
+			"settings":
+			{
+				"buffer_size": 1308,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/preprocessor.py",
+			"settings":
+			{
+				"buffer_size": 2974,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py",
+			"settings":
+			{
+				"buffer_size": 1718,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 753 files for \"SITE_TITLE\"\n\n/Sites/essentialjs-site/testing.log:\n   52    8      _buffer.append(_tmp)\n   53    9      _buffer.append(' - ')\n   54:  10      _tmp = SITE_TITLE\n   55   11      if isinstance(_tmp, _string_types): _tmp = _utf8(_tmp)\n   56   12      else: _tmp = _utf8(str(_tmp))\n   ..\n  194    8      _buffer.append(_tmp)\n  195    9      _buffer.append(' - ')\n  196:  10      _tmp = SITE_TITLE\n  197   11      if isinstance(_tmp, _string_types): _tmp = _utf8(_tmp)\n  198   12      else: _tmp = _utf8(str(_tmp))\n\n/Sites/essentialjs-site/conf/settings.py:\n   49  \n   50  SITE_ID = 1\n   51: SITE_TITLE = 'essentialjs Site'\n   52  \n   53  # If you set this to False, Django will make some optimizations so as not\n\n/Sites/essentialjs-site/conf/structure.py:\n    5  )\n    6  \n    7: DEFAULT_SITE_TITLE = \"essentialjs Site\"\n    8  DEFAULT_HOSTNAME = \"www.essentialjs.local\"\n    9  \n\n/Sites/essentialjs-site/templates/pagespec/base.html:\n    2  <html lang=\"en\">\n    3  <head>\n    4:     <title>{% block title %}Results{% end %}{% block sitetitle %} - {{ SITE_TITLE }}{% end %}</title>\n    5    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n    6    <link rel=\"stylesheet\" href=\"{{ MEDIA_URL }}/css/screen.css\" type=\"text/css\" media=\"screen, projection\">\n\n/Sites/essentialjs-site/templates/pagespec/progress-response.html:\n    2  <html lang=\"en\">\n    3  <head>\n    4:     <title>{% block title %}{{ title }}{% end %}{% block sitetitle %} - {{ SITE_TITLE }}{% end %}</title>\n    5    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n    6    <style type=\"text/css\" media=\"screen\">{% block screenstyle %}{% end %}</style>\n\n/Sites/themaestro/Library/maestro/maestro/config/maintenance.py:\n    4  from thepian.conf import structure\n    5  \n    6: SETTING_NAMES = ('MEDIA_URL','SITE_TITLE')\n    7  \n    8  def create_maintenance():\n\n/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py:\n   28              \"list\": os.listdir(self.application.site['path'] + self.request.path), \n   29              \"path\": self.request.path,\n   30:             \"SITE_TITLE\": \"PageSpec\",\n   31              \"MEDIA_URL\": settings.MEDIA_URL\n   32          }\n\n/Sites/themaestro/Library/maestro/mediaserver/handlers/nodes.py:\n   19              \"node\": node,\n   20              \n   21:             \"SITE_TITLE\": \"pagespec.com\",\n   22              \"MEDIA_URL\": \"\",\n   23              \"messages\": None,\n   ..\n   54                  \"project\": project,\n   55  \n   56:                 \"SITE_TITLE\": \"pagespec.com\",\n   57                  \"MEDIA_URL\": \"\",\n   58                  \"messages\": None,\n   ..\n   74              \"run\": run,\n   75              \n   76:             \"SITE_TITLE\": \"pagespec.com\",\n   77              \"MEDIA_URL\": \"\",\n   78              \"messages\": None,\n   ..\n   99                  \"run\": run,\n  100  \n  101:                 \"SITE_TITLE\": \"pagespec.com\",\n  102                  \"MEDIA_URL\": \"\",\n  103                  \"title\": \"Progress for %s %s : %s\" % (account,project,run),\n\n/Sites/themaestro/Library/maestro/mediaserver/handlers/verify.py:\n   86              # print 'posted results: ', directory, file_name, results\n   87              info = {\n   88:                 \"SITE_TITLE\": \"pagespec.com\",\n   89                  \"MEDIA_URL\": \"\",\n   90                  \"messages\": None,\n\n/Sites/themaestro/Library/maestro/thepian/conf/global_structure.py:\n   27  HTTP_COUNTRY_VARIABLE = \"HTTP_COUNTRY\"\n   28  \n   29: DEFAULT_SITE_TITLE = \"The Thepia Site\"\n   30  \n   31  # Default HOSTNAME if not supplied by the http webserver\n\n14 matches across 10 files\n",
+			"settings":
+			{
+				"buffer_size": 3611,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "",
+			"file": "/Users/hvendelbo/Documents/Test Edge.html",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/verify.py",
+			"settings":
+			{
+				"buffer_size": 4212,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/essentialjs-site/conf/urls.py",
+			"settings":
+			{
+				"buffer_size": 2231,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/themaestro/Library/maestro/mediaserver/persisted.py",
+			"settings":
+			{
+				"buffer_size": 3779,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/themaestro/Library/maestro/ecmatic/es.ometa",
+			"settings":
+			{
+				"buffer_size": 13363,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Sites/themaestro/Library/maestro/mediaserver/__init__.py",
+			"settings":
+			{
+				"buffer_size": 3890,
 				"line_ending": "Unix"
 			}
 		}
@@ -153,6 +226,27 @@
 	},
 	"file_history":
 	[
+		"/Sites/themaestro/Library/maestro/maestro/__init__.py",
+		"/Sites/essentialjs-site/templates/pagespec/local-suite-page.html",
+		"/Sites/pagespec/js/pagespec/assertion.js",
+		"/Sites/pagespec/js/pagespec/accessor.js",
+		"/Sites/pagespec/js/pagespec/matchers.js",
+		"/Sites/pagespec/js/pagecore/verify/generator.html",
+		"/Sites/pagespec/js/pagecore/xhr.js",
+		"/Sites/pagespec/js/pagecore/state.js",
+		"/Sites/pagespec/js/pagecore/constructive.js",
+		"/Sites/themaestro/Library/maestro/maestro/commands/make_html.py",
+		"/Sites/essentialjs-site/start-here.html",
+		"/Sites/essentialjs-site/templates/pagespec/selftest.html",
+		"/Sites/themaestro/Library/maestro/mediaserver/templates/verify/all.html",
+		"/Sites/themaestro/Library/maestro/mediaserver/database.py",
+		"/Sites/themaestro/Library/maestro/mediaserver/verify.py",
+		"/Sites/themaestro/Library/maestro/mediaserver/handlers/old.py",
+		"/Sites/themaestro/Library/maestro/mediaserver/urls.py",
+		"/Users/henrikvendelbo/Desktop/Self test sample.html",
+		"/Sites/themaestro/Library/maestro/mediaserver/handlers/results.py",
+		"/Users/hvendelbo/Library/Application Support/Sublime Text 2/Packages/User/Global.sublime-settings",
+		"/Users/hvendelbo/Library/Application Support/Sublime Text 2/Packages/User/Distraction Free.sublime-settings",
 		"/Sites/themaestro/src/tornado/tornado/web.py",
 		"/Sites/essentialjs-site/.gitignore",
 		"/Sites/pagespec/templates/verify/base.html",
@@ -182,6 +276,13 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"SITE_TITLE",
+			"print",
+			"pushSubject",
+			"sentence.replace",
+			"redis",
+			"UploadInput.push",
+			"VerifySource",
 			"config",
 			"parts",
 			"scriptPrefix",
@@ -210,2307 +311,50 @@
 			"/Sites/themaestro/Library/maestro",
 			"/Sites/themaestro/src/tornado",
 			"/Sites/themaestro/Library/PyMeta2",
-			"/Sites/pagespec/js/pagecore"
+			"/Sites/pagespec/js/pagecore",
+			"/Sites/pagespec/js/pagespec"
 		]
 	},
 	"groups":
 	[
 		{
-			"selected": 8,
+			"selected": 10,
 			"sheets":
 			[
 				{
 					"buffer": 0,
+					"file": "/Sites/essentialjs-site/js/pagespec/spec.js",
 					"settings":
 					{
-						"buffer_size": 74530,
+						"buffer_size": 2697,
 						"regions":
 						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										254,
-										261
-									],
-									[
-										392,
-										399
-									],
-									[
-										785,
-										792
-									],
-									[
-										923,
-										930
-									],
-									[
-										1316,
-										1323
-									],
-									[
-										1454,
-										1461
-									],
-									[
-										1936,
-										1943
-									],
-									[
-										2074,
-										2081
-									],
-									[
-										2467,
-										2474
-									],
-									[
-										2605,
-										2612
-									],
-									[
-										2998,
-										3005
-									],
-									[
-										3136,
-										3143
-									],
-									[
-										3523,
-										3530
-									],
-									[
-										3763,
-										3770
-									],
-									[
-										3925,
-										3932
-									],
-									[
-										4119,
-										4126
-									],
-									[
-										4349,
-										4356
-									],
-									[
-										4524,
-										4531
-									],
-									[
-										4754,
-										4761
-									],
-									[
-										4991,
-										4998
-									],
-									[
-										5228,
-										5235
-									],
-									[
-										5499,
-										5506
-									],
-									[
-										5857,
-										5864
-									],
-									[
-										6020,
-										6027
-									],
-									[
-										6350,
-										6360
-									],
-									[
-										6493,
-										6503
-									],
-									[
-										6745,
-										6755
-									],
-									[
-										6763,
-										6773
-									],
-									[
-										7184,
-										7194
-									],
-									[
-										7327,
-										7337
-									],
-									[
-										7579,
-										7589
-									],
-									[
-										7597,
-										7607
-									],
-									[
-										7888,
-										7898
-									],
-									[
-										8126,
-										8136
-									],
-									[
-										8410,
-										8420
-									],
-									[
-										8457,
-										8467
-									],
-									[
-										8652,
-										8662
-									],
-									[
-										8904,
-										8914
-									],
-									[
-										9134,
-										9147
-									],
-									[
-										9360,
-										9373
-									],
-									[
-										9671,
-										9683
-									],
-									[
-										9961,
-										9973
-									],
-									[
-										10180,
-										10192
-									],
-									[
-										10377,
-										10389
-									],
-									[
-										10626,
-										10638
-									],
-									[
-										10852,
-										10864
-									],
-									[
-										11142,
-										11154
-									],
-									[
-										11449,
-										11461
-									],
-									[
-										11780,
-										11785
-									],
-									[
-										12019,
-										12024
-									],
-									[
-										12233,
-										12238
-									],
-									[
-										12266,
-										12271
-									],
-									[
-										12277,
-										12282
-									],
-									[
-										12294,
-										12299
-									],
-									[
-										12404,
-										12409
-									],
-									[
-										12421,
-										12426
-									],
-									[
-										12565,
-										12570
-									],
-									[
-										12598,
-										12603
-									],
-									[
-										12742,
-										12747
-									],
-									[
-										12814,
-										12819
-									],
-									[
-										12930,
-										12935
-									],
-									[
-										13064,
-										13069
-									],
-									[
-										13162,
-										13167
-									],
-									[
-										13266,
-										13271
-									],
-									[
-										13337,
-										13342
-									],
-									[
-										13374,
-										13379
-									],
-									[
-										13417,
-										13422
-									],
-									[
-										13428,
-										13433
-									],
-									[
-										13506,
-										13511
-									],
-									[
-										13563,
-										13568
-									],
-									[
-										13615,
-										13620
-									],
-									[
-										13654,
-										13659
-									],
-									[
-										13747,
-										13752
-									],
-									[
-										13966,
-										13971
-									],
-									[
-										14057,
-										14062
-									],
-									[
-										14090,
-										14095
-									],
-									[
-										14096,
-										14101
-									],
-									[
-										14156,
-										14161
-									],
-									[
-										14350,
-										14355
-									],
-									[
-										14412,
-										14417
-									],
-									[
-										14425,
-										14430
-									],
-									[
-										14448,
-										14453
-									],
-									[
-										14468,
-										14473
-									],
-									[
-										14638,
-										14643
-									],
-									[
-										14751,
-										14756
-									],
-									[
-										14785,
-										14790
-									],
-									[
-										14894,
-										14899
-									],
-									[
-										14981,
-										14986
-									],
-									[
-										15096,
-										15101
-									],
-									[
-										15153,
-										15158
-									],
-									[
-										15197,
-										15202
-									],
-									[
-										15215,
-										15220
-									],
-									[
-										15387,
-										15392
-									],
-									[
-										15551,
-										15556
-									],
-									[
-										15713,
-										15718
-									],
-									[
-										15824,
-										15829
-									],
-									[
-										15973,
-										15978
-									],
-									[
-										16100,
-										16105
-									],
-									[
-										16261,
-										16266
-									],
-									[
-										16308,
-										16313
-									],
-									[
-										16318,
-										16323
-									],
-									[
-										16330,
-										16335
-									],
-									[
-										16378,
-										16383
-									],
-									[
-										16529,
-										16534
-									],
-									[
-										16615,
-										16620
-									],
-									[
-										16660,
-										16665
-									],
-									[
-										16693,
-										16698
-									],
-									[
-										16881,
-										16886
-									],
-									[
-										16916,
-										16921
-									],
-									[
-										17257,
-										17262
-									],
-									[
-										17691,
-										17696
-									],
-									[
-										18050,
-										18055
-									],
-									[
-										18213,
-										18218
-									],
-									[
-										18344,
-										18349
-									],
-									[
-										18374,
-										18379
-									],
-									[
-										18604,
-										18609
-									],
-									[
-										18868,
-										18873
-									],
-									[
-										18939,
-										18944
-									],
-									[
-										18988,
-										18993
-									],
-									[
-										19145,
-										19150
-									],
-									[
-										19190,
-										19195
-									],
-									[
-										19585,
-										19590
-									],
-									[
-										19765,
-										19770
-									],
-									[
-										19853,
-										19858
-									],
-									[
-										19879,
-										19884
-									],
-									[
-										19923,
-										19928
-									],
-									[
-										19964,
-										19969
-									],
-									[
-										19975,
-										19980
-									],
-									[
-										20053,
-										20058
-									],
-									[
-										20123,
-										20128
-									],
-									[
-										20141,
-										20146
-									],
-									[
-										20160,
-										20165
-									],
-									[
-										20344,
-										20349
-									],
-									[
-										20608,
-										20613
-									],
-									[
-										20774,
-										20779
-									],
-									[
-										21160,
-										21165
-									],
-									[
-										21435,
-										21440
-									],
-									[
-										21703,
-										21708
-									],
-									[
-										22103,
-										22108
-									],
-									[
-										22299,
-										22304
-									],
-									[
-										22700,
-										22705
-									],
-									[
-										23082,
-										23087
-									],
-									[
-										23091,
-										23096
-									],
-									[
-										23293,
-										23298
-									],
-									[
-										23302,
-										23307
-									],
-									[
-										23600,
-										23605
-									],
-									[
-										23606,
-										23611
-									],
-									[
-										23649,
-										23654
-									],
-									[
-										23740,
-										23745
-									],
-									[
-										23746,
-										23751
-									],
-									[
-										23787,
-										23792
-									],
-									[
-										23875,
-										23880
-									],
-									[
-										23881,
-										23886
-									],
-									[
-										23921,
-										23926
-									],
-									[
-										23952,
-										23957
-									],
-									[
-										24525,
-										24530
-									],
-									[
-										24783,
-										24788
-									],
-									[
-										24832,
-										24837
-									],
-									[
-										24851,
-										24856
-									],
-									[
-										25160,
-										25165
-									],
-									[
-										25406,
-										25411
-									],
-									[
-										25672,
-										25677
-									],
-									[
-										25923,
-										25928
-									],
-									[
-										26284,
-										26289
-									],
-									[
-										26587,
-										26592
-									],
-									[
-										26649,
-										26654
-									],
-									[
-										26704,
-										26709
-									],
-									[
-										26741,
-										26746
-									],
-									[
-										26989,
-										26994
-									],
-									[
-										27084,
-										27089
-									],
-									[
-										27148,
-										27153
-									],
-									[
-										27322,
-										27327
-									],
-									[
-										27384,
-										27389
-									],
-									[
-										27444,
-										27449
-									],
-									[
-										27506,
-										27511
-									],
-									[
-										27749,
-										27754
-									],
-									[
-										27830,
-										27835
-									],
-									[
-										27886,
-										27891
-									],
-									[
-										27944,
-										27949
-									],
-									[
-										28007,
-										28012
-									],
-									[
-										28162,
-										28167
-									],
-									[
-										28220,
-										28225
-									],
-									[
-										28278,
-										28283
-									],
-									[
-										28515,
-										28520
-									],
-									[
-										28880,
-										28885
-									],
-									[
-										28906,
-										28911
-									],
-									[
-										29053,
-										29058
-									],
-									[
-										29078,
-										29083
-									],
-									[
-										29100,
-										29105
-									],
-									[
-										29252,
-										29257
-									],
-									[
-										29291,
-										29296
-									],
-									[
-										29310,
-										29315
-									],
-									[
-										29400,
-										29405
-									],
-									[
-										29531,
-										29536
-									],
-									[
-										29633,
-										29638
-									],
-									[
-										29927,
-										29932
-									],
-									[
-										30011,
-										30016
-									],
-									[
-										30030,
-										30035
-									],
-									[
-										30064,
-										30069
-									],
-									[
-										30377,
-										30382
-									],
-									[
-										30493,
-										30498
-									],
-									[
-										30620,
-										30625
-									],
-									[
-										30732,
-										30737
-									],
-									[
-										30788,
-										30793
-									],
-									[
-										30944,
-										30949
-									],
-									[
-										31036,
-										31041
-									],
-									[
-										31293,
-										31298
-									],
-									[
-										31358,
-										31363
-									],
-									[
-										31542,
-										31547
-									],
-									[
-										31607,
-										31612
-									],
-									[
-										31814,
-										31819
-									],
-									[
-										31875,
-										31880
-									],
-									[
-										32235,
-										32240
-									],
-									[
-										32285,
-										32290
-									],
-									[
-										32529,
-										32534
-									],
-									[
-										32620,
-										32625
-									],
-									[
-										32750,
-										32755
-									],
-									[
-										32799,
-										32804
-									],
-									[
-										32854,
-										32859
-									],
-									[
-										33075,
-										33080
-									],
-									[
-										33128,
-										33133
-									],
-									[
-										33175,
-										33180
-									],
-									[
-										33195,
-										33200
-									],
-									[
-										33457,
-										33462
-									],
-									[
-										33507,
-										33512
-									],
-									[
-										33579,
-										33584
-									],
-									[
-										33622,
-										33627
-									],
-									[
-										33647,
-										33652
-									],
-									[
-										33780,
-										33785
-									],
-									[
-										33858,
-										33863
-									],
-									[
-										33992,
-										33997
-									],
-									[
-										34071,
-										34076
-									],
-									[
-										34249,
-										34254
-									],
-									[
-										34294,
-										34299
-									],
-									[
-										34314,
-										34319
-									],
-									[
-										34494,
-										34499
-									],
-									[
-										34534,
-										34539
-									],
-									[
-										34544,
-										34549
-									],
-									[
-										34674,
-										34679
-									],
-									[
-										34732,
-										34737
-									],
-									[
-										34835,
-										34840
-									],
-									[
-										35093,
-										35098
-									],
-									[
-										35393,
-										35398
-									],
-									[
-										35577,
-										35582
-									],
-									[
-										35638,
-										35643
-									],
-									[
-										35664,
-										35669
-									],
-									[
-										35710,
-										35715
-									],
-									[
-										35974,
-										35979
-									],
-									[
-										36030,
-										36035
-									],
-									[
-										36111,
-										36116
-									],
-									[
-										36121,
-										36126
-									],
-									[
-										36178,
-										36183
-									],
-									[
-										36335,
-										36340
-									],
-									[
-										36634,
-										36639
-									],
-									[
-										37012,
-										37017
-									],
-									[
-										37168,
-										37173
-									],
-									[
-										37290,
-										37295
-									],
-									[
-										37532,
-										37537
-									],
-									[
-										37723,
-										37728
-									],
-									[
-										37789,
-										37794
-									],
-									[
-										37804,
-										37809
-									],
-									[
-										37908,
-										37913
-									],
-									[
-										38131,
-										38136
-									],
-									[
-										38407,
-										38412
-									],
-									[
-										38529,
-										38534
-									],
-									[
-										38618,
-										38623
-									],
-									[
-										38657,
-										38662
-									],
-									[
-										38716,
-										38721
-									],
-									[
-										39028,
-										39033
-									],
-									[
-										39334,
-										39339
-									],
-									[
-										39568,
-										39573
-									],
-									[
-										39642,
-										39647
-									],
-									[
-										39741,
-										39746
-									],
-									[
-										39770,
-										39775
-									],
-									[
-										39911,
-										39916
-									],
-									[
-										39920,
-										39925
-									],
-									[
-										40286,
-										40291
-									],
-									[
-										40458,
-										40463
-									],
-									[
-										40546,
-										40551
-									],
-									[
-										40572,
-										40577
-									],
-									[
-										40616,
-										40621
-									],
-									[
-										40657,
-										40662
-									],
-									[
-										40668,
-										40673
-									],
-									[
-										40746,
-										40751
-									],
-									[
-										40816,
-										40821
-									],
-									[
-										40834,
-										40839
-									],
-									[
-										40853,
-										40858
-									],
-									[
-										41061,
-										41066
-									],
-									[
-										41079,
-										41084
-									],
-									[
-										41122,
-										41127
-									],
-									[
-										41383,
-										41388
-									],
-									[
-										41417,
-										41422
-									],
-									[
-										41434,
-										41439
-									],
-									[
-										41678,
-										41683
-									],
-									[
-										42060,
-										42065
-									],
-									[
-										42146,
-										42151
-									],
-									[
-										42534,
-										42539
-									],
-									[
-										42920,
-										42925
-									],
-									[
-										43211,
-										43216
-									],
-									[
-										43450,
-										43455
-									],
-									[
-										43664,
-										43669
-									],
-									[
-										43697,
-										43702
-									],
-									[
-										43708,
-										43713
-									],
-									[
-										43725,
-										43730
-									],
-									[
-										43835,
-										43840
-									],
-									[
-										43852,
-										43857
-									],
-									[
-										43996,
-										44001
-									],
-									[
-										44029,
-										44034
-									],
-									[
-										44173,
-										44178
-									],
-									[
-										44245,
-										44250
-									],
-									[
-										44361,
-										44366
-									],
-									[
-										44495,
-										44500
-									],
-									[
-										44593,
-										44598
-									],
-									[
-										44697,
-										44702
-									],
-									[
-										44768,
-										44773
-									],
-									[
-										44805,
-										44810
-									],
-									[
-										44848,
-										44853
-									],
-									[
-										44859,
-										44864
-									],
-									[
-										44937,
-										44942
-									],
-									[
-										44994,
-										44999
-									],
-									[
-										45046,
-										45051
-									],
-									[
-										45085,
-										45090
-									],
-									[
-										45178,
-										45183
-									],
-									[
-										45397,
-										45402
-									],
-									[
-										45488,
-										45493
-									],
-									[
-										45521,
-										45526
-									],
-									[
-										45527,
-										45532
-									],
-									[
-										45587,
-										45592
-									],
-									[
-										45781,
-										45786
-									],
-									[
-										45843,
-										45848
-									],
-									[
-										45856,
-										45861
-									],
-									[
-										45879,
-										45884
-									],
-									[
-										45899,
-										45904
-									],
-									[
-										46069,
-										46074
-									],
-									[
-										46182,
-										46187
-									],
-									[
-										46216,
-										46221
-									],
-									[
-										46325,
-										46330
-									],
-									[
-										46412,
-										46417
-									],
-									[
-										46527,
-										46532
-									],
-									[
-										46584,
-										46589
-									],
-									[
-										46628,
-										46633
-									],
-									[
-										46646,
-										46651
-									],
-									[
-										46818,
-										46823
-									],
-									[
-										46982,
-										46987
-									],
-									[
-										47144,
-										47149
-									],
-									[
-										47255,
-										47260
-									],
-									[
-										47404,
-										47409
-									],
-									[
-										47531,
-										47536
-									],
-									[
-										47692,
-										47697
-									],
-									[
-										47739,
-										47744
-									],
-									[
-										47749,
-										47754
-									],
-									[
-										47761,
-										47766
-									],
-									[
-										47809,
-										47814
-									],
-									[
-										47960,
-										47965
-									],
-									[
-										48046,
-										48051
-									],
-									[
-										48091,
-										48096
-									],
-									[
-										48124,
-										48129
-									],
-									[
-										48312,
-										48317
-									],
-									[
-										48347,
-										48352
-									],
-									[
-										48688,
-										48693
-									],
-									[
-										49122,
-										49127
-									],
-									[
-										49481,
-										49486
-									],
-									[
-										49644,
-										49649
-									],
-									[
-										49775,
-										49780
-									],
-									[
-										49805,
-										49810
-									],
-									[
-										50035,
-										50040
-									],
-									[
-										50299,
-										50304
-									],
-									[
-										50370,
-										50375
-									],
-									[
-										50419,
-										50424
-									],
-									[
-										50576,
-										50581
-									],
-									[
-										50621,
-										50626
-									],
-									[
-										51016,
-										51021
-									],
-									[
-										51196,
-										51201
-									],
-									[
-										51284,
-										51289
-									],
-									[
-										51310,
-										51315
-									],
-									[
-										51354,
-										51359
-									],
-									[
-										51395,
-										51400
-									],
-									[
-										51406,
-										51411
-									],
-									[
-										51484,
-										51489
-									],
-									[
-										51554,
-										51559
-									],
-									[
-										51572,
-										51577
-									],
-									[
-										51591,
-										51596
-									],
-									[
-										51775,
-										51780
-									],
-									[
-										52039,
-										52044
-									],
-									[
-										52205,
-										52210
-									],
-									[
-										52591,
-										52596
-									],
-									[
-										52866,
-										52871
-									],
-									[
-										53134,
-										53139
-									],
-									[
-										53534,
-										53539
-									],
-									[
-										53730,
-										53735
-									],
-									[
-										54131,
-										54136
-									],
-									[
-										54513,
-										54518
-									],
-									[
-										54522,
-										54527
-									],
-									[
-										54724,
-										54729
-									],
-									[
-										54733,
-										54738
-									],
-									[
-										55031,
-										55036
-									],
-									[
-										55037,
-										55042
-									],
-									[
-										55080,
-										55085
-									],
-									[
-										55171,
-										55176
-									],
-									[
-										55177,
-										55182
-									],
-									[
-										55218,
-										55223
-									],
-									[
-										55306,
-										55311
-									],
-									[
-										55312,
-										55317
-									],
-									[
-										55352,
-										55357
-									],
-									[
-										55383,
-										55388
-									],
-									[
-										55956,
-										55961
-									],
-									[
-										56214,
-										56219
-									],
-									[
-										56263,
-										56268
-									],
-									[
-										56282,
-										56287
-									],
-									[
-										56591,
-										56596
-									],
-									[
-										56837,
-										56842
-									],
-									[
-										57103,
-										57108
-									],
-									[
-										57354,
-										57359
-									],
-									[
-										57715,
-										57720
-									],
-									[
-										58018,
-										58023
-									],
-									[
-										58080,
-										58085
-									],
-									[
-										58135,
-										58140
-									],
-									[
-										58172,
-										58177
-									],
-									[
-										58420,
-										58425
-									],
-									[
-										58515,
-										58520
-									],
-									[
-										58579,
-										58584
-									],
-									[
-										58753,
-										58758
-									],
-									[
-										58815,
-										58820
-									],
-									[
-										58875,
-										58880
-									],
-									[
-										58937,
-										58942
-									],
-									[
-										59180,
-										59185
-									],
-									[
-										59261,
-										59266
-									],
-									[
-										59317,
-										59322
-									],
-									[
-										59375,
-										59380
-									],
-									[
-										59438,
-										59443
-									],
-									[
-										59593,
-										59598
-									],
-									[
-										59651,
-										59656
-									],
-									[
-										59709,
-										59714
-									],
-									[
-										59946,
-										59951
-									],
-									[
-										60311,
-										60316
-									],
-									[
-										60337,
-										60342
-									],
-									[
-										60484,
-										60489
-									],
-									[
-										60509,
-										60514
-									],
-									[
-										60531,
-										60536
-									],
-									[
-										60683,
-										60688
-									],
-									[
-										60722,
-										60727
-									],
-									[
-										60741,
-										60746
-									],
-									[
-										60831,
-										60836
-									],
-									[
-										60962,
-										60967
-									],
-									[
-										61064,
-										61069
-									],
-									[
-										61358,
-										61363
-									],
-									[
-										61442,
-										61447
-									],
-									[
-										61461,
-										61466
-									],
-									[
-										61495,
-										61500
-									],
-									[
-										61808,
-										61813
-									],
-									[
-										61924,
-										61929
-									],
-									[
-										62051,
-										62056
-									],
-									[
-										62163,
-										62168
-									],
-									[
-										62219,
-										62224
-									],
-									[
-										62375,
-										62380
-									],
-									[
-										62467,
-										62472
-									],
-									[
-										62724,
-										62729
-									],
-									[
-										62789,
-										62794
-									],
-									[
-										62973,
-										62978
-									],
-									[
-										63038,
-										63043
-									],
-									[
-										63245,
-										63250
-									],
-									[
-										63306,
-										63311
-									],
-									[
-										63666,
-										63671
-									],
-									[
-										63716,
-										63721
-									],
-									[
-										63960,
-										63965
-									],
-									[
-										64051,
-										64056
-									],
-									[
-										64181,
-										64186
-									],
-									[
-										64230,
-										64235
-									],
-									[
-										64285,
-										64290
-									],
-									[
-										64506,
-										64511
-									],
-									[
-										64559,
-										64564
-									],
-									[
-										64606,
-										64611
-									],
-									[
-										64626,
-										64631
-									],
-									[
-										64888,
-										64893
-									],
-									[
-										64938,
-										64943
-									],
-									[
-										65010,
-										65015
-									],
-									[
-										65053,
-										65058
-									],
-									[
-										65078,
-										65083
-									],
-									[
-										65211,
-										65216
-									],
-									[
-										65289,
-										65294
-									],
-									[
-										65423,
-										65428
-									],
-									[
-										65502,
-										65507
-									],
-									[
-										65680,
-										65685
-									],
-									[
-										65725,
-										65730
-									],
-									[
-										65745,
-										65750
-									],
-									[
-										65925,
-										65930
-									],
-									[
-										65965,
-										65970
-									],
-									[
-										65975,
-										65980
-									],
-									[
-										66105,
-										66110
-									],
-									[
-										66163,
-										66168
-									],
-									[
-										66266,
-										66271
-									],
-									[
-										66524,
-										66529
-									],
-									[
-										66824,
-										66829
-									],
-									[
-										67008,
-										67013
-									],
-									[
-										67069,
-										67074
-									],
-									[
-										67095,
-										67100
-									],
-									[
-										67141,
-										67146
-									],
-									[
-										67405,
-										67410
-									],
-									[
-										67461,
-										67466
-									],
-									[
-										67542,
-										67547
-									],
-									[
-										67552,
-										67557
-									],
-									[
-										67609,
-										67614
-									],
-									[
-										67766,
-										67771
-									],
-									[
-										68065,
-										68070
-									],
-									[
-										68443,
-										68448
-									],
-									[
-										68599,
-										68604
-									],
-									[
-										68721,
-										68726
-									],
-									[
-										68963,
-										68968
-									],
-									[
-										69154,
-										69159
-									],
-									[
-										69220,
-										69225
-									],
-									[
-										69235,
-										69240
-									],
-									[
-										69339,
-										69344
-									],
-									[
-										69562,
-										69567
-									],
-									[
-										69838,
-										69843
-									],
-									[
-										69960,
-										69965
-									],
-									[
-										70049,
-										70054
-									],
-									[
-										70088,
-										70093
-									],
-									[
-										70147,
-										70152
-									],
-									[
-										70459,
-										70464
-									],
-									[
-										70765,
-										70770
-									],
-									[
-										70999,
-										71004
-									],
-									[
-										71073,
-										71078
-									],
-									[
-										71172,
-										71177
-									],
-									[
-										71201,
-										71206
-									],
-									[
-										71342,
-										71347
-									],
-									[
-										71351,
-										71356
-									],
-									[
-										71717,
-										71722
-									],
-									[
-										71889,
-										71894
-									],
-									[
-										71977,
-										71982
-									],
-									[
-										72003,
-										72008
-									],
-									[
-										72047,
-										72052
-									],
-									[
-										72088,
-										72093
-									],
-									[
-										72099,
-										72104
-									],
-									[
-										72177,
-										72182
-									],
-									[
-										72247,
-										72252
-									],
-									[
-										72265,
-										72270
-									],
-									[
-										72284,
-										72289
-									],
-									[
-										72492,
-										72497
-									],
-									[
-										72510,
-										72515
-									],
-									[
-										72553,
-										72558
-									],
-									[
-										72814,
-										72819
-									],
-									[
-										72848,
-										72853
-									],
-									[
-										72865,
-										72870
-									],
-									[
-										73109,
-										73114
-									],
-									[
-										73491,
-										73496
-									],
-									[
-										73577,
-										73582
-									],
-									[
-										73965,
-										73970
-									],
-									[
-										74351,
-										74356
-									]
-								],
-								"scope": ""
-							}
 						},
 						"selection":
 						[
 							[
-								30875,
-								30875
+								1495,
+								1495
 							]
 						],
 						"settings":
 						{
-							"output_tag": 8,
-							"result_base_dir": "",
-							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0,
-						"translation.y": 18430,
+						"translation.y": 403,
 						"zoom_level": 1
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/verify.py",
+					"file": "/Sites/essentialjs-site/testing.log",
 					"settings":
 					{
-						"buffer_size": 4212,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2041,
-								2041
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0,
-						"translation.y": 281,
-						"zoom_level": 1
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/Sites/themaestro/Library/maestro/mediaserver/verify.py",
-					"settings":
-					{
-						"buffer_size": 7462,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7162,
-								7172
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0,
-						"translation.y": 1617,
-						"zoom_level": 1
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/Sites/themaestro/Library/maestro/mediaserver/urls.py",
-					"settings":
-					{
-						"buffer_size": 866,
+						"buffer_size": 42737,
 						"regions":
 						{
 						},
@@ -2523,8 +367,8 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0,
@@ -2534,89 +378,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/old.py",
-					"settings":
-					{
-						"buffer_size": 5326,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3105,
-								3105
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0,
-						"translation.y": 575,
-						"zoom_level": 1
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/preprocessor.py",
-					"settings":
-					{
-						"buffer_size": 4205,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3681,
-								3681
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0,
-						"translation.y": 309,
-						"zoom_level": 1
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "/Users/henrikvendelbo/Desktop/Self test sample.html",
-					"settings":
-					{
-						"buffer_size": 726,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								579,
-								579
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage"
-						},
-						"translation.x": 0,
-						"translation.y": 0,
-						"zoom_level": 1
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 7,
+					"buffer": 2,
 					"file": "/Sites/essentialjs-site/js/execute-all.js",
 					"settings":
 					{
@@ -2644,19 +406,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 3,
 					"file": "/Sites/essentialjs-site/js/pagespec/upload.js",
 					"settings":
 					{
-						"buffer_size": 3260,
+						"buffer_size": 3141,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								560,
-								560
+								2797,
+								2797
 							]
 						],
 						"settings":
@@ -2665,40 +427,14 @@
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 0,
+						"translation.x": 1,
 						"translation.y": 0,
 						"zoom_level": 1
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 9,
-					"file": "/Sites/essentialjs-site/testing.log",
-					"settings":
-					{
-						"buffer_size": 91578,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0,
-						"translation.y": 14645,
-						"zoom_level": 1
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 10,
+					"buffer": 4,
 					"file": "/Sites/essentialjs-site/js/pagecore/scripts.js",
 					"settings":
 					{
@@ -2726,7 +462,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 5,
 					"file": "/Sites/essentialjs-site/js/pagespec/api.js",
 					"settings":
 					{
@@ -2754,7 +490,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 6,
 					"file": "/Sites/essentialjs-site/templates/pagespec/results.html",
 					"settings":
 					{
@@ -2765,8 +501,8 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								218,
+								218
 							]
 						],
 						"settings":
@@ -2781,35 +517,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 13,
-					"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py",
-					"settings":
-					{
-						"buffer_size": 5058,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4757,
-								4757
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0,
-						"translation.y": 785,
-						"zoom_level": 1
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 14,
+					"buffer": 7,
 					"file": "/Sites/essentialjs-site/js/pagespec/slaves.js",
 					"settings":
 					{
@@ -2829,7 +537,521 @@
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0,
-						"translation.y": 2396,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/Sites/essentialjs-site/seed/essentialjs/pagespec/builtin.pagespec.js",
+					"settings":
+					{
+						"buffer_size": 482,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								254,
+								254
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/Sites/essentialjs-site/templates/pagespec/progress-response.html",
+					"settings":
+					{
+						"buffer_size": 612,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								553,
+								553
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/Sites/essentialjs-site/templates/pagespec/introduction.html",
+					"settings":
+					{
+						"buffer_size": 733,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								711,
+								711
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 6,
+			"sheets":
+			[
+				{
+					"buffer": 11,
+					"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/__init__.py",
+					"settings":
+					{
+						"buffer_size": 211,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								18,
+								18
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/Sites/themaestro/Library/maestro/ecmatic/es.py",
+					"settings":
+					{
+						"buffer_size": 8277,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4486,
+								4502
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 1979,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/nodes.py",
+					"settings":
+					{
+						"buffer_size": 3651,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2913,
+								2913
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 543,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "/Sites/themaestro/Library/maestro/mediaserver/results.py",
+					"settings":
+					{
+						"buffer_size": 1308,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1006,
+								1006
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/preprocessor.py",
+					"settings":
+					{
+						"buffer_size": 2974,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1549,
+								1549
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/home.py",
+					"settings":
+					{
+						"buffer_size": 1718,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								333,
+								607
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"settings":
+					{
+						"buffer_size": 3611,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										173,
+										183
+									],
+									[
+										405,
+										415
+									],
+									[
+										610,
+										620
+									],
+									[
+										807,
+										817
+									],
+									[
+										1068,
+										1078
+									],
+									[
+										1480,
+										1490
+									],
+									[
+										1831,
+										1841
+									],
+									[
+										2107,
+										2117
+									],
+									[
+										2339,
+										2349
+									],
+									[
+										2522,
+										2532
+									],
+									[
+										2709,
+										2719
+									],
+									[
+										2884,
+										2894
+									],
+									[
+										3232,
+										3242
+									],
+									[
+										3480,
+										3490
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0,
+						"translation.y": 680,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "/Users/hvendelbo/Documents/Test Edge.html",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "/Sites/themaestro/Library/maestro/mediaserver/handlers/verify.py",
+					"settings":
+					{
+						"buffer_size": 4212,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2041,
+								2041
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 20,
+					"file": "/Sites/essentialjs-site/conf/urls.py",
+					"settings":
+					{
+						"buffer_size": 2231,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								955,
+								955
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 21,
+					"file": "/Sites/themaestro/Library/maestro/mediaserver/persisted.py",
+					"settings":
+					{
+						"buffer_size": 3779,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 2,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 22,
+					"file": "/Sites/themaestro/Library/maestro/ecmatic/es.ometa",
+					"settings":
+					{
+						"buffer_size": 13363,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 0,
+						"zoom_level": 1
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 23,
+					"file": "/Sites/themaestro/Library/maestro/mediaserver/__init__.py",
+					"settings":
+					{
+						"buffer_size": 3890,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								3890
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0,
+						"translation.y": 627,
 						"zoom_level": 1
 					},
 					"type": "text"
@@ -2843,7 +1065,7 @@
 	},
 	"input":
 	{
-		"height": 0
+		"height": 27
 	},
 	"layout":
 	{
@@ -2854,11 +1076,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0,
+			0.5,
 			1
 		],
 		"rows":
