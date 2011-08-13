@@ -16,3 +16,4 @@ target/
 release/
 repos/
 _site
+testing.log
