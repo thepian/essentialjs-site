@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+	<h2>Known Specs</h2>
+	<p>Examples for each of the specs.
+	</p>
+	
+	{% for spec in specs %}
+	<h3>Spec: <span title="id = {{ spec["info"]["id"] }}, filename = {{ spec["info"]["filename"] }}">{{ spec["info"]["name"]}}</span></h3>
+	<dl>
+		{% for example in spec["examples"] %}
+		<dt>{{ example }}</dt>
+		<dd></dd>
+		{% end %}	
+	</dl>
+	{% end %}	
+</body>
+</html>
