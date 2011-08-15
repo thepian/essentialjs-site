@@ -16,6 +16,7 @@ function makeUploadStep(spec_id) {
             }
             UploadInput.prepare(UploadInput.form);
             UploadInput.form.submit();
+            UploadInput.inputs = []; // clear the inputs just sent
         }
     };
 }
