@@ -31,8 +31,8 @@
         };
         specs.push(spec);
         
-        for(var i=0,name,func; name = parts[i]; i += 2){
-            func = parts[i+1];
+        for(var j=0,name,func; name = parts[j]; j += 2){
+            func = parts[j+1];
             
             var example = new Example(name,func,spec);
             examples.push(example);
