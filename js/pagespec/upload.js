@@ -76,6 +76,15 @@ UploadInput.pushSpecEnded = function(step) {
     },"ended","ended","text");
 };
 
+UploadInput.pushStepStamps = function(step,stamps) {
+    var sl = [];
+    for(var s in stamps) {
+        sl.push('"' + s + '": '+stamps[s]);
+    }
+    var stamps_json = "{" + sl.join(",") + "}";
+    this.pushOutcome(step,"stamps",stamps_json,"hidden");    
+};
+
 
 UploadInput.prepare = function(form) {
     var inner = XSRF_INPUT_MARKUP;

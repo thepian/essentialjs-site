@@ -50,7 +50,10 @@ Example.prototype.post_exception = function(ex) {
 
 // Called after each example step
 Example.prototype.post_success = function() {
-    
+    UploadInput.pushStepStamps(this,{
+        "pre": this.preStamp,
+        "done": this.runStamp
+    });
     if (this.last) UploadInput.pushSpecEnded(this);
 };
 

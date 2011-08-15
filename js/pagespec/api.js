@@ -68,8 +68,12 @@ function nextStep() {
     if (step) {
         pagespec.current_step = step;
         try {
+            if (step.pre) step.pre();
+            step.preStamp = new Date().getTime();
             step.run();
+            step.runStamp = new Date().getTime();
             if (step.post) step.post();
+            step.postStamp = new Date().getTime();
             if (step.post_success) step.post_success();
         } catch(ex) {
             if (step.post_exception) step.post_exception(ex);
