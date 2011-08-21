@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Specifications for {{ account }} / {{ project }}</title>
+<script type="text/pagespec" language="PageSpecJs" src="example.spec.js"></script>
 </head>
 <body>
 	<h2>Specifications for {{ account }} / {{ project }} </h2>
@@ -11,6 +12,8 @@
 	<h2>Upload</h2>
 	<p>If you link to the specifications within this document they will be automatically uploaded when you open or refresh this page.</p>
 
-	<button>Upload Specs</button>	
+	<button>Upload Specs</button>
+	
+	<script src="{{ spec_upload_url }}"></script>	
 </body>
 </html>
