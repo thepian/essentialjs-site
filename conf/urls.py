@@ -11,6 +11,7 @@ apisite = [
     
     # Self Test pages
     (r"^/(essentialjs)/(pagespec)/all/(selftest)\.html$", SelfTestHandler),
+    (r"^/(essentialjs)/(pagespec)/all/(known)\.html$", KnownSpecsHandler),
     (r"^/(essentialjs)/(constructive)/all/(selftest)\.html$", SelfTestHandler),
     
     # Self Test test all JavaScript
@@ -19,6 +20,16 @@ apisite = [
         "run_script": structure.JS_DIR + "/execute-all.js" 
         }),
         
+    # /project/shortcut_id/runner.js
+    # /project/shortcut_id/runner.html - downloadable
+    # /project/shortcut_id/introduction.html - downloadable
+    (r"^/(\w+)/([^\./]+)/runner.js", IntroductionHandler),
+    (r"^/(\w+)/([^\./]+)/runner.html", IntroductionHandler),
+    (r"^/(\w+)/([^\./]+)/introduction.html", IntroductionHandler),
+    (r"^/(\w+)/([^\./]+)/spec/index.html", SpecIndexHandler),
+    (r"^/(\w+)/([^\./]+)/spec.zip", SpecZipHandler),
+    (r"^/(\w+)/([^\./]+)/spec/(.*\.js)", SpecUploadHandler),
+
     # Self Test nodes and runs
     (r"^/(\w+)/(\w+)/nodes", NodesHandler),
     (r"^/(\w+)/(\w+)/nodes/([^\.]+)$", NodesHandler),
