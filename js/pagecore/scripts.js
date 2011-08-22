@@ -12,13 +12,16 @@ function ScriptTag(tag) {
     	this.defer = tag.getAttribute("defer");
     	this.delay = tag.getAttribute("delay");
     	this.async = tag.getAttribute("async");
+    	this.disabled = tag.getAttribute("disabled");
 	}
 	this.text = tag.text || tag.textContent || ScriptTag.BLANK_TEXT;
 	this.tag = tag;
 }
 ScriptTag.BLANK_TEXT = "\x0a  ";
 
-ScriptTag._attributes = ['src','language','type','title','rel','defer', 'delay', 'async'];
+ScriptTag._attributes = ['src','language','type','title','rel','defer', 'delay', 'async', 'disabled'];
+
+ScriptTag.translateScriptTypes = {};
 
 ScriptTag.prototype.attributesString = function() {
     var attrs = [];
@@ -52,7 +55,7 @@ ScriptTag.prototype.getPrefix = function() {
 };
 
 ScriptTag.prototype.hasSpecs = function() {
-    return pagecore.translateScriptTypes[this.type];
+    return ScriptTag.translateScriptTypes[this.type];
 };
 
 ScriptTag.prototype.hasExamples = function() {
@@ -99,23 +102,87 @@ ScriptTag.prototype.getText = function() {
     } else return this.text;
 };
 
+ScriptTag.prototype.loadText = function(func,instance) {
+	var request = new XMLHttpRequest();
+	request.open('GET', this.src, true);
+	request.onreadystatechange = function (evt) {
+	  if (request.readyState == 4) {
+		 if(request.status == 200)
+		   console.log(request.responseText)
+		 else
+		   console.log('Error', request.statusText);
+	  }
+	};
+	request.send(null);
+};
+
+ScriptTag.prototype.loadTextFrame = function(func,instance) 
+{
+	var scriptTag = this;
+	
+	var frame = document.createElement("iframe");
+	frame.src = this.src;
+	frame.type = "text/plain";
+	frame.onload = function() {
+		var d = this.contentDocument || this.document;
+		var text = d? d.body.innerText : this.innerText;
+		func.call(instance,scriptTag,scriptTag.src,text);
+	};
+	document.body.appendChild(frame);
+
+	/*
+	var embed = document.createElement("embed");
+	embed.src = this.src;
+	embed.type = "text/plain";
+	embed.onload = function() {
+		func.call(instance,this,this.src,this.innerText);
+	};
+	document.body.appendChild(embed);
+	*/
+};
+
 function scanScriptTags() {
     function makeTranslateScript() {
         var translate = [];
-        for(var i=0,s; s = pagecore.otherScripts[i]; ++i) 
+        for(var i=0,s; s = results.otherScripts[i]; ++i) 
             if (s.hasSpecs()){
                 translate.push("t"+i+"=" + s.getText());
             }
         if (translate.length) {
-            var translateScript = pagecore.translateScript = new ScriptTag({
-                src: pagecore.scriptPrefix + "translated.js?" + translate.join("&"),
+            var translateScript = results.translateScript = new ScriptTag({
+                src: results.scriptPrefix + "translated.js?" + translate.join("&"),
                 type: "text/javascript"
             });
             return translateScript;
         }
         return null;
     }
+    
+    function forEachSpecScript(func,instance) {
+    	for(var i=0,s; s = this.otherScripts[i]; ++i) {
+    		if (s.hasSpecs()) func.call(instance,s);
+    	}
+    } 
+    
+    function loadSpecScripts(func,instance) {
+    	for(var i=0,s; s = this.otherScripts[i]; ++i) {
+    		if (s.hasSpecs()) s.loadTextFrame(func,instance);
+    	}
+    }
 
+	function getRelativeUrl(rel) {
+		var base_bits = this.coreScript.src.split("/");
+		base_bits.pop(); // remove filename
+		
+		var rel_bits = rel.split("/");
+		while(rel_bits[0] == "..") {
+			rel_bits.shift();
+			base_bits.pop();
+		}
+
+		return base_bits.concat(rel_bits).join("/");
+	}
+	
     var results = {
         /** url base for the script */
         scriptPrefix: "",
@@ -127,7 +194,11 @@ function scanScriptTags() {
         otherScripts: [],
         
         /** which mime type script tags to translate */
-        translateScriptTypes: {},
+        translateScriptTypes: ScriptTag.translateScriptTypes,
+        
+        forEachSpecScript: forEachSpecScript,
+        loadSpecScripts: loadSpecScripts,
+        getRelativeUrl: getRelativeUrl,
         
         options: new UrlOptions(),
         pageOptions: new UrlOptions(),

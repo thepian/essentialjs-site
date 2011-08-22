@@ -1,21 +1,14 @@
-function makeUploadStep(spec_id) {
-    
+function makeUploadStep(spec_id) 
+{
     return {
         run: function() {
             // Make form and iframe for posting result
             //TODO create this on DOM ready instead
-            if (UploadInput.form == undefined) {
-                UploadInput.form = document.createElement("FORM");
-                UploadInput.form.target = "__submitter__";
-                UploadInput.form.action = Scripts.scriptPrefix + "../runs/" + String(unique_id) + "/";
-                UploadInput.form.method = "POST";
-                UploadInput.form.style.cssText = "display:none;";
-                document.body.appendChild(UploadInput.form);
-                var results_frame = SlaveFrame("__submitter__","submitter",{ src: "javascript:void(0);", parent:UploadInput.form });
-
-            }
-            UploadInput.prepare(UploadInput.form);
-            UploadInput.form.submit();
+            //NOTE!!!! unique_id is a Scoped var from execute-all
+            var form = UploadInput.getForm(Scripts.scriptPrefix + "../runs/" + String(unique_id) + "/");
+            
+            UploadInput.prepare(form);
+            form.submit();
             UploadInput.inputs = []; // clear the inputs just sent
         }
     };
@@ -36,6 +29,21 @@ UploadInput.prototype.toString = function() {
     return this.template.replace("{name}",this.name).replace("{value}",this.value); 
 };
 
+UploadInput.getForm = function(action)
+{
+	if (this.form == undefined) {
+		this.form = document.createElement("FORM");
+		this.form.target = "__submitter__";
+		this.form.action = action;
+		this.form.method = "POST";
+		this.form.style.cssText = "display:none;";
+		document.body.appendChild(this.form);
+		var results_frame = SlaveFrame("__submitter__","submitter",{ src: "javascript:void(0);", parent:this.form });
+	}
+	
+	return this.form;
+};
+
 // var regex = /
 function sentence2name(sentence) {
     //TODO character translation table or html-name-encoding
@@ -43,6 +51,10 @@ function sentence2name(sentence) {
 }
 
 UploadInput.inputs = [];
+
+UploadInput.push = function(name,value,template) {
+    this.inputs.push( new this(name,value,template) );
+};
 
 UploadInput.pushOutcome = function(step,outcome,value,template) {
     var name = sentence2name(step.spec_id);
@@ -54,7 +66,7 @@ UploadInput.pushOutcome = function(step,outcome,value,template) {
     }
     name += "__"+sentence2name(outcome);
 
-    this.inputs.push( new this(name,encodeURIComponent(value),template) );
+    this.inputs.push( new this(name,encodeURIComponent(value),template) ); //TODO hmm, don't think this should be encoded, for post already does that
 };
 
 UploadInput.pushStepException = function(step,ex,template) {
