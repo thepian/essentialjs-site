@@ -15,20 +15,28 @@
     @insert path raw "pagespec/slaves.js";
     @insert path raw "pagespec/upload.js";
 
-	function SpecScriptUpload(url,text,tag) {
+	function SpecScriptUpload(base_url,url,text,tag) {
+		this.base_url = base_url;
 		this.url = url;
 		this.text = text;
 		this.tag = tag;
-	}
 
-	SpecScriptUpload.prototype.upload = function(base_url) {
-		
 		var href_bits = location.href.split("/");
 		href_bits.pop();
 		var url_bits = this.url.split("/");		
-		var rel_url = url_bits.slice(href_bits.length).join("/");
+		this.rel_url = url_bits.slice(href_bits.length).join("/");
+	}
+
+	SpecScriptUpload.prototype.uploadGetScript = function() {
+		var q = "?language="+(this.tag.language || "")+"&disabled="+(this.tag.disabled || "")+"&script="+ encodeURIComponent(this.text);
+		var script = document.createElement("script");
+		script.src = this.base_url + this.rel_url + q;
+		document.getElementsByTagName("HEAD")[0].appendChild(script);
+	}
+	
+	SpecScriptUpload.prototype.uploadForm = function() {
 		
-		var form = UploadInput.getForm(base_url + rel_url);
+		var form = UploadInput.getForm(this.base_url + this.rel_url);
 		UploadInput.push("script",this.text,"textarea");
 		UploadInput.push("async",this.tag.async || "","hidden");
 		UploadInput.push("delay",this.tag.delay || "","hidden");
@@ -41,13 +49,8 @@
 	
 	SpecScriptUpload.prototype.uploadXhr = function(base_url) {
 		
-		var href_bits = location.href.split("/");
-		href_bits.pop();
-		var url_bits = this.url.split("/");		
-		var rel_url = url_bits.slice(href_bits.length).join("/");
-		
 		var request = new XMLHttpRequest();
-        request.open('POST', base_url + rel_url, true);
+        request.open('POST', this.base_url + this.rel_url, true);
 		// request.setRequestHeader('X-PINGOTHER', 'pingpong');
         request.setRequestHeader('Content-Type', 'text/plain');		
 		request.onreadystatechange = function (aEvt) {
@@ -66,7 +69,7 @@
     Scripts.translateScriptTypes["text/pagespec"] = true;
     
 	Scripts.loadSpecScripts(function(tag,url,text) {
-		var ssu = new SpecScriptUpload(url,text,tag);
-		ssu.upload(Scripts.getRelativeUrl("spec/"));
+		var ssu = new SpecScriptUpload(Scripts.getRelativeUrl("spec/"),url,text,tag);
+		ssu.uploadGetScript();
 	},{});
 }

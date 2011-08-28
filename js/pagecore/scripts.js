@@ -102,15 +102,40 @@ ScriptTag.prototype.getText = function() {
     } else return this.text;
 };
 
-ScriptTag.prototype.loadText = function(func,instance) {
+ScriptTag.prototype.loadText = function(func,instance) 
+{
+	if (window.addEventListener) {
+		this.loadTextFrame(func,instance);
+	}
+	else {
+		//IE Specific (TODO, make it work)
+		this.loadTextXhr(func,instance);
+	}
+};
+
+ScriptTag.prototype.loadTextScript = function(func,instance) 
+{
+	var script = document.createElement("SCRIPT");
+	script.src = this.src;
+	document.getElementsByTagName("HEAD")[0].appendChild(script);
+
+	this.loader = script;
+};
+
+ScriptTag.prototype.loadTextXhr = function(func,instance) {
+	var scriptTag = this;
+	
 	var request = new XMLHttpRequest();
 	request.open('GET', this.src, true);
 	request.onreadystatechange = function (evt) {
 	  if (request.readyState == 4) {
-		 if(request.status == 200)
-		   console.log(request.responseText)
-		 else
+		 if(request.status == 200) {
+			func.call(instance,scriptTag,scriptTag.src,request.responseText);
+			 }
+		 else {
+		 	debugger;
 		   console.log('Error', request.statusText);
+		   }
 	  }
 	};
 	request.send(null);
@@ -125,7 +150,7 @@ ScriptTag.prototype.loadTextFrame = function(func,instance)
 	frame.type = "text/plain";
 	frame.onload = function() {
 		var d = this.contentDocument || this.document;
-		var text = d? d.body.innerText : this.innerText;
+		var text = d? (d.body.innerText || d.body.textContent) : this.innerText;
 		func.call(instance,scriptTag,scriptTag.src,text);
 	};
 	document.body.appendChild(frame);
@@ -141,71 +166,98 @@ ScriptTag.prototype.loadTextFrame = function(func,instance)
 	*/
 };
 
-function scanScriptTags() {
-    function makeTranslateScript() {
-        var translate = [];
-        for(var i=0,s; s = results.otherScripts[i]; ++i) 
-            if (s.hasSpecs()){
-                translate.push("t"+i+"=" + s.getText());
-            }
-        if (translate.length) {
-            var translateScript = results.translateScript = new ScriptTag({
-                src: results.scriptPrefix + "translated.js?" + translate.join("&"),
-                type: "text/javascript"
-            });
-            return translateScript;
-        }
-        return null;
-    }
-    
-    function forEachSpecScript(func,instance) {
-    	for(var i=0,s; s = this.otherScripts[i]; ++i) {
-    		if (s.hasSpecs()) func.call(instance,s);
-    	}
-    } 
-    
-    function loadSpecScripts(func,instance) {
-    	for(var i=0,s; s = this.otherScripts[i]; ++i) {
-    		if (s.hasSpecs()) s.loadTextFrame(func,instance);
-    	}
-    }
+function ScriptsManager() {
+	/** url base for the script */
+	this.scriptPrefix = "";
+	
+	/** main script that loaded pagecore */
+	this.coreScript = null;
+	
+	/** the other scripts in the page at load time */
+	this.otherScripts = [];
+	
+	this.options = new UrlOptions();
+    this.pageOptions = new UrlOptions();
+    this.scriptOptions = new UrlOptions();
+	
+	this.translateScriptTypes = ScriptTag.translateScriptTypes;
+}
 
-	function getRelativeUrl(rel) {
-		var base_bits = this.coreScript.src.split("/");
-		base_bits.pop(); // remove filename
-		
-		var rel_bits = rel.split("/");
-		while(rel_bits[0] == "..") {
-			rel_bits.shift();
-			base_bits.pop();
+ScriptsManager.prototype.getRelativeUrl = function(rel) 
+{
+	var base_bits = this.coreScript.src.split("/");
+	base_bits.pop(); // remove filename
+	
+	var rel_bits = rel.split("/");
+	while(rel_bits[0] == "..") {
+		rel_bits.shift();
+		base_bits.pop();
+	}
+
+	return base_bits.concat(rel_bits).join("/");
+};
+
+ScriptsManager.prototype.forEachSpecScript = function(func,instance) 
+{
+	for(var i=0,s; s = this.otherScripts[i]; ++i) {
+		if (s.hasSpecs()) func.call(instance,s);
+	}
+}; 
+
+ScriptsManager.prototype.tracSpecLoadingHandling = function(func,instance) 
+{
+	var scripts = this;
+	
+	return function(ev) {
+
+		for(var i=0,s; s = scripts.otherScripts[i]; ++i) {
+			if (s.loader) {
+				console.log(s.src,"  ",s.loader.text);
+			}
 		}
+	};
+};
 
-		return base_bits.concat(rel_bits).join("/");
+ScriptsManager.prototype.loadSpecScripts = function(func,instance) {
+
+	function onSpecScriptError(errorMsg, url, lineNumber) {
+		var u = url;
+		debugger;
 	}
 	
-    var results = {
-        /** url base for the script */
-        scriptPrefix: "",
-        
-        /** main script that loaded pagecore */
-        coreScript: null,
-        
-        /** the other scripts in the page at load time */
-        otherScripts: [],
-        
-        /** which mime type script tags to translate */
-        translateScriptTypes: ScriptTag.translateScriptTypes,
-        
-        forEachSpecScript: forEachSpecScript,
-        loadSpecScripts: loadSpecScripts,
-        getRelativeUrl: getRelativeUrl,
-        
-        options: new UrlOptions(),
-        pageOptions: new UrlOptions(),
-        scriptOptions: new UrlOptions(),
+	// window.onerror = onSpecScriptError;
+	for(var i=0,s; s = this.otherScripts[i]; ++i) {
+		if (s.hasSpecs()) {
+			s.loadText(func,instance);
+		}
+	}
+	//setInterval(this.tracSpecLoadingHandling(func,instance),200);
+};
 
-        makeTranslateScript: makeTranslateScript
-    };        
+
+	
+ScriptsManager.prototype.makeTranslateScript = function() 
+{
+	var translate = [];
+	for(var i=0,s; s = results.otherScripts[i]; ++i) 
+		if (s.hasSpecs()){
+			translate.push("t"+i+"=" + s.getText());
+		}
+	if (translate.length) {
+		var translateScript = results.translateScript = new ScriptTag({
+			src: results.scriptPrefix + "translated.js?" + translate.join("&"),
+			type: "text/javascript"
+		});
+		return translateScript;
+	}
+	return null;
+};
+
+
+
+function scanScriptTags() 
+{
+    var results = new ScriptsManager();
 
 	var scripts = document.getElementsByTagName("SCRIPT"); 
 	for(var i=0, script;script = scripts[i];++i) {
