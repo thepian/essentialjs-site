@@ -10,6 +10,7 @@ apisite = [
     (r"/(\w+)/(\w+)/pagespec-verify.js", PageSpecVerifyJsHandler),
     
     # Self Test pages
+    (r"^/(essentialjs)/$", AccountOverviewHandler),
     (r"^/(essentialjs)/(pagespec)/all/(selftest)\.html$", SelfTestHandler),
     (r"^/(essentialjs)/(pagespec)/all/(known)\.html$", KnownSpecsHandler),
     (r"^/(essentialjs)/(constructive)/all/(selftest)\.html$", SelfTestHandler),

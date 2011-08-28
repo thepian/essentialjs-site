@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Overview of {{ account }}</title>
+</head>
+<body>
+	<h2>Overview of {{ account }} </h2>
+	<dl>
+	{% for project in projects %}
+		{% for suite in project.suites %}
+			<dt>{{ suite["project"] }}</dt>
+			<dd>{{ suite["suite"] }}/{{ suite["exec_name"] }}
+			</dd>
+		{% end %}
+	{% end %}
+	</dl>
+	
+	<p>The common way to run Specs is to execute in the loading page with the examples running in a hidden scope. The examples will have to leave the DOM unchanged, or restore them upon completion. The running will create a results IFRAME for posting the results.
+	</p>
+	
+	<h2>Kicking off the suite</h2>
+	<p>You can kick off a suite of Specifications by opening the <a href="runner.html">Runner</a> page.
+	If you save(just the HTML file as it is) together with your source code locally, it can be run
+	by simply opening the file with a web browser.</p>
+	
+</body>
+</html>
