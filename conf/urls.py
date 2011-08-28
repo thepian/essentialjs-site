@@ -14,7 +14,6 @@ apisite = [
     (r"^/(essentialjs)/(pagespec)/$", ProjectOverviewHandler),
     (r"^/(essentialjs)/(constructive)/$", ProjectOverviewHandler),
     (r"^/(essentialjs)/(pagespec)/all/(selftest)\.html$", SelfTestHandler),
-    (r"^/(essentialjs)/(pagespec)/all/(known)\.html$", KnownSpecsHandler),
     (r"^/(essentialjs)/(constructive)/all/(selftest)\.html$", SelfTestHandler),
     
     # Self Test test all JavaScript
