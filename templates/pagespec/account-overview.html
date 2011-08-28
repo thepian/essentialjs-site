@@ -4,14 +4,59 @@
 <title>Overview of {{ account }}</title>
 </head>
 <body>
-	<h2>Overview of {{ account }} </h2>
+
+	<h2>{{ account }} ({{ full_name }}) <button>Edit Profile</button></h2>
+	<hr>
+	<dl>
+		<dt>Name</dt>
+		<dd>{{ full_name }}</dd>
+		<dt>Email</dt>
+		<dd>{{ public_email }}</dd>
+		<dt>Website/Blog</dt>
+		<dd>{{ public_website }}</dd>
+		<dt>Company</dt>
+		<dd>{{ company_name }}</dd>
+		<dt>Location</dt>
+		<dd>{{ public_location }}</dd>
+		<dt>Member Since</dt>
+		<dd>{{ member_since }}</dd>
+	</dl>
+	<div>
+		<a>
+		<em>{{ public_projects }}</em>
+		public projects
+		</a>
+		
+		<a>
+		<em>{{ private_projects }}</em>
+		private projects
+		</a>
+		
+		<a>
+		<em>{{ followers }}</em>
+		followers
+		</a>
+	</div>
+	<hr>
 	<dl>
 	{% for project in projects %}
+		<dt><a href="/{{ account }}/{{ project.project }}/">{{ project.project }}</a>
+		</dt>
+		<dd>
+			<div>
+			Essential JavaScript
+			Last updated about 11 hours ago
+			</div>
+			<ul>
 		{% for suite in project.suites %}
-			<dt>{{ suite["project"] }}</dt>
-			<dd>{{ suite["suite"] }}/{{ suite["exec_name"] }}
-			</dd>
+			<li>
+			{{ suite["suite"] }}/{{ suite["exec_name"] }} ❖
+				<a href="/{{ suite["project"] }}/{{ suite["hash"] }}/introduction.html">Introduction</a> ❖
+				<a href="/{{ suite["project"] }}/{{ suite["hash"] }}/runner.html">Runner</a>
+			</li>
 		{% end %}
+			</ul>
+		</dd>
 	{% end %}
 	</dl>
 	
