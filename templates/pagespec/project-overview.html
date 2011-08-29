@@ -22,14 +22,15 @@
 		<summary>
 			Essential JavaScript
 			Last updated about 11 hours ago
+			<a href="{{ project.project }}-example.zip">Download Sample Project</a> or
+			<a href="introduction.html">Download Project Introduction</a>
 		</summary>
 
 			<ul>
 		{% for suite in project.suites %}
 			<li>
 			{{ suite["suite"] }}/{{ suite["exec_name"] }} ❖
-				<a href="/{{ suite["project"] }}/{{ suite["hash"] }}/introduction.html">Introduction</a> ❖
-				<a href="/{{ suite["project"] }}/{{ suite["hash"] }}/runner.html">Runner</a>
+				<a href="/{{ suite["project"] }}/{{ suite["hash"] }}/{{ suite["exec_name"] }}-suite-runner.html">Runner</a>
 			</li>
 		{% end %}
 			</ul>

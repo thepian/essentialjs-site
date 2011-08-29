@@ -2,6 +2,12 @@ from thepian.conf import structure
 from mediaserver.handlers import *
 from tornado.web import StaticFileHandler
 
+url_info = {
+    "upload_script_name": "upload-specs.js",
+    "core_api": structure.JS_DIR + "/upload-specs.js",
+    "run_script": structure.JS_DIR + "/upload-specs.js" 
+}
+
 website = [
 # (r"^/$", HomeHandler),
 (r".*/$", DirectoryHandler),
@@ -9,37 +15,27 @@ website = [
 apisite = [
     (r"/(\w+)/(\w+)/pagespec-verify.js", PageSpecVerifyJsHandler),
     
-    # Self Test pages
+    # Account and project pages (for testing as it would be on website instead)
     (r"^/(essentialjs)/$", AccountOverviewHandler),
     (r"^/(essentialjs)/(pagespec)/$", ProjectOverviewHandler),
     (r"^/(essentialjs)/(constructive)/$", ProjectOverviewHandler),
-    (r"^/(essentialjs)/(pagespec)/all/(selftest)\.html$", SelfTestHandler),
-    (r"^/(essentialjs)/(constructive)/all/(selftest)\.html$", SelfTestHandler),
+    (r"^/(\w+)/(\w+)/(\w+)-example.zip", ExampleZipHandler, url_info),             # Downloadable ZIP with suite runners and specs uploader
+    (r"^/(\w+)/(\w+)/introduction.html", IntroductionHandler),          # Downloadable
     
-    # Self Test test all JavaScript
-    (r"^/(\w+)/(\w+)/all/(\w+)\.js$", JsExecuteAllHandler, { 
-        "core_api": structure.JS_DIR + "/pagespec-core.js",
-        "run_script": structure.JS_DIR + "/execute-all.js" 
-        }),
-        
-    # /project/shortcut_id/runner.js
-    # /project/shortcut_id/runner.html - downloadable
-    # /project/shortcut_id/introduction.html - downloadable
-    (r"^/(\w+)/([^\./]+)/runner.js", IntroductionHandler),
-    (r"^/(\w+)/([^\./]+)/runner.html", IntroductionHandler),
-    (r"^/(\w+)/([^\./]+)/introduction.html", IntroductionHandler),
-    (r"^/(\w+)/([^\./]+)/spec/index.html", SpecIndexHandler,{
-    	"upload_script_name": "upload-specs.js",
-    	}),
-    (r"^/(\w+)/([^\./]+)/spec.zip", SpecZipHandler,{
-    	"upload_script_name": "upload-specs.js",
-    	}),
+
+    # /project/shortcut_id/all-suite-runner.html - downloadable
+    # /project/shortcut_id/all-suite-selftest.js
+    (r"^/(\w+)/([^\./]+)/(\w+)-suite-runner.html", SuiteRunnerHandler, url_info),
+    (r"^/(\w+)/([^\./]+)/(\w+)-suite-(\w+).js", SuiteRunnerScriptHandler, url_info),
+    
+    # /project/shortcut_id/spec.zip - Downloadable with specs uploader
+    # /project/shortcut_id/spec/index.html
+    # /project/shortcut_id/upload-specs.js
+    # /project/shortcut_id/spec/*.spec.js - upload spec change only
+    (r"^/(\w+)/([^\./]+)/spec/index.html", SpecIndexHandler,url_info),
+    (r"^/(\w+)/([^\./]+)/spec.zip", SpecZipHandler,url_info),
     (r"^/(\w+)/([^\./]+)/spec/(.*\.js)", SpecUploadHandler),
-    (r"^/(\w+)/([^\./]+)/upload-specs.js", SpecUploadScriptHandler,{
-    	"upload_script_name": "upload-specs.js",
-        "core_api": structure.JS_DIR + "/upload-specs.js",
-        "run_script": structure.JS_DIR + "/upload-specs.js" 
-    	}),
+    (r"^/(\w+)/([^\./]+)/upload-specs.js", SpecUploadScriptHandler,url_info),
 
     # Self Test nodes and runs
     (r"^/(\w+)/(\w+)/nodes", NodesHandler),
