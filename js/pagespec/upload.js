@@ -1,11 +1,9 @@
-function makeUploadStep(spec_id) 
+function makeUploadStep(spec_id,url) 
 {
     return {
         run: function() {
             // Make form and iframe for posting result
-            //TODO create this on DOM ready instead
-            //NOTE!!!! unique_id is a Scoped var from execute-all
-            var form = UploadInput.getForm(Scripts.scriptPrefix + "../runs/" + String(unique_id) + "/");
+            var form = UploadInput.getForm(url);
             
             UploadInput.prepare(form);
             form.submit();

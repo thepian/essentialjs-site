@@ -27,6 +27,9 @@ apisite = [
     # /project/shortcut_id/all-suite-selftest.js
     (r"^/(\w+)/([^\./]+)/(\w+)-suite-runner.html", SuiteRunnerHandler, url_info),
     (r"^/(\w+)/([^\./]+)/(\w+)-suite-(\w+).js", SuiteRunnerScriptHandler, url_info),
+    (r"^/(\w+)/([^\./]+)/runs$", NodesHandler),
+    (r"^/(\w+)/([^\./]+)/runs/([^\./]+)/$", SpecificRunHandler),
+    (r"^/(\w+)/([^\./]+)/runs/([^\./]+)$", SpecificRunHandler),
     
     # /project/shortcut_id/spec.zip - Downloadable with specs uploader
     # /project/shortcut_id/spec/index.html
@@ -40,9 +43,6 @@ apisite = [
     # Self Test nodes and runs
     (r"^/(\w+)/(\w+)/nodes", NodesHandler),
     (r"^/(\w+)/(\w+)/nodes/([^\.]+)$", NodesHandler),
-    (r"^/(\w+)/(\w+)/runs$", NodesHandler),
-    (r"^/(\w+)/(\w+)/runs/([^\./]+)/$", SpecificRunHandler),
-    (r"^/(\w+)/(\w+)/runs/([^\./]+)$", SpecificRunHandler),
 ]
 
 mediasite = [

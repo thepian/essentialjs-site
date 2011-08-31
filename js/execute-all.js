@@ -41,7 +41,9 @@
 
         example.last = true;
         
-        var uploadStep = makeUploadStep(spec.id);
+		//TODO create this on DOM ready instead
+		//NOTE!!!! unique_id is a Scoped var from execute-all
+        var uploadStep = makeUploadStep(spec.id, Scripts.scriptPrefix + "../runs/" + String(unique_id) + "/");
         outstanding.push(uploadStep);
     }
 

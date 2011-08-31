@@ -17,6 +17,9 @@
     @insert path raw "pagespec/api.js";
     @insert path raw "pagespec/spec.js";
 
+    //TODO consider loading it on DOM ready
+    var Scripts = scanScriptTags();
+    
     // Populate outstanding steps
     var specs = [], examples = [], outstanding = [];
     for(var i=0,arg; arg = arguments[i]; ++i) {
@@ -41,13 +44,12 @@
 
         example.last = true;
         
-        var uploadStep = makeUploadStep(spec.id);
+		//TODO create this on DOM ready instead
+		//NOTE!!!! unique_id is a Scoped var from execute-all
+        var uploadStep = makeUploadStep(spec.id, Scripts.getRelativeUrl("runs/" + String(unique_id) + "/"));
         outstanding.push(uploadStep);
     }
 
-    //TODO consider loading it on DOM ready
-    var Scripts = scanScriptTags();
-    
 
     /* Can be registered as an onload listener or onclick for a manual button */
     function __run__() {
