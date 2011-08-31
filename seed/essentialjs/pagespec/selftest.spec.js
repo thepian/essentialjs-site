@@ -6,7 +6,7 @@
         // var t1 = generator(Test)("a","b","c");
     }
     it "must provide default behavior" {
-        
+        var x;
     }
     
 //     head each = """
