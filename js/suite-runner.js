@@ -63,8 +63,13 @@
         if (window.addEventListener) window.addEventListener("load",whenLoaded,false);
         else if (window.attachEvent) window.attachEvent("onload",whenLoaded);
         else window.onload = __run__;
+        
+        // only run once
+        __run__.addOnLoad = function(){};
     };
     __run__.script_name = @insert:script_name;
+    
+    if (Scripts.runSuite) __run__.addOnLoad();
     
     return __run__;
 }

@@ -48,7 +48,7 @@ var loadedStep = null;
 function whenLoaded() {
     loaded = true;
     if (loadedStep) loadedStep();
-    // else queueNext();
+    else queueNext();
     
 }
 

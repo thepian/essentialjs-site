@@ -267,6 +267,7 @@ function scanScriptTags()
 		    results.scriptPrefix = tag.getPrefix();
 			results.options.setLocation(tag.src);
 			results.scriptOptions.setLocation(tag.src);
+			results.runSuite = tag.getAttribute("run-suite"); //TODO detect "no" "false"
 	    } else {
     	    results.otherScripts.push(tag); 
 	    }
