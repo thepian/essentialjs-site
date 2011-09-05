@@ -1,0 +1,9 @@
+[submodule "Library/thepian-lib"]
+	path = Library/thepian-lib
+	url = git@github.com:thepian/thepian-lib.git
+[submodule "Library/tornado"]
+	path = Library/tornado
+	url = git://github.com/facebook/tornado.git
+[submodule "Library/redis-py"]
+	path = Library/redis-py
+	url = http://github.com/andymccurdy/redis-py.git
