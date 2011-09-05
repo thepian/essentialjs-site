@@ -1,0 +1,307 @@
+//
+// Comments and Spacing
+//
+hspace    = ' ' | '{HT}' | '{VT}' | '{FF}' | '{nbsp}' | '{BOM}' | '{zwj}' | '{zwnj}'
+vspace    = ('{CR}':c '{LF}':l -> c+l) | '{CR}' | '{LF}' | '{LS}' | '{PS}'
+tail      = hspace+:hs -> [''.join(hs)]
+          | end -> []
+
+line_rest = (~vspace :x)*:x (vspace:x |end) -> ''.join(x)
+
+comment  = "//" (~end ~vspace :c)*:c -> [ 'comment', ''.join(c) ]
+
+mlcomment = "/*" something_star_no_slash*:ssns something_without_star:ws "*/" -> ['mlcomment', ''.join(ssns + [ws])]
+something_star_no_slash = (~'*' anything)*:ct '*':ct2 ~'/' -> ''.join(ct + [ct2])
+something_without_star = (~'*' anything)*:ws -> ''.join(ws)
+
+slcomment = "/*" hsomething_star_no_slash*:ssns hsomething_without_star:ws "*/" -> ['slcomment', ''.join(ssns + [ws])]
+hsomething_star_no_slash = (~'*' ~vspace anything)*:ct '*':ct2 ~'/' -> ''.join(ct + [ct2])
+hsomething_without_star = (~'*' ~vspace anything)*:ws -> ''.join(ws)
+
+opt_hspan = (hspace | comment | slcomment | mlcomment)*
+opt_vspan = (vspace | hspace | comment | slcomment | mlcomment)*
+
+
+
+//
+// Literals
+//
+name_start = letter | '$' | '_'
+name_rest = name_start | digit
+iname = name_start:s name_rest*:r -> s + ''.join(r)
+isreserved :x = ?(self.is_reserved(x))
+name = iname:n ~isreserved(n)  -> n
+dotname = iname:n ("." iname:n2 -> n2)*:n2 -> '.'.join([n] + n2)
+
+string3 :e = match_string(e) (~(match_string(e)) anything)*:c match_string(e) -> e + ''.join(c) + e
+string2 = string3('"') | string3("'")
+string = (string2:s -> s)+:s -> ''.join(s)
+
+hexdigit = letterOrDigit:x !(self.hex_digits.find(x)) -> x
+
+number   = "0x" hexdigit+:d               -> '0x' + ''.join(d)
+         | "0X" hexdigit+:d               -> '0X' + ''.join(d)
+         | digit+:ws '.' digit+:fs 'e'    -> '%s.%se' % (''.join(ws), ''.join(fs))
+         | digit+:ws '.' digit+:fs 'E'    -> '%s.%sE' % (''.join(ws), ''.join(fs))
+         | digit+:ws '.' digit+:fs        -> '%s.%s' % (''.join(ws), ''.join(fs))
+         | '.' digit+:fs 'e'              -> '.%se' % ''.join(fs)
+         | '.' digit+:fs 'E'              -> '.%sE' % ''.join(fs)
+         | '.' digit+:ws				  -> '.%s' % ''.join(ws)
+         | digit+:ws                      -> ''.join(ws)
+
+regex = regex_empty | regex_nonempty
+
+regex_empty = '/' '/' regexFlags:f -> '//'+f  
+regex_nonempty = '/' ~'*' regexBody:b '/' regexFlags:f -> '/' + b + '/' + f
+
+regexFlags = letter*:l -> ''.join(l)
+regexBody = (regexEscape | untilEndRegex)+:p -> ''.join(p)
+regexEscape = '\\' (~vspace anything):c -> '\\' + c
+untilEndRegex = (~('\\' | '/') anything)+:c -> ''.join(c)
+
+InObjectText = hspace | vspace | comment | slcomment | mlcomment
+property_literal_single = string3("'"):key InObjectText*:pre ":" InObjectText*:post (PrimaryExpression):val -> self.ast("key_value", key, val, quote="'", pre_colon=pre, post_colon=post)
+property_literal_double = string3('"'):key InObjectText*:pre ":" InObjectText*:post (PrimaryExpression):val -> self.ast("key_value", key, val, quote='"', pre_colon=pre, post_colon=post)
+property_literal_name = iname:key InObjectText*:pre ":" InObjectText*:post (PrimaryExpression):val -> self.ast("key_value", key, val, pre_colon=pre, post_colon=post)
+property_literal = property_literal_name | property_literal_single | property_literal_double
+
+ArrayLiteral = "[" (hspace | vspace | comment | slcomment | mlcomment | PrimaryExpression | ",")*:entries "]" -> self.ast_list("ArrayExpr",entries)
+
+ObjectLiteral = "{" (InObjectText | PropertyLiteral | ",")*:entries "}" -> self.ast_list("ObjectExpr",entries)
+
+
+literal = "undefined" |  "null" | "true" | "false" | string | number | regex
+
+//
+// Expressions
+//
+innercsv :rule = (apply(rule) | ',')*:es 
+csv :rule = !(self.enter_paren()) innercsv(rule):es !(self.leave_paren()) -> es
+
+# TODO backlash + linebreak to be skipped
+# inline function void
+# conditional ?:
+# operators: single, combo, assignments
+# lhs expr: just that, call, index, this
+# simple expression: obj array lit space comment ()
+
+refinement_part = opt_hspan:s1 "." opt_vspan:s2 iname:n -> s1 + ["."] + s2 + [n]
+                | opt_hspan:s1 square_expr:e -> s1 + [e]
+refinement = refinement:r1 refinement_part:r2 !(r1.extend(r2)) -> r1 
+           | refinement_part:r -> r
+
+refinement_callable_part = opt_hspan:s1 "." opt_vspan:s2 iname:n -> s1 + ["."] + s2 + [n]
+                | opt_hspan:s1 square_expr:e -> s1 + [e]
+                | opt_hspan:s1 parenthesis_expr:e -> s1 + [e]
+refinement_callable = refinement_callable:r1 refinement_callable_part:r2 !(r1.extend(r2)) -> r1 
+           | refinement_callable_part:r -> r
+
+simple_expr = ObjectLiteral | ArrayLiteral | literal | comment | slcomment | mlcomment | hspace
+
+
+expr_lhs = name:n refinement:n2 -> [n] + n2
+         | name:n -> [n]
+
+expr_lhs_callable = name:n refinement_callable:n2 -> [n] + n2
+                  | name:n -> [n]
+
+expr_rhs = (literal | slcomment | mlcomment 
+         | square_expr | parenthesis_expr | curly_expr
+         | ops
+         | name | comment | hspace | vspace)+:e -> e
+
+#TODO empty regex vs line comment
+#TODO assign expr vs non
+
+expr = (func_block | conditional | literal | slcomment | mlcomment | ass_ops | dbl_ops | ops | "=" 
+     | square_expr | parenthesis_expr | curly_expr
+     | name 
+     | comment | hspace | vspace)+:e -> e
+
+ass_ops = "+=" | "-=" | "*=" | "/=" | "%=" | "^=" | "&=" | "|=" | "~=" | "<<=" | ">>="
+compare_ops = ">=" | "!=" | "==" | "<=" | "<" | ">"
+dbl_ops = "||" | "&&" | "<<" | ">>" | ">=" | "!=" | "==" | "<=" 
+ops = "." | "+" | "-" | "~" | "!" | "*" | "/" | "%" | "|" | "^" | "&" | "<" | ">"
+
+// ?: vs obj lit
+
+// {} block vs {} literate
+
+// [] () ; ,
+
+args_list = (name | comment | slcomment | mlcomment | hspace | vspace | ",")*
+
+conditional = "?" expr:one ":" expr:two -> ["conditional", one, two]
+
+//
+// Top level structure
+//
+statements = (func_block | conditional 
+           | scope_macro | insert_macro | import_macro | define_macro | describe_macro
+           | square_expr | parenthesis_expr | curly_expr
+           | ";" | "," | ":"
+		   | comment | slcomment | mlcomment 
+           | literal | ass_ops | dbl_ops | ops | "=" 
+           | "in" | "instanceof" | "void"
+           | iname 
+           | hspace | vspace)*
+
+func_block = keyword("function"):k opt_vspan:pre_name name?:nm opt_vspan:pre_args "(" args_list:args ")" opt_vspan:post_args "{" statements:s "}" -> ["function", k["prefix"], pre_name, nm, pre_args, args, post_args, s ]
+# var_decl = keyword("var"):k opt_vspan:gap -> ["var",k["prefix"], gap]
+square_expr = "[" statements:s "]" -> ["square", s]
+curly_expr = "{" statements:s "}" -> ["curly", s]
+parenthesis_expr = "(" statements:s ")" -> ["parenthesis", s]
+
+insert_macro = "@insert" "()"? ";" -> ["insert"]
+             | "@insert path raw" opt_vspan:span string:path ";" -> ["insert","path raw",path]
+             | "@insert path" opt_vspan:span string:path ";" -> ["insert","path",path]
+             | "@insert var" opt_vspan:span string:var ";" -> ["insert","var",var]
+             | "@insert var" opt_vspan:span iname:var ";" -> ["insert","var",var]
+             | "@insert:" iname:var -> ["insert","var",var]
+
+scope_macro = "@scope" opt_vspan:span string:path opt_vspan:post_path "{" statements:s "}" -> ["scope", span, path, post_path, s]
+
+import_macro = "@import" opt_vspan:span dotname:n ".* as *" ";" -> ["starimport",n]
+import_macro = "@import" opt_vspan:span dotname:n " as " name:as ";" -> ["import",n,as]
+define_macro = "@define" opt_vspan:span dotname:n opt_vspan ";" -> ["define", None, n, None]
+define_macro = "@define" opt_vspan:span (iname:n "::" -> n)?:ns dotname:n opt_vspan "=" expr:ex ";" -> ["define", ns, n, ex]
+
+//
+// PageSpec syntax
+//
+
+describe_macro = "@describe" opt_vspan name:constr opt_vspan "," opt_vspan string:caption opt_vspan "{" describe_parts:parts "}" -> ["describe", constr, caption, parts]
+               | "@describe" opt_vspan string:caption opt_vspan "{" describe_parts:parts "}" -> ["describe", None, caption, parts]
+               | "@describe" opt_vspan name:constr opt_vspan "{" describe_parts:parts "}" -> ["describe", constr, None, parts]
+
+describe_parts = (it_block | before_block | after_block | func_block | comment | slcomment | mlcomment | hspace | vspace )*
+before_block = "before all" opt_vspan:span "{" statements:s "}" -> ["beforeall",span,s]
+             |"before each" opt_vspan:span "{" statements:s "}" -> ["beforeeach",span,s]
+			  
+after_block = "after all" opt_vspan:span "{" statements:s "}" -> ["afterall",span,s]
+            | "after each" opt_vspan:span "{" statements:s "}" -> ["aftereach",span,s]
+it_block = "it" opt_vspan string:caption opt_vspan "{" it_statements:s "}" -> ["it",caption, s]
+
+it_statements = (func_block | conditional 
+              | scope_macro | insert_macro | import_macro | define_macro
+              | square_expr | parenthesis_expr | curly_expr
+              | ";" | "," | ":"
+              | comment | slcomment | mlcomment 
+              | should_expr
+              | literal | ass_ops | dbl_ops | ops | "=" 
+              | "in" | "instanceof" | "void"
+              | iname 
+              | hspace | vspace)*
+
+should_expr = expr_lhs_callable:lhs should_rhs+:rhs ";" -> ["should",lhs] + rhs
+
+# after_ms(100) within_ms(100)
+
+should_rhs = opt_hspan "should" opt_vspan (iname | compare_ops):op opt_vspan ~"should" expr_rhs:rhs -> [op] + rhs
+           | opt_hspan "after_ms" opt_vspan "(" expr_rhs:rhs ")" -> ["after_ms"] + rhs
+           | opt_hspan "within_ms" opt_vspan "(" expr_rhs:rhs ")" -> ["within_ms"] + rhs
+
+//
+// Output tree
+//
+statements_out = statement_out*:s -> ''.join(s)
+statements_list_out = [ statement_out*:s ] -> ''.join(s)
+exprs_out = expr_out*:s -> ''.join(s)
+exprs_list_out = [ expr_out*:s ] -> ''.join(s)
+
+statement_out = func_out
+              | describe_out | should_out
+              | conditional_out
+              | square_out | curly_out | parenthesis_out
+              | ['statement' statements_out:rest] -> ''.join(rest)
+              | ['try'] -> 'TRY'
+              | ['test'] -> 'test'
+              | ['pass'] -> ''
+              | comment_out
+              | hspace | vspace
+              | op_out 
+
+expr_out = func_out
+         | conditional_out
+         | square_out | curly_out | parenthesis_out
+         | comment_out
+         | hspace | vspace
+         | op_out
+
+func_out = ['function' :prefix :pre_name :nm :pre_args :args :post_args statements_list_out:s] 
+         -> "%sfunction%s%s%s(%s)%s{%s}" % (''.join(prefix), ''.join(pre_name),(nm or ""), ''.join(pre_args), ''.join(args), ''.join(post_args),s) 
+
+conditional_out = ['conditional' exprs_list_out:one exprs_list_out:two] -> "?%s:%s" % (one,two)
+
+square_out = ['square' exprs_list_out:s] -> "[" + s + "]"
+curly_out = ['curly' exprs_list_out:s] -> "{" + s + "}"
+parenthesis_out = ['parenthesis' exprs_list_out:s] -> "(%s)" % s
+
+comment_out = ['comment' :c] -> "//" + c
+            | ['mlcomment' :c] -> "/*" + c + "*/"
+            | ['slcomment' :c] -> "/*" + c + "*/"
+
+op_out = anything:op -> op
+
+describe_out = ['describe' :constr :caption describe_statements_list_out:stmts] -> self.describe_out_text % dict(constr=constr or "null",caption=caption or "null", stmts=stmts)
+it_out = ['it' :caption statements_list_out:stmts] -> self.it_out_text % dict(caption=caption,stmts=stmts)
+
+#TODO handle other top level statements
+describe_statements_list_out = [ describe_statement_out*:s ] -> ''.join(s)
+
+describe_statement_out = func_out | it_out
+              | conditional_out
+              | square_out | curly_out | parenthesis_out
+              | ['statement' statements_out:rest] -> ''.join(rest)
+              | comment_out
+              | hspace | vspace
+              | op_out 
+
+
+
+
+should_out = ['should' exprs_list_out:lhs should_rhs_out:rhs] -> self.should_out_text % (lhs, self.quote_text(lhs), rhs)
+
+should_rhs_out = should_op_ex_out+:e -> "[ %s ]" % ','.join(e)
+
+should_op_ex_out = [:op exprs_list_out:ex] -> self.should_rhs_out_text % (op, ex, self.quote_text(ex))
+
+# if = "if" args statement vspace
+#    | "if" args statement ";"
+#    |  "if" args block
+
+# stmt = continue | break | return | raise | while | delete | new
+#      | if | function | for | try | catch
+# 
+# continue = keyword("continue"):k              -> ['continue', k["prefix"]]
+# break    = keyword("break"):k                 -> ['break', k["prefix"]]
+# delete   = keyword("delete"):k  get:x   -> ['delete', k["prefix"], x]
+# 
+# return = "return" mandspace expr:e -> ['return', e]
+#        | "return" optspace ~~(vspace | end) -> ['return']
+# raise  = "raise" mandspace expr:e  -> ['raise', e]
+# 
+# unop  = optspace ('-' | '+' | '~'):op unop:e -> ['unop', op, e]
+#       | callable
+# 
+# callable = optspace
+#          ( new
+#          | get
+#          )
+# 
+# slice = expr?:start optspace ':' optspace expr?:end -> ['slice', start, end]
+#       | expr:e -> e
+# 
+# get = get:obj optspace '.' optspace name:n           -> ['getattr', obj, n]
+#     | get:obj optspace '[' !(self.enter_paren()) slice:s !(self.leave_paren()) ']' -> ['getitem', obj, s]
+#     | get:obj optspace '(' csv('expr'):params ')'    -> ['call', obj, params]
+#     | immediate
+# 
+# new = "new" mandspace get:c -> ['new', c]
+# 	
+# 
+# while = "while" mandspace expr:cond optspace ':' block:body -> ['while', cond, body]
+# 
+# for   = "for" mandspace name:var mandspace "in" mandspace expr:data optspace ':' block:body -> ['for', var, data, body]
+nil = "nil"
+

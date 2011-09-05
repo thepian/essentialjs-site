@@ -1,0 +1,127 @@
+blocks = (vspace | comment | mlcomment | annotation)*
+
+hspace    = ' ' | '\t'
+vspace    = '\n'
+lineend	  = '\n' | '\r' | '\l'
+
+comment  = "//" line_rest:c -> self.ast('comment', c)
+
+mlcomment = "/*" something_star_no_slash*:ssns something_without_star:ws "*/" -> self.ast('mlcomment', ''.join(ssns + [ws]))
+
+something_star_no_slash = (~'*' anything)*:ct '*':ct2 ~'/' -> ''.join(ct + [ct2])
+something_without_star = (~'*' anything)*:ws -> ''.join(ws)
+
+emptyline = hspace* ('\\' | comment)?:c vspace
+
+line_rest = (~vspace :x)*:x (vspace|end) -> ''.join(x)
+
+name_start = letter | '$' | '_'
+name_rest = name_start | digit
+iname = name_start:s name_rest*:r -> s + ''.join(r)
+isreserved :x = ?(self.is_reserved(x) or x == "null" or x == "true" or x == "false")
+name = iname:n ~isreserved(n)  -> n
+
+annotation = annotation_no_params | annotation_params
+annotation_no_params = '@' name:n (spaces "()")? (';' | vspace | end) -> self.ast('annotation', n)
+annotation_params = '@' name:n spaces '(' (~')' anything)*:params ')' (';' | vspace | end) -> self.ast('annotation', n,''.join(params))
+
+
+Keyword = ("break" | "do" | "instanceof" | "typeof" | "case" | "else" | "new" | "var" | "catch"
+		| "finally" | "return" | "void" | "continue" | "for" | "switch" | "while" | "debugger" 
+		| "function" | "this" | "with" | "default" | "if" | "throw" | "delete" | "in" | "try")
+		:kwname -> kwname
+
+Punctuator = ">>>="
+           | ">>=" | ">>>" | "===" | "!==" | "<<="
+           | "+="  | "-="  | "*="  | "%=" | ">="
+           | "=="  | "!="  | "++"  | "--" | "<<"
+           | ">>"  | "<="  | "&="  | "|=" | "^="
+           | "&&"  | "||"
+           | '{'     | '}'     | '('     | ')'    | '['   | ']'
+           | '.'     | ';'     | ','     | '<'    | '>'   | '!'
+           | '~'     | '='     | '&'     | '|'    | '^'   | '?'
+           | ':'     | '*'     | '%'     | '+'    | '-'
+DivPunctuator = "/=" | '/'
+
+WhitespaceOrLineTerminator = anything:x ?(ucSpacesRE.match(x)) -> x
+
+skip = (WhitespaceOrLineTerminator | mlcomment)*
+skipNoLine = (Whitespace | SingleLineComment | MultiLineCommentNoNL)*
+skipToEnd = skip end
+
+k :expected = skip Keyword:lexed ?(expected is lexed) -> expected
+
+sc = skipNoLine ';' | skipNoLine (scanLineTerminator | end || ~~'}')
+
+string3 :e = match_string(e) (~(match_string(e)) anything)*:c match_string(e) -> ''.join(c)
+string2 = string3('"') | string3("'")
+string = (string2:s -> s)+:s -> ''.join(s)
+
+regex = token('/') regexBody:b '/' regexFlags:f -> self.ast("regexp", b, flags=f)
+regexFlags = letter*:l -> ''.join(l)
+regexBody = (regexEscape | untilEndRegex)*
+regexEscape = '\\' (~lineend anything):c -> '\\' + c
+untilEndRegex = (~('\\' | '/') anything)*:c -> ''.join(c)
+
+literal = string | regex
+surrounded :op = skip (~hspace anything)+:lexed skip ?(op == ''.join(lexed)) -> op 
+expression_operator = ( surrounded("!") | surrounded("^") | surrounded("~") | surrounded("++") | surrounded("--") | 
+			surrounded("+") | surrounded("-") | surrounded("*") | surrounded("/") | surrounded("%") | 
+			surrounded("|") | surrounded("||") | surrounded("&") | surrounded("&&") | 
+			surrounded("==") | surrounded("===") | surrounded("!=") | surrounded("!==") |
+			surrounded("<<") | surrounded(">>") | surrounded("<") | surrounded(">") |
+			surrounded("<<=") | surrounded(">>=") | surrounded("<=") | surrounded(">=") |
+			surrounded(">>>") | surrounded(">>>=") | 
+			surrounded("in") | surrounded("instanceof"))
+			
+parenthesis = "(" expression:ex ")" -> ["()",ex]
+index = "[" expression:ex "]" -> ["[]",ex]
+ternary = expression:ex1 "?" expression:ex2 ":" expression:ex3 -> ["?:",ex1,ex2,ex3]
+expression = skip ("." | index | parenthesis | ternary | expression_operator | name | literal | comment | mlcomment)+:parts -> parts
+
+
+program = (sourceElements | empty -> []):src skipToEnd -> src 
+
+sourceElements = sourceElement*:e ->  e
+
+sourceElement = (block | functionDeclaration | varStatement |
+			keywordStatement | simpleStatement | emptyStatement | 
+			(comment:c vspace -> c) | mlcomment)
+
+emptyStatement = ";" -> self.ast("empty")
+
+untilEndParentesis = (~')' anything)+:args -> ''.join(args)
+betweenParentesisWithComments = (comment | mlcomment | untilEndParentesis)*:args -> args
+
+functionDeclaration = token("function") skip name:name skip "(" betweenParentesisWithComments:args ")" skip 
+						token("{") sourceElements:body token("}") -> self.ast("func", name, args, body)
+
+varStatement = token("var") skip varDeclarations:decls (';' | end | vspace) -> self.ast("var",decls)
+varDeclarations = varDeclaration:decl1 (token(",") skip varDeclaration:d -> d)*:decl -> [decl1] + decl
+varDeclaration =  (name:name ~(token("=")) -> self.ast(name, [])) | 
+			(name:name token("=") expression:bits -> self.ast(name, bits)) 
+
+block = token("{") sourceElements:body token("}") -> self.ast("block", body)
+
+untilEndStatement = (~(';' | end | vspace) anything)+:bits -> ''.join(bits)
+restStatement = (comment | mlcomment | string | regex | untilEndStatement)+:parts -> parts
+
+keywordStatement = ( token("debugger") | token("continue") | token("break")):keyword 
+			(';' | end | vspace) -> self.ast("simple", keyword, [])
+ 
+simpleStatement = ( token("delete") | token("return") | token("throw") ):keyword 
+			skip untilEndStatement:rest (';' | end | vspace) -> self.ast("simple", keyword, rest)
+
+
+
+
+scanLineTerminator = LineTerminator || ~MultiLineCommentNoNL MultiLineComment
+
+scanPunctNoLineTerminator :expected = skipNoLine  (Punctuator || DivPunctuator):lexed ?(expected is lexed) -> expected
+
+scanLiteral = skip Literal:l -> l
+
+scanDirective = skip ~~(RawStringLiteral):raw StringLiteral:l -> {value:l.value, directive:raw}
+
+
+

@@ -570,6 +570,26 @@ def main():
 
 main()
 
+def meshed_prefix():
+    from os.path import split,join,dirname
+    import sys
+    exec_path,exec_name = split(sys.executable)
+    
+    #TODO go up the path to find "Library/<exec>" or "Library/lib_pypy"
+    return join("Library",exec_path)
+
+def meshed_mods():
+    from os.path import split,join,dirname
+    import sys
+    exec_path,exec_name = split(sys.executable)
+
+    prefix = meshed_prefix()    
+    sys.path.append(join(prefix,exec_name))
+    #TODO check other directories if they have a MESHEDLIB*
+    
+    
+meshed_mods()
+
 def _script():
     help = """\
     %s [--user-base] [--user-site]
