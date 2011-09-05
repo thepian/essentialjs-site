@@ -6,7 +6,6 @@
 .installed.cfg
 *.egg-info
 eggs-log.txt
-bin/
 develop-eggs/
 eggs/
 parts/
