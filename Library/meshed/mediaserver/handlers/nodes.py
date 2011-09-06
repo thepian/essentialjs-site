@@ -3,7 +3,6 @@ import os, fs, os.path, logging
 from os.path import join,isdir
 
 from thepian.conf import structure, settings
-from mediaserver.sources import CssSourceNode,JsSourceNode, newer_assets, combine_asset_sources
 
 import tornado.web
 import tornado.template

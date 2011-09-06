@@ -5,7 +5,7 @@ from __future__ import with_statement
 import urllib, cgi
 import os, re
 
-import simplejson
+# import simplejson
 
 def posted_results(arguments):
     """Pull results from POST into a list of dicts"""

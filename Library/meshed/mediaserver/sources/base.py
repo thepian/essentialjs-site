@@ -4,7 +4,10 @@ from os.path import join,isdir,exists
 
 from thepian.conf import structure
 
-from simplejson import JSONEncoder
+try:
+    from json import JSONEncoder
+except ImportError:
+    from simplejson import JSONEncoder
 encoder = JSONEncoder()
 
 scope_statement = re.compile(r'@scope [^"]*"([^"]+)"')

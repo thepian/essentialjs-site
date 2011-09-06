@@ -13,8 +13,6 @@ website = [
 (r".*/$", DirectoryHandler),
 ]
 apisite = [
-    (r"/(\w+)/(\w+)/pagespec-verify.js", PageSpecVerifyJsHandler),
-    
     # Account and project pages (for testing as it would be on website instead)
     (r"^/(essentialjs)/$", AccountOverviewHandler),
     (r"^/(essentialjs)/(pagespec)/$", ProjectOverviewHandler),

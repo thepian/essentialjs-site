@@ -3,13 +3,13 @@ import os, fs, os.path, logging
 from os.path import join,isdir
 
 from thepian.conf import structure, settings
-from mediaserver.sources import CssSourceNode,JsSourceNode, newer_assets, combine_asset_sources
+#from mediaserver.sources import CssSourceNode,JsSourceNode, newer_assets, combine_asset_sources
 
 import tornado.web
 import tornado.template
 
 from base import ObjectLike
-from mediaserver.verify import VerifySource
+#from mediaserver.verify import VerifySource
 from mediaserver.persisted import *
 
 class MediaHomeHandler(tornado.web.RequestHandler):

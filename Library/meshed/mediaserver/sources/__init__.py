@@ -11,8 +11,8 @@ from fs.dependency import newer_group
 from thepian.conf import structure
 
 from base import SourceNode
-from css import CssSourceNode
-from js import JsSourceNode, JsScopeNode
+#from css import CssSourceNode
+#from js import JsSourceNode, JsScopeNode
 
     
 def newer_assets(src,target,source_node=SourceNode):

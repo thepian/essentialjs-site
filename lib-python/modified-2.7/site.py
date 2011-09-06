@@ -576,16 +576,28 @@ def meshed_prefix():
     exec_path,exec_name = split(sys.executable)
     
     #TODO go up the path to find "Library/<exec>" or "Library/lib_pypy"
-    return join("Library",exec_path)
+    exec_path = dirname(exec_path)
+    return join(exec_path,"Library")
 
 def meshed_mods():
     from os.path import split,join,dirname
     import sys
     exec_path,exec_name = split(sys.executable)
 
-    prefix = meshed_prefix()    
+    prefix = meshed_prefix() 
     sys.path.append(join(prefix,exec_name))
     #TODO check other directories if they have a MESHEDLIB*
+    sys.path.append(join(prefix,"thepian-lib"))
+    sys.path.append(join(prefix,"redis-py"))
+    sys.path.append(join(prefix,"tornado"))
+    sys.path.append(join(prefix,"PyMeta2"))
+
+    try:
+        from thepian.conf import use_settings, structure, use_cwd_structure
+        use_cwd_structure()
+        use_settings(structure.determine_settings_module())
+    except Exception, e:
+        print 'structure conf failed:: ',e
     
     
 meshed_mods()

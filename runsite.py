@@ -1,14 +1,17 @@
-#!/usr/bin/env ./meshed 
+#!bin/meshed 
 
 PORT = 33333
+
+import os,site,sys
 
 def main(executable_path,executable_name):
     print "Tornado Server on port %s, logging to testing.log, running in %s" % (PORT,executable_path)
 
-    import fs,os,site
+    import fs
     from thepian.conf import structure
     from os.path import join
     
+    print structure.PROJECT_DIR
     from thepian.conf import ensure_target_tree
     ensure_target_tree(structure.PROJECT_DIR)
     #TODO part add_themaestro functionality

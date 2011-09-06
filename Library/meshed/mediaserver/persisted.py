@@ -2,7 +2,10 @@ from __future__ import with_statement
 from os.path import join, exists
 from fs import listdir, filters
 import hashlib
-import simplejson as json
+try:
+    import json
+except ImportError:
+    import simplejson as json
 import time
 
 from ecmatic.es import translate, load_and_translate, load_expand_and_translate, load_and_add_scope, extract_examples  

@@ -5,7 +5,10 @@ from thepian.conf import structure
 
 from sources import CssSourceNode,JsSourceNode, JsScopeNode, newer_assets, combine_asset_sources, expand_inline_asset_sources
 
-import simplejson
+try:
+    import simplejson as json
+except ImportError:
+    import json
     
 class VerifySource(object):
     
@@ -34,7 +37,7 @@ class VerifySource(object):
                 specs.append(cls.get(base,test))
         return specs
 
-    decoder = simplejson.JSONDecoder()
+    decoder = json.JSONDecoder()
     
     @classmethod
     def posted_results(cls,arguments):
