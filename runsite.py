@@ -23,7 +23,14 @@ def main(executable_path,executable_name):
     LOG_FILENAME = join(structure.PROJECT_DIR,'testing.log')
     logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
     
-    from mediaserver import Application, HTTPServer
+    from mediaserver import *
+    connect_redis()
+    # REDIS.flushdb()
+    load_scopes()
+    load_seed()
+    
+    
+    from mediaserver import Application
     import tornado.httpserver
     import tornado.ioloop
     import tornado.autoreload

@@ -42,9 +42,17 @@ UPLOAD_SCRIPT_HASH_COMBINE = '%s/%s/7mkl37623iwuerqw'
 SUITE_KEY = 'shortcut/%s/%s/suite'.replace("/",UNIT_SEP) # json dict describing parameters
 SUITE_HASH_COMBINE = '%s/%s/%s/%s/knj897opifgy56'
 
-# Redis connection
-REDIS = redis.Redis(REDIS_HOST, REDIS_PORT, db=9)
+REDIS = None
 
+def connect_redis(host=REDIS_HOST,port=REDIS_PORT,db=9):
+    # Redis connection
+    global REDIS
+    REDIS = redis.StrictRedis(host=host, port=port, db=db)
+    print REDIS
+
+def flushdb():
+    REDIS.flushdb()
+    
 # REDIS = brukva.Client(REDIS_HOST, REDIS_PORT)
 # REDIS.connect()
 # REDIS.select(9)
@@ -54,6 +62,9 @@ IN_A_YEAR_STAMP = time.time() + ONE_YEAR_IN_SECONDS
 
 def load_seed():
     from thepian.conf import structure
+    
+    if not REDIS:
+        print "**** NO REDIS ****"
     
     base = join(structure.PROJECT_DIR,"seed")
     if exists(base):
@@ -129,10 +140,6 @@ def load_scopes():
         load_and_add_scope('"%s"' % s[:-9],join(base,s))
     print "Done loading scopes (", " ".join(scopes),")"
     
-# REDIS.flushdb()
-load_scopes()
-load_seed()
-
 def persist_results(results, account=None, project=None, run=None):
     """
     results take the form of
@@ -156,7 +163,7 @@ def persist_results(results, account=None, project=None, run=None):
 
     for r in results:
         spec_id = r["spec"]
-        if r["outcome"] == "ended" and r["example"] == "":
+        if r["outcome"] == "ended" and ("example" not in r or r["example"] == ""):
             # Spec completed, move out of ongoing
             if r["spec"] in examples:
                 flush_unfinished(examples[ spec_id ])
@@ -164,9 +171,9 @@ def persist_results(results, account=None, project=None, run=None):
             log_ongoing_spec(account,project,spec_id)
             move_to_completed(account,project,spec_id,run)
 
-        elif r["example"] != "":
+        elif "example" in r and r["example"] != "":
             ongoing_key = ONGOING_RUNS_KEY % (account,project,spec_id)
-            # print "adding ongoing", r["outcome"], "---", ongoing_key, "Run", run
+            print "adding ongoing", r["outcome"], "---", ongoing_key.replace("\x1f","/"), "Run", run
             REDIS.sadd(ongoing_key,run)
             example_names_id = ONGOING_EXAMPLE_NAMES_KEY % (account,project,spec_id,run)
             REDIS.sadd(example_names_id,r["example"])
@@ -186,18 +193,23 @@ def persist_results(results, account=None, project=None, run=None):
 def log_ongoing_spec(account, project, spec):
     print "------------"
     print "ongoing spec: ", account, project, spec
+
+    completed_runs_key = COMPLETED_RUNS_KEY % (account,project,spec)
+
     ongoing_id = ONGOING_RUNS_KEY % (account,project,spec)
     runs = REDIS.smembers(ongoing_id)
     for run in runs:
-        print "run %s:" % run
-        examples_id = EXAMPLE_NAMES_KEY % (account,project,spec)
-        for e in REDIS.smembers(examples_id):
-            example_run_id = ONGOING_EXAMPLES_KEY % (account,project,spec,run,e)
-            if example_run_id in REDIS:
-                result = REDIS[example_run_id]
-                print example_run_id, json.loads(result)
-            else:
-                print "no result for", e
+        # Fix until srem works
+        if not REDIS.sismember(completed_runs_key,run):
+            print "run %s:" % run
+            examples_id = EXAMPLE_NAMES_KEY % (account,project,spec)
+            for e in REDIS.smembers(examples_id):
+                example_run_id = ONGOING_EXAMPLES_KEY % (account,project,spec,run,e)
+                if example_run_id in REDIS:
+                    result = REDIS[example_run_id]
+                    print example_run_id, json.loads(result)
+                else:
+                    print "no result for", e
     print "."
 
     # example = json.loads(e_text)
@@ -205,13 +217,19 @@ def log_ongoing_spec(account, project, spec):
 def move_to_completed(account, project, spec, run):
     examples = {}
 
+    # Fix until srem works
+    completed_runs_key = COMPLETED_RUNS_KEY % (account,project,spec)
+    if REDIS.sismember(completed_runs_key,run):
+        return
+        
     # make json of the examples and save that
     example_names_id = ONGOING_EXAMPLE_NAMES_KEY % (account,project,spec,run)
     if example_names_id in REDIS:
-        # print "moving to completed --- ", REDIS.type(example_names_id), example_names_id.replace(UNIT_SEP,"/")
+        print "moving to completed --- ", REDIS.type(example_names_id), example_names_id.replace(UNIT_SEP,"/")
         for example_name in REDIS.smembers(example_names_id):
             example_id = ONGOING_EXAMPLES_KEY % (account,project,spec,run,example_name)
             example_results = json.loads(REDIS[example_id])
+            print "MOVING ", example_name, example_results
             #TODO extract stamps, append results/ongoing and completed
             examples[example_name] = example_results
 
@@ -252,8 +270,10 @@ def describe_specs(account,project):
 
         completed_runs_id = COMPLETED_RUNS_KEY % (account,project,spec_id)
         completed_runs = [e for e in REDIS.smembers(completed_runs_id)]
-        last_id = COMPLETED_RUN_KEY % (account,project,spec_id,completed_runs[-1])
-        last_completed = json.loads(REDIS[ last_id ])
+        last_completed = None
+        if len(completed_runs):
+            last_id = COMPLETED_RUN_KEY % (account,project,spec_id,completed_runs[-1])
+            last_completed = json.loads(REDIS[ last_id ])
 
         specs.append({ "examples":examples, "info": info, "ongoing_runs": ongoing_runs, 
             "completed_runs":completed_runs,
