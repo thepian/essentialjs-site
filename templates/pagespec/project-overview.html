@@ -54,7 +54,11 @@
 	<dl>
 		{% for example in spec["examples"] %}
 		<dt>It {{ example }}.</dt>
-		<dd></dd>
+		<dd>
+		{% if spec["last_completed"] %}
+		{{ spec["last_completed"] }}
+		{% end %}
+		</dd>
 		{% end %}	
 	</dl>
 	{% end %}	
