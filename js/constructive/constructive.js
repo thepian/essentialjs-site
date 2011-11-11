@@ -1,3 +1,4 @@
+
 /**
  * @param {Object} ns Namespace base (Optional)
  * " 
@@ -8,7 +9,7 @@ function Resolver(name,ns,options)
 	switch(typeof(name)) {
 	case "undefined":
 		// Resolver()
-		return Resolver.top;
+		return Resolver.default;
 		
 	case "string":
 		// Resolver("abc")
@@ -17,6 +18,7 @@ function Resolver(name,ns,options)
 		if (Resolver[name] == undefined) {
 			if (options == undefined) { options = ns; ns = {}; }
 			Resolver[name] = Resolver(ns,options);
+			Resolver[name].name = name;
 			}
 		return Resolver[name];
 	}
@@ -25,6 +27,7 @@ function Resolver(name,ns,options)
 	// Resolver({},{options})
 	options = ns || {};
 	ns = name;
+	name = options.name;
 	var _generator = options.generator || Generator(Object); //TODO faster default
 
 	function _resolve(names,onundefined) {
@@ -61,6 +64,7 @@ function Resolver(name,ns,options)
         }
     };
 
+    resolve.name = name;
     resolve.namespace = ns;
     
     resolve.declare = function(name,value,onundefined) 
@@ -79,9 +83,45 @@ function Resolver(name,ns,options)
     	base[symbol] = value;
     };
 
+    resolve.reference = function(name,onundefined)
+    {
+        var names = name.split(".");
+
+    	function get() {
+        	var base = _resolve(names,onundefined);
+        	return base;
+        }
+        function set(value) {
+            var symbol = names.pop();
+        	var base = _resolve(names,onundefined);
+        	names.push(symbol);
+        	base[symbol] = value;
+        }
+        function declare(value) {
+            var symbol = names.pop();
+        	var base = _resolve(names,onundefined);
+        	names.push(symbol);
+        	if (base[symbol] === undefined) base[symbol] = value;
+        }
+        get.set = set;
+        get.get = get;
+        get.declare = declare;
+
+        return get;
+    };
+
+    resolve.override = function(ns,options)
+    {
+        options = options || {};
+        var name = options.name || this.name; 
+		Resolver[name] = Resolver(ns,options);
+		Resolver[name].name = name;
+		return Resolver[name];
+    };
+
     return resolve;
 }
-Resolver.top = Resolver({});
+Resolver.default = Resolver({},{ name:"default" });
 
 var resolve = Resolver(Resolver.top);
 
@@ -235,3 +275,33 @@ Generator.setPoolSize = function(baseConstr,variant,nSize)
 	baseConstr.generator_variants[null].pool_size = nSize;
 };
 
+
+/*
+function assert(b) {
+	if (!eval(b)) alert("failed:"+ b);
+}
+var shapes = Resolver()("my.shapes");
+var tools = Resolver()("my.tools");
+
+Resolver().set("my.tools.X",5);
+assert("5 === Resolver.default.namespace.my.tools.X");
+
+assert("shapes === Resolver.default.namespace.my.shapes");
+assert("tools === Resolver.default.namespace.my.tools");
+assert("Resolver.default.namespace.my");
+
+Resolver("default").override({});
+assert("undefined === Resolver.default.namespace.my");
+Resolver()("my")
+assert("Resolver.default.namespace.my");
+
+var my = Resolver().reference("my");
+assert("my.get()");
+
+debugger;
+var num = Resolver().reference("num");
+num.set(5);
+assert("5 == num.get()");
+
+
+*/
