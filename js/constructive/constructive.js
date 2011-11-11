@@ -1,43 +1,89 @@
-function resolver(global)
+/**
+ * @param {Object} ns Namespace base (Optional)
+ * " 
+ * @param {Object} options Options { generator: function } (Optional) 
+ */
+function Resolver(name,ns,options)
 {
-    /**
-     * string with name to resolve and an optional boolean stating if the resolve can be undefined
-     *
-     * or
-     *
-     * { name: , generator: , allowUndefined: }
-     */
-    return function(name,allowUndefined) {
-        var _generator, names;
-        if (typeof name == "object") {
-            _generator = name.generator;
-            name = name.name;
-            names = name.split(".");
-            if (allowUndefined == undefined) allowUndefined = name.allowUndefined || name.allowNull;
-        }
-        else {
-            names = name.split(".");
-        }
-        var top = global;
+	switch(typeof(name)) {
+	case "undefined":
+		// Resolver()
+		return Resolver.top;
+		
+	case "string":
+		// Resolver("abc")
+		// Resolver("abc",{})
+		// Resolver("abc",{},{options})
+		if (Resolver[name] == undefined) {
+			if (options == undefined) { options = ns; ns = {}; }
+			Resolver[name] = Resolver(ns,options);
+			}
+		return Resolver[name];
+	}
+
+	// Resolver({})
+	// Resolver({},{options})
+	options = ns || {};
+	ns = name;
+	var _generator = options.generator || Generator(Object); //TODO faster default
+
+	function _resolve(names,onundefined) {
+        var top = ns;
         for (var j = 0, n; n = names[j]; ++j) {
             var prev_top = top;
             top = top[n];
             if (top == undefined) {
-                if (_generator) {
+                switch(onundefined) {
+                case undefined:
+                case "generate":
                     top = prev_top[n] = _generator();
-                }
-                else {
-                    if (!allowUndefined) throw new Error("The '" + n + "' part of '" + name + "' couldn't be resolved.");
+                    break;
+                case "null":
                     return null;
+                case "throw":
+                	throw new Error("The '" + n + "' part of '" + names.join(".") + "' couldn't be resolved.");
                 }
             }
         }
         return top;
+	}
+	
+    /**
+     * @param name To resolve
+     * @param onundefined What to do for undefined symbols ("generate","null","throw")
+     */
+    function resolve(name,onundefined) {
+        if (typeof name == "object") {
+            return _resolve(name.name.split("."),name.onundefined);
+        }
+        else {
+            return _resolve(name.split("."),onundefined);
+        }
     };
-}
-resolver.top = {};
 
-var resolve = resolver(resolver.top);
+    resolve.namespace = ns;
+    
+    resolve.declare = function(name,value,onundefined) 
+    {
+        var names = name.split(".");
+        var symbol = names.pop();
+    	var base = _resolve(names,onundefined);
+    	if (base[symbol] === undefined) base[symbol] = value;
+    };
+
+    resolve.set = function(name,value,onundefined) 
+    {
+        var names = name.split(".");
+        var symbol = names.pop();
+    	var base = _resolve(names,onundefined);
+    	base[symbol] = value;
+    };
+
+    return resolve;
+}
+Resolver.top = Resolver({});
+
+var resolve = Resolver(Resolver.top);
 
 // if (typeof pGlobals == "object" && typeof pGlobals.length == "undefined") pGlobals = [pGlobals];
 // for (var i = 0, g; g = pGlobals[i]; ++i) {
@@ -46,7 +92,7 @@ var resolve = resolver(resolver.top);
 // }
 
 
-function generator(baseConstr,variant)
+function Generator(baseConstr,variant)
 {
 	variant = variant || null; // defaults to null
 	
@@ -97,7 +143,7 @@ function generator(baseConstr,variant)
 	return newGenerator;
 };
  
-generator.setBase = function(baseConstr,mHandlers,pConstruction,v1,v2,v3,v4)
+Generator.setBase = function(baseConstr,mHandlers,pConstruction,v1,v2,v3,v4)
 {
 	// ensure that variants map is present on base constructor
 	baseConstr.generator_variants = baseConstr.generator_variants || { };
@@ -110,7 +156,7 @@ generator.setBase = function(baseConstr,mHandlers,pConstruction,v1,v2,v3,v4)
 	};
 };
 
-generator.setVariant = function(baseConstr,variant,variantConstr,mHandlers,pConstruction,v1,v2,v3,v4)
+Generator.setVariant = function(baseConstr,variant,variantConstr,mHandlers,pConstruction,v1,v2,v3,v4)
 {
 	variant = variant || null; // defaults to null
 	
@@ -127,7 +173,7 @@ generator.setVariant = function(baseConstr,variant,variantConstr,mHandlers,pCons
 };
 
  
-generator.setVariantGenerator = function(baseConstr,variant,fGenerator,mHandlers,pConstruction,v1,v2,v3,v4)
+Generator.setVariantGenerator = function(baseConstr,variant,fGenerator,mHandlers,pConstruction,v1,v2,v3,v4)
 {
 	variant = variant || null; // defaults to null
 	
@@ -142,7 +188,7 @@ generator.setVariantGenerator = function(baseConstr,variant,fGenerator,mHandlers
 	}; 
 };
 
-generator.setHandlers = function(constr,mHandlers)
+Generator.setHandlers = function(constr,mHandlers)
 {
        // morph arguments generator -> constructor
        // unknown variant
@@ -157,14 +203,14 @@ generator.setHandlers = function(constr,mHandlers)
 * { generate: MyBase, variant: "one" }
 * { constant: 1 }
 */
-generator.setArguments = function(mFirst,mSecond)
+Generator.setArguments = function(mFirst,mSecond)
 {
 };
  
 /**
  * Configure the base constructor to generate a singleton of a specific variant
  */
-generator.setSingleton = function(baseConstr,variant)
+Generator.setSingleton = function(baseConstr,variant)
 {
 	// ensure that variants map is present on base constructor
 	baseConstr.generator_variants = fConstructor.generator_variants || {}; 
@@ -178,7 +224,7 @@ generator.setSingleton = function(baseConstr,variant)
 /**
  * Configure the base constructor to generate a instances of a specific variant limited by a pool size
  */
-generator.setPoolSize = function(baseConstr,variant,nSize)
+Generator.setPoolSize = function(baseConstr,variant,nSize)
 {
 	// ensure that variants map is present on base constructor
 	baseConstr.generator_variants = baseConstr.generator_variants || {}; 
