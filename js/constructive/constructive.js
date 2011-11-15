@@ -1,4 +1,3 @@
-
 /**
  * @param {Object} ns Namespace base (Optional)
  * " 
@@ -123,104 +122,137 @@ function Resolver(name,ns,options)
 }
 Resolver.default = Resolver({},{ name:"default" });
 
-var resolve = Resolver(Resolver.top);
-
-// if (typeof pGlobals == "object" && typeof pGlobals.length == "undefined") pGlobals = [pGlobals];
-// for (var i = 0, g; g = pGlobals[i]; ++i) {
-//     var fResolved = _resolve(g, pName, false);
-//     if (fResolved) return fResolved
-// }
-
-
-function Generator(baseConstr,variant)
+/**
+ * Generator(constr) - get cached or new generator
+ * Generator(constr,base1,base2) - define with bases
+ * Generator(constr,base,options) - define with options 
+ *
+ * options { singleton: false, pool: undefined, allocate: true } 
+ *
+ */
+function Generator(mainConstr,options)
 {
-	variant = variant || null; // defaults to null
-	
-	var info = { constructor: baseConstr, func: baseConstr, construction: [] };
-	
+	if (mainConstr.__generator__) return mainConstr.__generator__;
+
 	function newGenerator(a,b,c,d,e,f,g,h,i,j,k,l) {
-		// TODO map args using handler
+
+		var instance = new generator.type();
 		
 		// args
-		for(var i=0,l=info.construction.length; i<l; ++i) {
-			//TODO call $_init
+		for(var i=0,g; g=generator.constructors[i]; ++i) {
+			//TODO set initial content
 		}
-		var object = new info.func(a,b,c,d,e,f,g,h,i,j,k,l);
 		
-		// setters and calls
-		for(var i=0,l=info.construction.length; i<l; ++i) {
-			//TODO call $_init
+		// constructors
+		instance.__context__ = { args:[a,b,c,d,e,f,g,h,i,j,k,l] }; //TODO inject morphers that change the args for next constructor
+		for(var i=0,g; g=generator.constructors[i]; ++i) {
+			generator.constructors[i].apply(instance,instance.__context__.args);
 		}
-		return object;
+		delete instance.__context__;
+		return instance;
 	}
 
 	function singletonGenerator(a,b,c,d,e,f,g,h,i,j,k,l) {
-		if (info.singleton == null) {
-			info.singleton = new info.func(a,b,c,d,e,f,g,h,i,j,k,l); 
+		if (options.singleton == null) {
+			generator.singleton = new info.func(a,b,c,d,e,f,g,h,i,j,k,l); 
 		}
-		return info.singleton;
+		return generator.singleton;
 	}
 	
-	if (baseConstr.generator_variants && baseConstr.generator_variants[variant]) {
-		info = baseConstr.generator_variants[variant];
+	// pooled generator
+	//TODO
 
-		// explicit generator function
-		if (info.generator) return info.generator;
-		
-		// singleton generator
-		if (info.singleton !== undefined) {
-			singletonGenerator.constructor = info.func;
-			return singletonGenerator;
+	// Make the generator with type annotations
+	var generator = (function(){
+		var generator = newGenerator;
+
+		// mark end of constructor arguments
+		var last = arguments.length-1;
+		var options = arguments[last];
+		if (typeof options == "function") {
+			options = {};
+		} else {
+			--last;
 		}
 
-		// pooled generator
-		//TODO
+		// get order of bases and constructors from the main constructor or the arguments
+		var bases = generator.bases = mainConstr.bases || [];
+		if (last > 0) {
+			bases = [];
+			for(var i=last,a; (i >= 1) &&(a = arguments[i]); --i) {
+				bases.push(arguments[i]);
+			}
+		}	
+		var constructors = generator.constructors = [];
+		for(var i=0,b; b = bases[i];++i) {
+			if (b.bases) {
+				for(var j=0,b2; b2 = b.bases[j]; ++j) constructors.push(b.bases[j]);
+			}
+			constructors.push(b);
+		}
+		constructors.push(mainConstr);
+
+		// If we have base classes, make prototype based on their type
+		if (bases.length) {
+			var base = Generator(bases[0]);
+			var p = generator.prototype = new base.type();
+			for(var i=1,b; b = bases[i]; ++i) {
+				for(var n in b.prototype) p[n] = b.prototype[n]; 
+			}
+		}
+
+		// simple type with inheritance chain, fresh prototype
+		function type() {}
+		generator.type = type;
+		generator.type.prototype = generator.prototype;
+
+		// migrate prototype
+		for(var n in mainConstr.prototype) generator.prototype[n] = mainConstr.prototype[n];
+		mainConstr.prototype = generator.prototype;
+
 		
-		// regular new
+		return generator;
+	})();
+		 
+	
+	function variant(name,variantConstr,v1,v2,v3,v4) {
+		if (variantConstr == undefined) { // Lookup the variant generator
+			var g = this.variants[name];
+			if (g.generator) return g.generator;
+			var g = this.variants[""]; // default generator
+			if (g.generator) return g.generator;
+			return this;			
+		} else {	// Set the variant generator
+			var handlers = variantConstr.handlers;
+			var bases = variantConstr.bases;
+			this.variants[name] = { 
+				func: variantConstr,
+				handlers: handlers || {},
+				bases: bases || [],
+				additional: [v1,v2,v3,v4] 
+			}; 
+		}
 	}
-	newGenerator.constructor = info.func;
-	
-	return newGenerator;
-};
- 
-Generator.setBase = function(baseConstr,mHandlers,pConstruction,v1,v2,v3,v4)
-{
-	// ensure that variants map is present on base constructor
-	baseConstr.generator_variants = baseConstr.generator_variants || { };
-	
-	baseConstr.generator_variants[null] = {
-		func: baseConstr,
-		handlers: mHandlers	|| {},
-		construction: pConstruction || [],
-		additional: [v1,v2,v3,v4] 
-	};
+
+	// variant get/set function and variants map
+	generator.variant = variant;
+	generator.variants = {};
+
+	// Future calls will return this generator
+	mainConstr.__generator__ = generator;
+		
+	return generator;
 };
 
-Generator.setVariant = function(baseConstr,variant,variantConstr,mHandlers,pConstruction,v1,v2,v3,v4)
+
+Generator.setVariantGenerator = function(mainConstr,variant,fGenerator,mHandlers,pConstruction,v1,v2,v3,v4)
 {
 	variant = variant || null; // defaults to null
 	
 	// ensure that variants map is present on base constructor
-	baseConstr.generator_variants = baseConstr.generator_variants || {}; 
+	mainConstr.generator_variants = mainConstr.generator_variants || {}; 
 
-	//TODO blend with previous config
-	baseConstr.generator_variants[variant] = { 
-		func: variantConstr,
-		handlers: mHandlers || {},
-		construction: pConstruction || [],
-		additional: [v1,v2,v3,v4] 
-	}; 
-};
-
- 
-Generator.setVariantGenerator = function(baseConstr,variant,fGenerator,mHandlers,pConstruction,v1,v2,v3,v4)
-{
-	variant = variant || null; // defaults to null
-	
-	// ensure that variants map is present on base constructor
-	baseConstr.generator_variants = baseConstr.generator_variants || {}; 
-
-	baseConstr.generator_variants[variant] = { 
+	mainConstr.generator_variants[variant] = { 
 		generator: fGenerator,
 		handlers: mHandlers || {},
 		construction: pConstruction || [],
@@ -250,30 +282,75 @@ Generator.setArguments = function(mFirst,mSecond)
 /**
  * Configure the base constructor to generate a singleton of a specific variant
  */
-Generator.setSingleton = function(baseConstr,variant)
+Generator.setSingleton = function(mainConstr,variant)
 {
 	// ensure that variants map is present on base constructor
-	baseConstr.generator_variants = fConstructor.generator_variants || {}; 
-	baseConstr.generator_variants[null] = fConstructor.generator_variants[null] || {};
+	mainConstr.generator_variants = fConstructor.generator_variants || {}; 
+	mainConstr.generator_variants[null] = fConstructor.generator_variants[null] || {};
 	
-	baseConstr.generator_variants[null].default_variant = variant || null; // defaults to null
-	baseConstr.generator_variants[null].singleton = null;
+	mainConstr.generator_variants[null].default_variant = variant || null; // defaults to null
+	mainConstr.generator_variants[null].singleton = null;
 };
 
  
 /**
  * Configure the base constructor to generate a instances of a specific variant limited by a pool size
  */
-Generator.setPoolSize = function(baseConstr,variant,nSize)
+Generator.setPoolSize = function(mainConstr,variant,nSize)
 {
 	// ensure that variants map is present on base constructor
-	baseConstr.generator_variants = baseConstr.generator_variants || {}; 
-	baseConstr.generator_variants[null] = baseConstr.generator_variants[null] || {};
+	mainConstr.generator_variants = mainConstr.generator_variants || {}; 
+	mainConstr.generator_variants[null] = mainConstr.generator_variants[null] || {};
 	
-	baseConstr.generator_variants[null].default_variant = variant || null; // defaults to null
-	baseConstr.generator_variants[null].pool = {};
-	baseConstr.generator_variants[null].pool_size = nSize;
+	mainConstr.generator_variants[null].default_variant = variant || null; // defaults to null
+	mainConstr.generator_variants[null].pool = {};
+	mainConstr.generator_variants[null].pool_size = nSize;
 };
+
+// types for describing generator arguments and generated properties
+(function(){
+	var essential = Resolver("essential",{});
+	function Type(options) {
+		this.options = options || {};
+	}
+	essential.set("Type",Generator(Type));
+	
+	function StringType(options) {
+		this.type = String;
+	}
+	essential.set("StringType",Generator(StringType,Type));
+	essential.namespace.Type.variant("String",essential.namespace.StringType);
+		
+	function NumberType(options) {
+		this.type = Number;
+	}
+	essential.set("NumberType",Generator(NumberType,Type));
+	essential.namespace.Type.variant("Number",essential.namespace.NumberType);
+	
+	function DateType(options) {
+		this.type = Date;
+	}
+	essential.set("DateType",Generator(DateType,Type));
+	essential.namespace.Type.variant("Date",essential.namespace.DateType);
+	
+	function BooleanType(options) {
+		this.type = Boolean;
+	}
+	essential.set("BooleanType",Generator(BooleanType,Type));
+	essential.namespace.Type.variant("Boolean",essential.namespace.BooleanType);
+	
+	function ObjectType(options) {
+		this.type = Object;
+	}
+	essential.set("ObjectType",Generator(ObjectType,Type));
+	essential.namespace.Type.variant("Object",essential.namespace.ObjectType);
+	
+	function ArrayType(options) {
+		this.type = Array;
+	}
+	essential.set("ArrayType",Generator(ArrayType,Type));
+	essential.namespace.Type.variant("Array",essential.namespace.ArrayType);
+})();
 
 
 /*
@@ -298,10 +375,42 @@ assert("Resolver.default.namespace.my");
 var my = Resolver().reference("my");
 assert("my.get()");
 
-debugger;
 var num = Resolver().reference("num");
 num.set(5);
 assert("5 == num.get()");
 
+
+// Generators
+
+var numberType = Generator(Resolver("essential")("Type"),"Number");
+
+var shapes = {};
+
+function Shape() {}
+Shape.arguments = [ ];
+
+function Rectangle(width,height) {
+	
+}
+Rectangle.bases = [Shape];
+Rectangle.arguments = [ numberType({name:"width"}), numberType({name:"height"}) ]; //TODO numberType({name:"width"}) optional: , default:  seed:
+Rectangle.prototype.earlyFunc = function() {};
+
+shapes.Shape = Generator(Shape);
+shapes.Rectangle = Generator(Rectangle);
+
+Rectangle.prototype.getWidth = function() {
+	return this.width;
+};
+
+var r55 = shapes.Rectangle(5,5);
+assert("r55 instanceof Rectangle");
+assert("r55 instanceof shapes.Rectangle");
+assert("r55 instanceof Shape");
+assert("r55 instanceof shapes.Shape");
+assert("shapes.Rectangle.prototype.getWidth == Rectangle.prototype.getWidth");
+assert("typeof shapes.Rectangle.prototype.earlyFunc == 'function'");
+//assert("5 == r55.width");
+//assert("5 == r55.getWidth()");
 
 */
