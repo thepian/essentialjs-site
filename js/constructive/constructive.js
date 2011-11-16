@@ -157,13 +157,8 @@ function Generator(mainConstr,options)
 
 		var instance = new generator.type();
 		
-		// args
-		for(var i=0,g; g=info.constructors[i]; ++i) {
-			//TODO set initial content
-		}
-		
 		// constructors
-		instance.__context__ = { args:[a,b,c,d,e,f,g,h,i,j,k,l] }; //TODO inject morphers that change the args for next constructor
+		instance.__context__ = { generator:generator, info:info, args:[a,b,c,d,e,f,g,h,i,j,k,l] }; //TODO inject morphers that change the args for next constructor
 		for(var i=0,g; g=info.constructors[i]; ++i) {
 			info.constructors[i].apply(instance,instance.__context__.args);
 		}
@@ -176,7 +171,7 @@ function Generator(mainConstr,options)
 			var instance = info.singleton = new generator.type();
 
 			// constructors
-			instance.__context__ = { args:[a,b,c,d,e,f,g,h,i,j,k,l] }; //TODO inject morphers that change the args for next constructor
+			instance.__context__ = { generator:generator, info:info, args:[a,b,c,d,e,f,g,h,i,j,k,l] }; //TODO inject morphers that change the args for next constructor
 			for(var i=0,g; g=info.constructors[i]; ++i) {
 				info.constructors[i].apply(instance,instance.__context__.args);
 			}
@@ -184,16 +179,24 @@ function Generator(mainConstr,options)
 		}
 		return info.singleton;
 	}
+
+	function simpleGenerator(a,b,c,d,e,f,g,h,i,j,k,l) {
+		var instance = mainConstr.apply(generator,arguments);
+		return instance;
+	}
+
+	function presetMembers() {
+		var args = this.__context__.generator.arguments;
+		for(var i=0,a; a = args[i]; ++i) if (a.preset) {
+			this[a.preset] = arguments[i];
+		}
+	}
 	
 	// pooled generator
 	//TODO
 
 	// Make the generator with type annotations
 	var generator = (function(args){
-		var generator = newGenerator;
-		generator.__generator__ = generator;
-		generator.info = info;
-
 		// mark end of constructor arguments
 		var last = args.length-1;
 		var options = args[last];
@@ -204,11 +207,20 @@ function Generator(mainConstr,options)
 		}
 		info.options = options;
 
+		var generator = options.alloc === false? simpleGenerator : newGenerator;
+		generator.__generator__ = generator;
+		generator.info = info;
+
 		// arguments planning
 		generator.arguments = options.arguments || mainConstr.arguments || [];
+		var argsPreset = false;
 		for(var i=0,a; a = generator.arguments[i]; ++i) {
 			a.no = i;
 			info.arguments[a.name] = a;
+			if (a.preset) argsPreset = true;
+		}
+		if (argsPreset) {
+			info.constructors.push(presetMembers)
 		}
 
 		// get order of bases and constructors from the main constructor or the arguments
@@ -300,25 +312,6 @@ Generator.setVariantGenerator = function(mainConstr,variant,fGenerator,mHandlers
 	}; 
 };
 
-Generator.setHandlers = function(constr,mHandlers)
-{
-       // morph arguments generator -> constructor
-       // unknown variant
-       // configuration finalize
-       // pool size change
-       // unload
-};
- 
-/* setArguments ( config,config,config )
-*
- * { call: myfunc, obj: myobj, params: [] }
-* { generate: MyBase, variant: "one" }
-* { constant: 1 }
-*/
-Generator.setArguments = function(mFirst,mSecond)
-{
-};
- 
 /**
  * Configure the base constructor to generate a singleton of a specific variant
  */
@@ -353,6 +346,7 @@ Generator.setPoolSize = function(mainConstr,variant,nSize)
 	function Type(options) {
 		this.options = options || {};
 		this.name = this.options.name;
+		this.preset = this.options.preset === true? this.name : this.options.preset;
 	}
 	essential.set("Type",Generator(Type));
 	
@@ -394,7 +388,6 @@ Generator.setPoolSize = function(mainConstr,variant,nSize)
 })();
 
 
-
 /*
 function assert(b) {
 	if (!eval(b)) alert("failed:"+ b);
@@ -424,7 +417,7 @@ assert("5 == num.get()");
 
 // Generators
 
-var numberType = Generator(Resolver("essential")("Type"),"Number");
+var NumberType = Generator(Resolver("essential")("Type"),"Number");
 
 var shapes = {};
 
@@ -435,7 +428,7 @@ function Rectangle(width,height) {
 	
 }
 Rectangle.bases = [Shape];
-Rectangle.arguments = [ numberType({name:"width"}), numberType({name:"height"}) ]; //TODO numberType({name:"width"}) optional: , default:  seed:
+Rectangle.arguments = [ NumberType({name:"width",preset:true}), NumberType({name:"height",preset:true}) ]; //TODO NumberType({name:"width"}) optional: , default:  seed:
 Rectangle.prototype.earlyFunc = function() {};
 
 shapes.Shape = Generator(Shape);
@@ -457,8 +450,8 @@ assert("r55 instanceof Shape");
 assert("r55 instanceof shapes.Shape");
 assert("shapes.Rectangle.prototype.getWidth == Rectangle.prototype.getWidth");
 assert("typeof shapes.Rectangle.prototype.earlyFunc == 'function'");
-//assert("5 == r55.width");
-//assert("5 == r55.getWidth()");
+assert("5 == r55.width");
+assert("5 == r55.getWidth()");
 
 shapes.Shape.mixin({
 	sides: 0
@@ -481,7 +474,7 @@ function Circle(diameter) {
 Circle.prototype.earlyFunc = function() {};
 
 shapes.Circle = Generator(Circle,Shape,{
-	arguments : [ numberType({name:"diameter"}) ] //TODO numberType({name:"width"}) optional: , default:  seed:
+	arguments : [ NumberType({name:"diameter",preset:true}) ] //TODO NumberType({name:"width"}) optional: , default:  seed:
 });
 
 Circle.prototype.getWidth = function() {
@@ -499,7 +492,12 @@ assert("c9 instanceof Circle");
 assert("c9 instanceof shapes.Circle");
 assert("c9 instanceof Shape");
 assert("c9 instanceof shapes.Shape");
-//assert("9 == c9.diameter");
+assert("9 == c9.diameter");
+assert("9 == c9.getWidth()");
 
+var Simple = Generator(function(v) { return v; }, { alloc: false });
+
+var s8 = Simple(8);
+assert("s8 == 8");
 
 */
