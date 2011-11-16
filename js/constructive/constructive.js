@@ -50,6 +50,16 @@ function Resolver(name,ns,options)
         return top;
 	}
 	
+    function _setValue(value,names,base,symbol)
+    {
+    	base[symbol] = value;
+		if (value.__generator__ == value) {
+    		value.info.symbol = symbol;
+    		value.info["package"] = names.join(".");
+    		value.info.within = base;
+    	}
+    }
+
     /**
      * @param name To resolve
      * @param onundefined What to do for undefined symbols ("generate","null","throw")
@@ -71,7 +81,9 @@ function Resolver(name,ns,options)
         var names = name.split(".");
         var symbol = names.pop();
     	var base = _resolve(names,onundefined);
-    	if (base[symbol] === undefined) base[symbol] = value;
+    	if (base[symbol] === undefined) { 
+    		_setValue(value,names,base,symbol);
+    	}
     };
 
     resolve.set = function(name,value,onundefined) 
@@ -79,7 +91,7 @@ function Resolver(name,ns,options)
         var names = name.split(".");
         var symbol = names.pop();
     	var base = _resolve(names,onundefined);
-    	base[symbol] = value;
+		_setValue(value,names,base,symbol);
     };
 
     resolve.reference = function(name,onundefined)
@@ -122,6 +134,7 @@ function Resolver(name,ns,options)
 }
 Resolver.default = Resolver({},{ name:"default" });
 
+
 /**
  * Generator(constr) - get cached or new generator
  * Generator(constr,base1,base2) - define with bases
@@ -134,56 +147,79 @@ function Generator(mainConstr,options)
 {
 	if (mainConstr.__generator__) return mainConstr.__generator__;
 
+	var info = {
+		arguments: {},
+		options: options,
+		constructors: []
+	};
+	
 	function newGenerator(a,b,c,d,e,f,g,h,i,j,k,l) {
 
 		var instance = new generator.type();
 		
 		// args
-		for(var i=0,g; g=generator.constructors[i]; ++i) {
+		for(var i=0,g; g=info.constructors[i]; ++i) {
 			//TODO set initial content
 		}
 		
 		// constructors
 		instance.__context__ = { args:[a,b,c,d,e,f,g,h,i,j,k,l] }; //TODO inject morphers that change the args for next constructor
-		for(var i=0,g; g=generator.constructors[i]; ++i) {
-			generator.constructors[i].apply(instance,instance.__context__.args);
+		for(var i=0,g; g=info.constructors[i]; ++i) {
+			info.constructors[i].apply(instance,instance.__context__.args);
 		}
 		delete instance.__context__;
 		return instance;
 	}
 
 	function singletonGenerator(a,b,c,d,e,f,g,h,i,j,k,l) {
-		if (options.singleton == null) {
-			generator.singleton = new info.func(a,b,c,d,e,f,g,h,i,j,k,l); 
+		if (info.options.singleton == null) {
+			var instance = info.singleton = new generator.type();
+
+			// constructors
+			instance.__context__ = { args:[a,b,c,d,e,f,g,h,i,j,k,l] }; //TODO inject morphers that change the args for next constructor
+			for(var i=0,g; g=info.constructors[i]; ++i) {
+				info.constructors[i].apply(instance,instance.__context__.args);
+			}
+			delete instance.__context__;
 		}
-		return generator.singleton;
+		return info.singleton;
 	}
 	
 	// pooled generator
 	//TODO
 
 	// Make the generator with type annotations
-	var generator = (function(){
+	var generator = (function(args){
 		var generator = newGenerator;
+		generator.__generator__ = generator;
+		generator.info = info;
 
 		// mark end of constructor arguments
-		var last = arguments.length-1;
-		var options = arguments[last];
+		var last = args.length-1;
+		var options = args[last];
 		if (typeof options == "function") {
 			options = {};
 		} else {
 			--last;
 		}
+		info.options = options;
+
+		// arguments planning
+		generator.arguments = options.arguments || mainConstr.arguments || [];
+		for(var i=0,a; a = generator.arguments[i]; ++i) {
+			a.no = i;
+			info.arguments[a.name] = a;
+		}
 
 		// get order of bases and constructors from the main constructor or the arguments
 		var bases = generator.bases = mainConstr.bases || [];
 		if (last > 0) {
-			bases = [];
-			for(var i=last,a; (i >= 1) &&(a = arguments[i]); --i) {
-				bases.push(arguments[i]);
+			bases = generator.bases = [];
+			for(var i=last,a; (i >= 1) &&(a = args[i]); --i) {
+				bases.push(args[i]);
 			}
 		}	
-		var constructors = generator.constructors = [];
+		var constructors = info.constructors;
 		for(var i=0,b; b = bases[i];++i) {
 			if (b.bases) {
 				for(var j=0,b2; b2 = b.bases[j]; ++j) constructors.push(b.bases[j]);
@@ -212,8 +248,12 @@ function Generator(mainConstr,options)
 
 		
 		return generator;
-	})();
-		 
+	})(arguments);
+
+	function mixin(mix) {
+		for(var n in mix) this.prototype[n] = mix[n];
+	}
+	generator.mixin = mixin;
 	
 	function variant(name,variantConstr,v1,v2,v3,v4) {
 		if (variantConstr == undefined) { // Lookup the variant generator
@@ -312,6 +352,7 @@ Generator.setPoolSize = function(mainConstr,variant,nSize)
 	var essential = Resolver("essential",{});
 	function Type(options) {
 		this.options = options || {};
+		this.name = this.options.name;
 	}
 	essential.set("Type",Generator(Type));
 	
@@ -351,6 +392,7 @@ Generator.setPoolSize = function(mainConstr,variant,nSize)
 	essential.set("ArrayType",Generator(ArrayType,Type));
 	essential.namespace.Type.variant("Array",essential.namespace.ArrayType);
 })();
+
 
 
 /*
@@ -403,6 +445,11 @@ Rectangle.prototype.getWidth = function() {
 	return this.width;
 };
 
+assert("typeof shapes.Shape.info.options == 'object'");
+assert("shapes.Rectangle.bases == Rectangle.bases");
+assert("shapes.Rectangle.arguments == Rectangle.arguments");
+
+var s = shapes.Shape();
 var r55 = shapes.Rectangle(5,5);
 assert("r55 instanceof Rectangle");
 assert("r55 instanceof shapes.Rectangle");
@@ -412,5 +459,47 @@ assert("shapes.Rectangle.prototype.getWidth == Rectangle.prototype.getWidth");
 assert("typeof shapes.Rectangle.prototype.earlyFunc == 'function'");
 //assert("5 == r55.width");
 //assert("5 == r55.getWidth()");
+
+shapes.Shape.mixin({
+	sides: 0
+});
+
+shapes.Rectangle.mixin({
+	sides: 2,
+	getRatio: function() { return this.width / this.height; }
+});
+
+assert("0 == Shape.prototype.sides");
+assert("0 == s.sides");
+assert("2 == Rectangle.prototype.sides");
+assert("2 == r55.sides");
+
+
+function Circle(diameter) {
+	
+}
+Circle.prototype.earlyFunc = function() {};
+
+shapes.Circle = Generator(Circle,Shape,{
+	arguments : [ numberType({name:"diameter"}) ] //TODO numberType({name:"width"}) optional: , default:  seed:
+});
+
+Circle.prototype.getWidth = function() {
+	return this.diameter;
+};
+
+assert("shapes.Circle.bases.length == 1");
+assert("shapes.Circle.bases[0] == Shape");
+assert("shapes.Circle.info.options.arguments.length == 1");
+assert("typeof shapes.Circle.info.options.arguments[0] == 'object'");
+assert("0 == Circle.prototype.sides");
+
+var c9 = shapes.Circle(9);
+assert("c9 instanceof Circle");
+assert("c9 instanceof shapes.Circle");
+assert("c9 instanceof Shape");
+assert("c9 instanceof shapes.Shape");
+//assert("9 == c9.diameter");
+
 
 */
