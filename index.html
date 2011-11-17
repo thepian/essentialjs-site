@@ -2,8 +2,18 @@
 layout: frontpage
 rooturi: http://essentialjs.com
 ---
+<style>
+blockquote.comment {
+  position:absolute;
+  right:0;
+  width: 50%;
+}
+section.hello pre {
+  width: 50%;
+}
+</style>
 
-<section>
+<section class="hello">
 
   <h2>Features</h2>
   <ul>
@@ -15,7 +25,13 @@ rooturi: http://essentialjs.com
   </ul>
 
   <h2>Basic Use</h2>
+  <blockquote class="comment">
+      Fetch the previously defined Rectangle generator, and make a new object.
+      You can use an <a href="#namespaces">Alternate or Private Namespace</a> by passing
+      a namespace in the Resolver() call.
+  </blockquote>
   <pre>
+    var Shape = Resolver()("shapes.Shape");
     var Rectangle = Resolver()("shapes.Rectangle");
     var fivefive = Rectangle(5,5);
   </pre>
