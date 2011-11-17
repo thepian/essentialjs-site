@@ -148,3 +148,20 @@ You can assign an entry in a package using a single statement.
 
 </section>
 
+<section id="preset">
+<h2>Generating Pre-Initialised Object</h2>
+      <p>By default a generated object starts out blank before the constructors are called. You can fill in member variables with argument values. This will seed the members before the base constructors are called.</p>
+
+<pre><code>function Rectangle(width,height) {}
+Rectangle.arguments = [
+    NumberType({ name:"width", preset:true }),
+    NumberType({ name:"height", preset:"height" })
+]
+</code></pre>
+
+<p>If an argument is configured with a <code>preset</code> attribute the argument will be used to assign the member variable
+before the constructors are called. A name can be specified or true for the argument name.</p>
+
+<a href="https://github.com/essentialjs/EssentialJS/wiki/Generating-Pre-Initialised-Object">More about Generating Pre-Initialised Object</a>
+</section>
+
