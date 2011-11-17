@@ -106,3 +106,16 @@ header a {	color:#525252; text-decoration:none; }
 .posts p { 
 font-family:Georgia, "Times New Roman", Times, serif;
     }
+    
+blockquote.download { 
+	font-size:1.2em;	
+}
+blockquote.download .btn { 
+	border:2px solid #888;
+	border-radius: 10px;
+}
+blockquote.download .btn small { 
+	display:block;
+	font-size:0.9em;	
+}
+
