@@ -3,5 +3,65 @@ layout: frontpage
 rooturi: http://essentialjs.com
 ---
 
+<section>
+  <h2>Basic Use</h2>
+  <pre>
+    var Rectangle = Resolver()("shapes.Rectangle");
+    var fivefive = Rectangle(5,5);
+  </pre>
+
+<p>This will find the generator for a Rectangle constructor previously defined. The generator will call `new` to make an object that is instanceof the Rectangle constructor. It then initialises properties with initial value and calls the
+constructor and base constructors.
+</p>
+<p>If you want to specify a common base class and make the concrete class configurable, you need to get 
+a generator variant by.
+</p>
+<pre>
+    var Shape = Resolver()("shapes.Shape");
+    var Rectangle = Shape.variant("Rectangle");
+    var fivefive = Rectangle(5,5);
+</pre>
+<p>To declare the Rectangle and Shape constructors you would do something like
+</p>
+<pre>
+    function Shape() {}
+    Resolver().set("shapes.Shape", Generator(Shape));
+
+    function Rectangle() {}
+    Resolver().set("shapes.Rectangle", Generator(Rectangle));  # needed for resolving the concrete constructor
+    Generator(Shape).variant("Rectangle",Rectangle);  # needed for resolving the Rectangle variant of Shape
+</pre>
+
+<section>
+<h2>Why?</h2>
+<p>
+The simplest way of sharing information in a JavaScript application is to create a global object.
+This creates the problem of picking a name for your global variable that others won't reuse by mistake.
+For more have a look at [[Namespaces and Globals]].
+</p>
+<p>
+A common pattern is to reuse a previous object or create a new one if it wasn't used before.
+[[Constructing Objects with Generators]] subtly moved the decision of whether to create a new instance from
+the caller to a middleman. You go from `new Rectange(5,5)` to `Generator(Rectangle)(5,5)`.
+[[Restricting Object Generation]] allows you to use previously constructed instances rather than creating a `new`.
+</p>
+<p>
+When you make an application using typical Java paradigms you will quickly be adding singleton classes.
+And you will just as quickly see why many people say that "singletons are evil".
+The problem with singletons is not the concept of sharing a single instance among dependents, rather it is
+the way the single instance is enforced and the resolution of it. 
+In languages like Java solutions exist under the term [Dependency Injection](http://en.wikipedia.org/wiki/Dependency_injection).
+Since [[JavaScript is a very different language]], it can be done in a fairly simple way using 
+[[Restricting Object Generation]] and [[Generator Argument Injection]].
+</p>
+<p>
+You commonly want to make a particular variant of something. So you know that you want a shape, and the design
+might say that it is supposed to be a rectangle, but that might be configurable or persisted in a design document.
+So you want a concrete instance of a shape constructor. The simple solution is [[Generating a Variant]].
+Occasionally you don't want to a particular variant, but rather use the default one, and allow configurations
+to determine which constructor to use. [Generating a Default Variant](Generating a Variant).
+</p>
+</section>
+
 <h2>{{ site.description }}</h2>
 
