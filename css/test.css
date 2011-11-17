@@ -147,7 +147,8 @@ blockquote.download .btn {
 	border-radius: 10px;
 }
 blockquote.download .btn big {
-	font-size:1.4em;	
+	font-size:2em;	
+	vertical-align:bottom;
 }
 blockquote.download .btn small { 
 	display:block;
