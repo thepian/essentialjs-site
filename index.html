@@ -108,5 +108,43 @@ to determine which constructor to use. [Generating a Default Variant](Generating
 </p>
 </section>
 
-<h2>{{ site.description }}</h2>
+<section id="namespaces">
+<h2>Namespaces and Globals</h2>
+
+<p>When your page needs more than a couple of common variables and functions, you need a way to divide them into packages.
+In JavaScript that is easy. Just create a few objects and divide your code between them.
+</p>
+<pre>
+    var shapes = {};
+    shapes.Shape = function() {};
+
+    var tools = {};
+    tools.Tool = function() {};
+</pre>
+
+<p>This works well for websites with a moderate amount of code. Eventually you will want a simple way to specify a 
+hierachialy named package supported natively by most modern languages.
+This classic functionality packaging can be done easily with a window resolver.
+</p>
+<pre>
+    var shapes = Resolver(window)("my.shapes");
+    var tools = Resolver(window)("my.tools");
+</pre>
+
+<p>If you call `Resolver()` without a parameter, the default behaviour is the look up the package within the default namespace object. This is called the **default namespace**.
+Undefined parts are stubbed out with plain objects. This is usually what you want to do for the package, but not for the functionality within the package.
+You can assign an entry in a package using a single statement.
+</p>
+<pre>
+    Resolver().set("my.shapes.IGNORE_X",5);
+</pre>
+<p>If you want to declare a value without overwriting a previous one set elsewhere or configured, call `declare`.
+</p>
+<pre>
+    Resolver().declare("my.shapes.IGNORE_X",5);
+</pre>
+
+<a href="https://github.com/essentialjs/EssentialJS/wiki/Namespaces-and-Globals">More about Namespaces and Globals</a>
+
+</section>
 
