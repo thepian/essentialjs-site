@@ -149,6 +149,7 @@ blockquote.download .btn {
 blockquote.download .btn big {
 	font-size:2em;	
 	vertical-align:bottom;
+	font-weight: bold;
 }
 blockquote.download .btn small { 
 	display:block;
