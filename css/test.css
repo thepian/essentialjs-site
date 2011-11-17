@@ -132,6 +132,7 @@ blockquote.download {
 	position:relative;
 	font-size:1.2em;
 	padding-bottom: 4em;
+	text-align: right;
 }
 blockquote.download .btn { 
 	display:block;
