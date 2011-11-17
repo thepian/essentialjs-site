@@ -6,7 +6,8 @@ rooturi: http://essentialjs.com
 blockquote.comment {
   position:absolute;
   right:0;
-  width: 50%;
+  width: 40%;
+  font-size:1.1em;
 }
 section.hello pre {
   width: 50%;
@@ -24,40 +25,58 @@ section.hello pre {
   <li><a href="#namespaces">Non-Global-Object and Private namespaces</a></li>
   </ul>
 
-  <h2>Basic Use</h2>
+  <h2>Using</h2>
   <blockquote class="comment">
-      Fetch the previously defined Rectangle generator, and make a new object.
+      Fetch the previously defined Rectangle and Circle <a href="#variant">generator variant</a> of 
+      the <a href="#concrete">concrete generator</a> for Shape, 
+      and make a new object.
       You can use an <a href="#namespaces">Alternate or Private Namespace</a> by passing
       a namespace in the Resolver() call.
   </blockquote>
   <pre>
-    var Shape = Resolver()("shapes.Shape");
-    var Rectangle = Resolver()("shapes.Rectangle");
-    var fivefive = Rectangle(5,5);
+var Shape = Resolver()("shapes.Shape");
+var Rectangle = Shape.variant("rectangle");
+var fivefive = Rectangle(5,5,{fill:"color1"});
+var Circle = Shape.variant("circle");
+var eight = Circle(8, {stroke:"recessed"});
   </pre>
 
-<p>This will find the generator for a Rectangle constructor previously defined. The generator will call `new` to make an object that is instanceof the Rectangle constructor. It then initialises properties with initial value and calls the
-constructor and base constructors.
-</p>
-<p>If you want to specify a common base class and make the concrete class configurable, you need to get 
-a generator variant by.
-</p>
-<pre>
-    var Shape = Resolver()("shapes.Shape");
-    var Rectangle = Shape.variant("Rectangle");
-    var fivefive = Rectangle(5,5);
-</pre>
-<p>To declare the Rectangle and Shape constructors you would do something like
-</p>
-<pre>
-    function Shape() {}
-    Resolver().set("shapes.Shape", Generator(Shape));
+<h2>Declaring</h2>
+<blockquote class="comment">To declare the Rectangle and Shape constructors you would do something like
+# needed for resolving the concrete constructor
+# needed for resolving the Rectangle variant of Shape
 
-    function Rectangle() {}
-    Resolver().set("shapes.Rectangle", Generator(Rectangle));  # needed for resolving the concrete constructor
-    Generator(Shape).variant("Rectangle",Rectangle);  # needed for resolving the Rectangle variant of Shape
+</blockquote>
+<pre>
+function Shape(options) {}
+Shape.arguments = {
+  "options":ObjectType({preset:true})      
+};
+Resolver().set("shapes.Shape", Generator(Shape));
+
+function Rectangle(width,height,options) {}
+Rectangle.arguments = {
+  "width": NumberType({preset:true}),
+  "height": NumberType({preset:true}),
+  "options":ObjectType({})
+};
+Resolver().set("shapes.Rectangle", Generator(Rectangle));  
+Generator(Shape).variant("rectangle",Rectangle);  
+    
+function Circle(diameter,options) {}
+Circle.arguments = {
+  "diameter": NumberType({preset:true}),
+  "options":ObjectType({})
+};
+Resolver().set("shapes.Circle", Generator(Circle));  
+Generator(Shape).variant("circle",Circle);  
+    
 </pre>
 
+<h2>Configuring Variants</h2>
+<p>Variants can be configured separately. This allows you to change the behaviour of your web app without changing
+the program code. You can try out a better version of Rectangle without changing the existing implementation.
+</p>
 <section>
 <h2>Why?</h2>
 <p>
