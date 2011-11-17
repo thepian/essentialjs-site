@@ -4,6 +4,16 @@ rooturi: http://essentialjs.com
 ---
 
 <section>
+
+  <h2>Features</h2>
+  <ul>
+  <li><a href="#pre-init">Initialise generated object with arguments</a></li>
+  <li><a href="#variant">Using a specialised object only knowing the base constructor</a></li>
+  <li><a href="#variant">Using a concrete variant of a base constructor without knowing which</a></li>
+  <li><a href="#restricting">Generating an object not knowing that it is a singleton</a></li>
+  <li><a href="#namespaces">Non-Global-Object and Private namespaces</a></li>
+  </ul>
+
   <h2>Basic Use</h2>
   <pre>
     var Rectangle = Resolver()("shapes.Rectangle");
