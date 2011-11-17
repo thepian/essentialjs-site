@@ -120,6 +120,13 @@ header blockquote.comment {
   font-size:1.1em;
 }
 
+nav.the-project {
+	position:absolute;
+	left:0;
+	bottom:0;
+}
+
+
 blockquote.download { 
 	position:relative;
 	font-size:1.2em;
