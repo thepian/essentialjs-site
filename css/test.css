@@ -69,8 +69,8 @@ a { color: #226666;}
 header a {	color:#525252; text-decoration:none; }
 
 .posts { margin: 0;}
-.posts li { list-style: none; margin-left: 0; padding-left:55px; text-indent:0;}
-.posts li { margin-top:3em; }
+.posts > li { list-style: none; margin-left: 0; padding-left:55px; text-indent:0;}
+.posts > li { margin-top:3em; }
 
 .postdate {
     position:absolute;
