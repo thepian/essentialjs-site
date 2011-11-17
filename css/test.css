@@ -26,6 +26,7 @@ body {
 }
 .inlined {
     display: inline-block;
+    text-align:top;
 }
 
 .fullwidth {
