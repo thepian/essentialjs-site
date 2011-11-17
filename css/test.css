@@ -107,6 +107,19 @@ header a {	color:#525252; text-decoration:none; }
 font-family:Georgia, "Times New Roman", Times, serif;
     }
     
+header .using {
+	position:relative;
+}
+header .using pre {
+	width:50%;
+}
+header blockquote.comment {
+  position:absolute;
+  right:0;
+  width: 40%;
+  font-size:1.1em;
+}
+
 blockquote.download { 
 	position:relative;
 	font-size:1.2em;
