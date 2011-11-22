@@ -12,9 +12,38 @@ blockquote.comment {
 section.hello pre {
   width: 50%;
 }
+.codeblock {
+	font: 1em 'andale mono', 'lucida console', monospace;
+}
 </style>
 
+<script name="declare-shapes" type="tryout/javascript">
+function Shape(options) {}
+Shape.arguments = {
+  "options":ObjectType({preset:true})      
+};
+Resolver().set("shapes.Shape", Generator(Shape));
+
+function Rectangle(width,height,options) {}
+Rectangle.arguments = {
+  "width": NumberType({preset:true}),
+  "height": NumberType({preset:true}),
+  "options":ObjectType({})
+};
+Resolver().set("shapes.Rectangle", Generator(Rectangle));  
+Generator(Shape).variant("rectangle",Rectangle);  
+    
+function Circle(diameter,options) {}
+Circle.arguments = {
+  "diameter": NumberType({preset:true}),
+  "options":ObjectType({})
+};
+Resolver().set("shapes.Circle", Generator(Circle));  
+Generator(Shape).variant("circle",Circle);  
+</script>
+
 <section class="hello">
+  <textarea class="tryout codeblock" name="declare-shapes" cols="42" rows="28" data-></textarea>
 
   <h2>Features</h2>
   <ul>
