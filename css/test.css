@@ -121,18 +121,14 @@ header blockquote.comment {
   font-size:1.1em;
 }
 
-nav.the-project {
-	position:absolute;
-	left:10px;
-	bottom:10px;
-}
-
-
 blockquote.download { 
 	position:relative;
-	font-size:1.2em;
+	font-size:1.15em;
 	padding-bottom: 4em;
+	padding-left:0;
+	padding-right:0;
 	text-align: right;
+	margin:0;
 }
 blockquote.download .btn { 
 	display:block;
@@ -144,7 +140,7 @@ blockquote.download .btn {
 	border:2px solid #888;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
-	border-radius: 10px;
+	border-radius: 20px;
 }
 blockquote.download .btn big {
 	font-size:2em;	
@@ -156,3 +152,40 @@ blockquote.download .btn small {
 	font-size:0.7em;	
 }
 
+.circle {
+	display: inline-block;
+	font-family: 'CaviarDreamsRegular', Helvetica, sans-serif;
+	font-size: 20px;
+	background-color: #70AAE2;
+	width:120px;
+	height:80px;
+	padding: 40px 20px;
+	border: 2px solid #8FB9E2;
+	border-radius: 80px;
+	color: white;
+	text-decoration: none;
+	text-align: center;
+	margin: 20px;
+}
+
+nav.the-project {
+	position:relative;
+	text-align: center;
+}
+nav.the-project .links {
+	position:absolute;
+	width: 300px;
+	margin-left:-150px;
+	left:50%;
+	top:-30px;
+}
+
+.prodname {
+	font-family: 'CaviarDreamsRegular', Helvetica, sans-serif;
+	font-size:40px;
+	color: #70AAE2;
+}
+
+.center {
+	text-align: center;
+}

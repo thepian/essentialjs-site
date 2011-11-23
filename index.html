@@ -9,6 +9,9 @@ blockquote.comment {
   width: 40%;
   font-size:1.1em;
 }
+section.hello {
+  padding-top:1em;
+}
 section.hello pre {
   width: 50%;
 }
@@ -18,32 +21,49 @@ section.hello pre {
 </style>
 
 <script name="declare-shapes" type="tryout/javascript">
-function Shape(options) {}
-Shape.arguments = {
-  "options":ObjectType({preset:true})      
-};
-Resolver().set("shapes.Shape", Generator(Shape));
-
 function Rectangle(width,height,options) {}
-Rectangle.arguments = {
-  "width": NumberType({preset:true}),
-  "height": NumberType({preset:true}),
-  "options":ObjectType({})
-};
-Resolver().set("shapes.Rectangle", Generator(Rectangle));  
-Generator(Shape).variant("rectangle",Rectangle);  
+Rectangle.arguments = [
+  NumberType({name:"width",preset:true}),
+  NumberType({name:"height",preset:true}),
+  ObjectType({name:"options"})
+];
+Resolver().set("shapes.Rectangle", Generator(Rectangle,Shape));  
+Generator(Shape).variant("rectangle",Generator(Rectangle);  
     
 function Circle(diameter,options) {}
-Circle.arguments = {
-  "diameter": NumberType({preset:true}),
-  "options":ObjectType({})
-};
-Resolver().set("shapes.Circle", Generator(Circle));  
-Generator(Shape).variant("circle",Circle);  
+Circle.arguments = [
+  NumberType({name:"diameter",preset:true}),
+  ObjectType({name:"options"})
+];
+Resolver().set("shapes.Circle", Generator(Circle,Shape));  
+Generator(Shape).variant("circle",Generator(Circle));  
 </script>
 
+<nav class="the-project">
+    <span class="prodname">Essential JavaScript</span>
+    <div class="links">
+    <a href="https://github.com/essentialjs/essentialjs/wiki">Documentation</a>
+    <a href="https://github.com/essentialjs/essentialjs/issues">Feedback</a>
+    </div>
+</nav>
+
 <section class="hello">
-  <textarea class="tryout codeblock" name="declare-shapes" cols="42" rows="28" data-></textarea>
+  <div class="center">
+  <a class="circle" href="#oojs">Better Object Orientation</a>
+  <a class="circle" href="#snippets">Live <br>HTML5 Snippets</a>
+  <a class="circle" href="#pages">Combining HTML5 Sectioning</a>
+  </div>
+
+<h2>Declaring a Generator</h2>
+{% highlight javascript %}
+function Shape(options) {}
+Shape.arguments = [
+  ObjectType({name:"options",preset:true})      
+];
+Resolver().set("shapes.Shape", Generator(Shape));
+{% endhighlight %}
+
+  <textarea class="tryout codeblock" name="declare-shapes" cols="60" rows="20" ></textarea>
 
   <h2>Features</h2>
   <ul>
@@ -54,58 +74,13 @@ Generator(Shape).variant("circle",Circle);
   <li><a href="#namespaces">Non-Global-Object and Private namespaces</a></li>
   </ul>
 
-  <h2>Using</h2>
-  <blockquote class="comment">
-      Fetch the previously defined Rectangle and Circle <a href="#variant">generator variant</a> of 
-      the <a href="#concrete">concrete generator</a> for Shape, 
-      and make a new object.
-      You can use an <a href="#namespaces">Alternate or Private Namespace</a> by passing
-      a namespace in the Resolver() call.
-  </blockquote>
-  <pre>
-var Shape = Resolver()("shapes.Shape");
-var Rectangle = Shape.variant("rectangle");
-var fivefive = Rectangle(5,5,{fill:"color1"});
-var Circle = Shape.variant("circle");
-var eight = Circle(8, {stroke:"recessed"});
-  </pre>
-
-<h2>Declaring</h2>
-<blockquote class="comment">To declare the Rectangle and Shape constructors you would do something like
-# needed for resolving the concrete constructor
-# needed for resolving the Rectangle variant of Shape
-
-</blockquote>
-<pre>
-function Shape(options) {}
-Shape.arguments = {
-  "options":ObjectType({preset:true})      
-};
-Resolver().set("shapes.Shape", Generator(Shape));
-
-function Rectangle(width,height,options) {}
-Rectangle.arguments = {
-  "width": NumberType({preset:true}),
-  "height": NumberType({preset:true}),
-  "options":ObjectType({})
-};
-Resolver().set("shapes.Rectangle", Generator(Rectangle));  
-Generator(Shape).variant("rectangle",Rectangle);  
-    
-function Circle(diameter,options) {}
-Circle.arguments = {
-  "diameter": NumberType({preset:true}),
-  "options":ObjectType({})
-};
-Resolver().set("shapes.Circle", Generator(Circle));  
-Generator(Shape).variant("circle",Circle);  
-    
-</pre>
 
 <h2>Configuring Variants</h2>
 <p>Variants can be configured separately. This allows you to change the behaviour of your web app without changing
 the program code. You can try out a better version of Rectangle without changing the existing implementation.
 </p>
+</section>
+
 <section>
 <h2>Why?</h2>
 <p>
