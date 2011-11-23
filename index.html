@@ -20,6 +20,18 @@ section.hello pre {
 }
 </style>
 
+<script>
+var NumberType = Resolver("essential")("Type").variant("Number");
+var StringType = Resolver("essential")("Type").variant("String");
+var DateType = Resolver("essential")("Type").variant("Date");
+var ObjectType = Resolver("essential")("Type").variant("Object");
+function Shape(options) {}
+Shape.arguments = [
+  ObjectType({name:"options",preset:true})      
+];
+Resolver().set("shapes.Shape", Generator(Shape));
+</script>
+
 <script name="declare-shapes" type="tryout/javascript">
 function Rectangle(width,height,options) {}
 Rectangle.arguments = [
@@ -64,12 +76,7 @@ Resolver().set("shapes.Shape", Generator(Shape));
 {% endhighlight %}
 
   <textarea class="tryout codeblock" name="declare-shapes" cols="60" rows="20" ></textarea>
-
-
-<h2>Configuring Variants</h2>
-<p>Variants can be configured separately. This allows you to change the behaviour of your web app without changing
-the program code. You can try out a better version of Rectangle without changing the existing implementation.
-</p>
+  <blockquote class="tryout" name="declare-shapes-error"></blockquote>
 </section>
 
 <section id="oojs">
@@ -173,6 +180,13 @@ Rectangle.arguments = [
 before the constructors are called. A name can be specified or true for the argument name.</p>
 
 <a href="https://github.com/essentialjs/EssentialJS/wiki/Generating-Pre-Initialised-Object">More about Generating Pre-Initialised Object</a>
+
+
+
+<h2>Configuring Variants</h2>
+<p>Variants can be configured separately. This allows you to change the behaviour of your web app without changing
+the program code. You can try out a better version of Rectangle without changing the existing implementation.
+</p>
 </section>
 
 <section id="snippets">
