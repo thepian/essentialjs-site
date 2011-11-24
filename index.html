@@ -15,6 +15,14 @@ section.hello {
 section.hello pre {
   width: 50%;
 }
+section.hello .comment {
+  position: absolute;
+  left: 56%;
+  width: 44%;
+}
+section.hello .comment blockquote {
+  font-size: 1em;
+}
 .codeblock {
 	font: 1em 'andale mono', 'lucida console', monospace;
 }
@@ -26,7 +34,7 @@ var StringType = Resolver("essential")("Type").variant("String");
 var DateType = Resolver("essential")("Type").variant("Date");
 var ObjectType = Resolver("essential")("Type").variant("Object");
 function Shape(options) {}
-Shape.arguments = [
+Shape.args = [
   ObjectType({name:"options",preset:true})      
 ];
 Resolver().set("shapes.Shape", Generator(Shape));
@@ -34,16 +42,16 @@ Resolver().set("shapes.Shape", Generator(Shape));
 
 <script name="declare-shapes" type="tryout/javascript">
 function Rectangle(width,height,options) {}
-Rectangle.arguments = [
+Rectangle.args = [
   NumberType({name:"width",preset:true}),
   NumberType({name:"height",preset:true}),
   ObjectType({name:"options"})
 ];
 Resolver().set("shapes.Rectangle", Generator(Rectangle,Shape));  
-Generator(Shape).variant("rectangle",Generator(Rectangle);  
+Generator(Shape).variant("rectangle",Generator(Rectangle));  
     
 function Circle(diameter,options) {}
-Circle.arguments = [
+Circle.args = [
   NumberType({name:"diameter",preset:true}),
   ObjectType({name:"options"})
 ];
@@ -75,8 +83,12 @@ Shape.arguments = [
 Resolver().set("shapes.Shape", Generator(Shape));
 {% endhighlight %}
 
+  <div class="comment">
+    <blockquote class="tryout" name="declare-shapes-error"></blockquote>
+    <h4>shapes module</h4>
+    <blockquote name="declare-shapes-code"></blockquote>
+  </div>
   <textarea class="tryout codeblock" name="declare-shapes" cols="60" rows="20" ></textarea>
-  <blockquote class="tryout" name="declare-shapes-error"></blockquote>
 </section>
 
 <section id="oojs">
@@ -86,7 +98,7 @@ Resolver().set("shapes.Shape", Generator(Shape));
   gives you core functionality that will allow a great deal of decoupling with minimal overhead.
   </p>
 
-  <h2>Features</h2>
+  <h3>Features</h3>
   <ul>
   <li><a href="#pre-init">Initialise generated object with arguments</a></li>
   <li><a href="#variant">Using a specialised object only knowing the base constructor</a></li>

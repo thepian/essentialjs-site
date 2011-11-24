@@ -106,13 +106,13 @@ function Resolver(name,ns,options)
             var symbol = names.pop();
         	var base = _resolve(names,onundefined);
         	names.push(symbol);
-        	base[symbol] = value;
+        	_setValue(value,names,base,symbol);
         }
         function declare(value) {
             var symbol = names.pop();
         	var base = _resolve(names,onundefined);
         	names.push(symbol);
-        	if (base[symbol] === undefined) base[symbol] = value;
+        	if (base[symbol] === undefined) _setValue(value,names,base,symbol);
         }
         get.set = set;
         get.get = get;
@@ -134,6 +134,11 @@ function Resolver(name,ns,options)
 }
 Resolver.default = Resolver({},{ name:"default" });
 
+Resolver.hasGenerator = function(subject) {
+	if (subject.__generator__) return true;
+	if (typeof subject == "function" && typeof subject.type == "function") return true;
+	return false;
+};
 
 /**
  * Generator(constr) - get cached or new generator
@@ -291,6 +296,28 @@ function Generator(mainConstr,options)
 	generator.variant = variant;
 	generator.variants = {};
 
+	function toRepr() {
+		var l = [];
+		l.push("function ");
+		l.push(this.info.package);
+		l.push(".");
+		l.push(this.info.symbol);
+		l.push("(");
+		var ps = [];
+		for(var i=0,a; a = this.args[i]; ++i) {
+			ps.push(a.name + ":" + a.variantName);
+		}
+		l.push(ps.join(","))
+		l.push(")");
+		l.push(" {");
+		l.push("<br>  ");
+		l.push("<br>  }");
+		l.push("<br>  ");
+		
+		return l.join("");
+	}
+	generator.toRepr = toRepr;
+
 	// Future calls will return this generator
 	mainConstr.__generator__ = generator;
 		
@@ -353,90 +380,46 @@ Generator.setPoolSize = function(mainConstr,variant,nSize)
 	
 	function StringType(options) {
 		this.type = String;
+		this.variantName = "String";
 	}
 	essential.set("StringType",Generator(StringType,Type));
 	essential.namespace.Type.variant("String",essential.namespace.StringType);
 		
 	function NumberType(options) {
 		this.type = Number;
+		this.variantName = "Number";
 	}
 	essential.set("NumberType",Generator(NumberType,Type));
 	essential.namespace.Type.variant("Number",essential.namespace.NumberType);
 	
 	function DateType(options) {
 		this.type = Date;
+		this.variantName = "Date";
 	}
 	essential.set("DateType",Generator(DateType,Type));
 	essential.namespace.Type.variant("Date",essential.namespace.DateType);
 	
 	function BooleanType(options) {
 		this.type = Boolean;
+		this.variantName = "Boolean";
 	}
 	essential.set("BooleanType",Generator(BooleanType,Type));
 	essential.namespace.Type.variant("Boolean",essential.namespace.BooleanType);
 	
 	function ObjectType(options) {
 		this.type = Object;
+		this.variantName = "Object";
 	}
 	essential.set("ObjectType",Generator(ObjectType,Type));
 	essential.namespace.Type.variant("Object",essential.namespace.ObjectType);
 	
 	function ArrayType(options) {
 		this.type = Array;
+		this.variantName = "Array";
 	}
 	essential.set("ArrayType",Generator(ArrayType,Type));
 	essential.namespace.Type.variant("Array",essential.namespace.ArrayType);
 	
-function tryoutUpdate(value,name) {
-	var errorQ = document.querySelector("blockquote[name="+ name +"-error]");
-	errorQ.innerHTML = "";
-	try {
-		eval(value);
-	}
-	catch(ex) {
-		errorQ.innerHTML = ex.message;
-	}
-	console.log(value);
-}
-function tryoutChange() {
-	if (this.tryoutTimer) {
-		clearTimeout(this.tryoutTimer);
-		this.tryoutTimer = undefined;
-	}
-	//console.log(this.value);
-	tryoutUpdate(this.value,this.getAttribute("name"));
-}
-function tryoutInput() {
-	if (this.tryoutTimer != undefined) clearTimeout(this.tryoutTimer);
-
-	var that = this;
-	this.tryoutTimer = setTimeout( function() { 
-		that.tryoutTimer = undefined;
-		tryoutUpdate(that.value,that.getAttribute("name")); 
-	} , 1000);
-}
-
-function enhanceTryout() {
-    var scripts = document.getElementsByTagName("script");
-    for(var i=0,s; s = scripts[i]; ++i) if (s.getAttribute("type") == "tryout/javascript") {
-        var others = document.getElementsByName(s.getAttribute("name"));
-        for(var j=0,o; o = others[j]; ++j) if (o.nodeName.toLowerCase() != "script"){
-            if (o.value != undefined && s.firstChild) o.value = s.firstChild.nodeValue;
-            if (o.addEventListener) { 
-	            o.addEventListener("change",tryoutChange,false); 
-	            o.addEventListener("input",tryoutInput,false); 
-	        }
-            else if (o.attachEvent) { 
-	            o.attachEvent("onchange",tryoutChange,false); 
-	            o.attachEvent("oninput",tryoutInput,false); 
-	        }
-        }
-    }
-    
-}
-
-	if (window.attachEvent) window.attachEvent("onload",enhanceTryout);
-	else window.addEventListener("load",enhanceTryout,false);
 })();
 
 
@@ -474,13 +457,13 @@ var NumberType = Generator(Resolver("essential")("Type"),"Number");
 var shapes = {};
 
 function Shape() {}
-Shape.arguments = [ ];
+Shape.args = [ ];
 
 function Rectangle(width,height) {
 	
 }
 Rectangle.bases = [Shape];
-Rectangle.arguments = [ NumberType({name:"width",preset:true}), NumberType({name:"height",preset:true}) ]; //TODO NumberType({name:"width"}) optional: , default:  seed:
+Rectangle.args = [ NumberType({name:"width",preset:true}), NumberType({name:"height",preset:true}) ]; //TODO NumberType({name:"width"}) optional: , default:  seed:
 Rectangle.prototype.earlyFunc = function() {};
 
 shapes.Shape = Generator(Shape);
@@ -492,7 +475,7 @@ Rectangle.prototype.getWidth = function() {
 
 assert("typeof shapes.Shape.info.options == 'object'");
 assert("shapes.Rectangle.bases == Rectangle.bases");
-assert("shapes.Rectangle.arguments == Rectangle.arguments");
+assert("shapes.Rectangle.args == Rectangle.args");
 
 var s = shapes.Shape();
 var r55 = shapes.Rectangle(5,5);
@@ -526,7 +509,7 @@ function Circle(diameter) {
 Circle.prototype.earlyFunc = function() {};
 
 shapes.Circle = Generator(Circle,Shape,{
-	arguments : [ NumberType({name:"diameter",preset:true}) ] //TODO NumberType({name:"width"}) optional: , default:  seed:
+	args : [ NumberType({name:"diameter",preset:true}) ] //TODO NumberType({name:"width"}) optional: , default:  seed:
 });
 
 Circle.prototype.getWidth = function() {
@@ -535,8 +518,8 @@ Circle.prototype.getWidth = function() {
 
 assert("shapes.Circle.bases.length == 1");
 assert("shapes.Circle.bases[0] == Shape");
-assert("shapes.Circle.info.options.arguments.length == 1");
-assert("typeof shapes.Circle.info.options.arguments[0] == 'object'");
+assert("shapes.Circle.info.options.args.length == 1");
+assert("typeof shapes.Circle.info.options.args[0] == 'object'");
 assert("0 == Circle.prototype.sides");
 
 var c9 = shapes.Circle(9);
