@@ -17,7 +17,7 @@ function Resolver(name,ns,options)
 		if (Resolver[name] == undefined) {
 			if (options == undefined) { options = ns; ns = {}; }
 			Resolver[name] = Resolver(ns,options);
-			Resolver[name].name = name;
+			Resolver[name].named = name;
 			}
 		return Resolver[name];
 	}
@@ -73,7 +73,7 @@ function Resolver(name,ns,options)
         }
     };
 
-    resolve.name = name;
+    resolve.named = name;
     resolve.namespace = ns;
     
     resolve.declare = function(name,value,onundefined) 
@@ -124,9 +124,9 @@ function Resolver(name,ns,options)
     resolve.override = function(ns,options)
     {
         options = options || {};
-        var name = options.name || this.name; 
+        var name = options.name || this.named; 
 		Resolver[name] = Resolver(ns,options);
-		Resolver[name].name = name;
+		Resolver[name].named = name;
 		return Resolver[name];
     };
 
@@ -157,10 +157,19 @@ function Generator(mainConstr,options)
 		options: options,
 		constructors: []
 	};
-	
-	function newGenerator(a,b,c,d,e,f,g,h,i,j,k,l) {
 
-		var instance = new generator.type();
+	function newGenerator(a,b,c,d,e,f,g,h,i,j,k,l) {
+		var instance;
+		if (generator.info.existing) {
+			//TODO perhaps different this pointer
+			var id = generator.info.identifier.apply(generator.info,arguments);
+			if (! (id in generator.info.existing)) {
+				instance = generator.info.existing[id] = instance = new generator.type();
+			}
+			instance = generator.info.existing[id];
+		} else {
+			instance = new generator.type();
+		}
 		
 		// constructors
 		instance.__context__ = { generator:generator, info:info, args:[a,b,c,d,e,f,g,h,i,j,k,l] }; //TODO inject morphers that change the args for next constructor
@@ -244,6 +253,7 @@ function Generator(mainConstr,options)
 			constructors.push(b);
 		}
 		constructors.push(mainConstr);
+		constructors[-1] = mainConstr;
 
 		// If we have base classes, make prototype based on their type
 		if (bases.length) {
@@ -317,6 +327,24 @@ function Generator(mainConstr,options)
 		return l.join("");
 	}
 	generator.toRepr = toRepr;
+
+	function restrict(restrictions) {
+		if (restrictions.singleton) {
+			this.info.existing = {};
+			this.info.identifier = function() {
+				return 0;
+			}
+		}
+		else if (restrictions.identifier) {
+			var fn = typeof restrictions.identifier == "string"? restrictions.identifier : "identifier";
+			this.info.identifier = this.info.constructors[-1][fn];
+			this.info.existing = {};
+		}
+		else if (restrictions.size != undefined) {
+			
+		}
+	}
+	generator.restrict = restrict;
 
 	// Future calls will return this generator
 	mainConstr.__generator__ = generator;
