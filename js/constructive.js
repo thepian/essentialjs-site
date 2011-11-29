@@ -180,19 +180,6 @@ function Generator(mainConstr,options)
 		return instance;
 	}
 
-	function singletonGenerator(a,b,c,d,e,f,g,h,i,j,k,l) {
-		if (info.options.singleton == null) {
-			var instance = info.singleton = new generator.type();
-
-			// constructors
-			instance.__context__ = { generator:generator, info:info, args:[a,b,c,d,e,f,g,h,i,j,k,l] }; //TODO inject morphers that change the args for next constructor
-			for(var i=0,g; g=info.constructors[i]; ++i) {
-				info.constructors[i].apply(instance,instance.__context__.args);
-			}
-			delete instance.__context__;
-		}
-		return info.singleton;
-	}
 
 	function simpleGenerator(a,b,c,d,e,f,g,h,i,j,k,l) {
 		var instance = mainConstr.apply(generator,arguments);
@@ -206,9 +193,6 @@ function Generator(mainConstr,options)
 		}
 	}
 	
-	// pooled generator
-	//TODO
-
 	// Make the generator with type annotations
 	var generator = (function(args){
 		// mark end of constructor arguments
@@ -330,18 +314,35 @@ function Generator(mainConstr,options)
 
 	function restrict(restrictions) {
 		if (restrictions.singleton) {
+			this.info.singleton = true;
+			this.info.lifecycle = restrictions.lifecycle;
 			this.info.existing = {};
 			this.info.identifier = function() {
 				return 0;
+			}
+			if (!this.info.restricted) {
+				Generator.restricted.push(generator);
+				this.info.restricted = true;
 			}
 		}
 		else if (restrictions.identifier) {
 			var fn = typeof restrictions.identifier == "string"? restrictions.identifier : "identifier";
 			this.info.identifier = this.info.constructors[-1][fn];
 			this.info.existing = {};
+			if (!this.info.restricted) {
+				Generator.restricted.push(generator);
+				this.info.restricted = true;
+			}
 		}
 		else if (restrictions.size != undefined) {
 			
+			if (!this.info.restricted) {
+				Generator.restricted.push(generator);
+				this.info.restricted = true;
+			}
+		}
+		else {
+			//TODO remove from restricted list
 		}
 	}
 	generator.restrict = restrict;
@@ -352,49 +353,8 @@ function Generator(mainConstr,options)
 	return generator;
 };
 
-
-Generator.setVariantGenerator = function(mainConstr,variant,fGenerator,mHandlers,pConstruction,v1,v2,v3,v4)
-{
-	variant = variant || null; // defaults to null
-	
-	// ensure that variants map is present on base constructor
-	mainConstr.generator_variants = mainConstr.generator_variants || {}; 
-
-	mainConstr.generator_variants[variant] = { 
-		generator: fGenerator,
-		handlers: mHandlers || {},
-		construction: pConstruction || [],
-		additional: [v1,v2,v3,v4] 
-	}; 
-};
-
-/**
- * Configure the base constructor to generate a singleton of a specific variant
- */
-Generator.setSingleton = function(mainConstr,variant)
-{
-	// ensure that variants map is present on base constructor
-	mainConstr.generator_variants = fConstructor.generator_variants || {}; 
-	mainConstr.generator_variants[null] = fConstructor.generator_variants[null] || {};
-	
-	mainConstr.generator_variants[null].default_variant = variant || null; // defaults to null
-	mainConstr.generator_variants[null].singleton = null;
-};
-
- 
-/**
- * Configure the base constructor to generate a instances of a specific variant limited by a pool size
- */
-Generator.setPoolSize = function(mainConstr,variant,nSize)
-{
-	// ensure that variants map is present on base constructor
-	mainConstr.generator_variants = mainConstr.generator_variants || {}; 
-	mainConstr.generator_variants[null] = mainConstr.generator_variants[null] || {};
-	
-	mainConstr.generator_variants[null].default_variant = variant || null; // defaults to null
-	mainConstr.generator_variants[null].pool = {};
-	mainConstr.generator_variants[null].pool_size = nSize;
-};
+/* List of generators that have been restricted */
+Generator.restricted = [];
 
 // types for describing generator arguments and generated properties
 (function(){
@@ -448,6 +408,83 @@ Generator.setPoolSize = function(mainConstr,variant,nSize)
 	essential.set("ArrayType",Generator(ArrayType,Type));
 	essential.namespace.Type.variant("Array",essential.namespace.ArrayType);
 	
+	function instantiatePageSingletons()
+	{
+		for(var i=0,g; g = Generator.restricted[i]; ++i) {
+			if (g.info.lifecycle == "page") {
+				g();
+			}
+		}
+	}
+
+	function discardRestricted()
+	{
+		for(var i=0,g; g = Generator.restricted[i]; ++i) {
+			var discarded = g.info.constructors[-1].discarded;
+			for(var n in g.info.existing) {
+				var instance = g.info.existing[n];
+				if (discarded) {
+					discarded.call(g,instance);
+				}
+			}
+			g.info.constructors[-1].__generator__ = undefined;
+			g.__generator__ = undefined;
+		}
+	}
+
+	function fireDomReady()
+	{
+		instantiatePageSingletons();
+	}
+	function fireLoad()
+	{
+		
+	}
+	function fireBeforeUnload()
+	{
+		discardRestricted();
+	}
+
+	function listenForDomReady() 
+	{
+	  var u = navigator.userAgent.toLowerCase();
+	  var ie = /*@cc_on!@*/false;
+	  if ((/webkit/.test(u)) || (/mozilla/.test(u) && !/(compatible)/.test(u)) || (/opera/.test(u))) {
+	    // opera/moz
+	    document.addEventListener("DOMContentLoaded",fireDomReady,false);
+	  } else if (ie) {
+	    // IE
+	    (function (){ 
+	      var tempNode = document.createElement('document:ready'); 
+	      try {
+	        tempNode.doScroll('left'); 
+	        fireDomReady(); 
+	        tempNode = null; 
+	      } catch(e) { 
+	        setTimeout(arguments.callee, 0); 
+	      } 
+	    })();
+	  } else {
+	    window.onload = fireDomReady;
+	  }
+	}
+
+	if (window.device) {
+		//TODO PhoneGap support
+	}
+	else {
+		listenForDomReady();		
+		if (window.addEventListener) {
+			window.addEventListener("load",fireLoad,false);
+		} else {
+			window.attachEvent("onload",fireLoad);
+		}
+		if (window.addEventListener) {
+			window.addEventListener("beforeunload",fireBeforeUnload,false);
+		} else {
+			window.attachEvent("onbeforeunload",fireBeforeUnload);
+		}
+	}
 })();
 
 

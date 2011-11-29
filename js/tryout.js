@@ -38,7 +38,7 @@ function tryoutInput() {
 	} , 1000);
 }
 
-function enhanceTryout() {
+function TryoutEnhancer() {
     var scripts = document.getElementsByTagName("script");
     for(var i=0,s; s = scripts[i]; ++i) if (s.getAttribute("type") == "tryout/javascript") {
         var others = document.getElementsByName(s.getAttribute("name"));
@@ -57,7 +57,8 @@ function enhanceTryout() {
     }
     
 }
+TryoutEnhancer.discarded = function(instance) {
+}
+Generator(TryoutEnhancer).restrict({ singleton:true, lifecycle:"page" });
 
-	if (window.attachEvent) window.attachEvent("onload",enhanceTryout);
-	else window.addEventListener("load",enhanceTryout,false);
 })();
