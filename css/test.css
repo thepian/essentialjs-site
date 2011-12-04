@@ -31,7 +31,7 @@ body {
 
 .fullwidth {
     position:relative;
-    background-color:white;
+    background: white url("data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADxJREFUeNpMjEkOADAIAtH04P8/qzcq3VISYwZEy0wCsIiAVFUcMnrYsLbYsfUMgZ8avwCuH/fiBlOAAQAQWBTZ4wlu4wAAAABJRU5ErkJggg==");
 }
 
 header h1 {
@@ -61,6 +61,9 @@ footer .copyright img {
     vertical-align: -4px;
 }
 
+section {
+	margin-top: 2em;
+}
 /* ** ** Header Styles ** ** */
 section h2 a, section h3 a, section h4 a, section h5 a,
 section h2, section h3, section h4, section h5 {
@@ -156,17 +159,61 @@ blockquote.download .btn small {
 	display: inline-block;
 	font-family: 'CaviarDreamsRegular', Helvetica, sans-serif;
 	font-size: 20px;
-	background-color: #70AAE2;
+	vertical-align: top;
 	width:120px;
 	height:80px;
 	padding: 40px 20px;
 	border: 2px solid #8FB9E2;
 	border-radius: 80px;
+	background-color: #70AAE2;
 	color: white;
 	text-decoration: none;
 	text-align: center;
 	margin: 20px;
 }
+
+.infocircle {
+	display: inline-block;
+	font-family: 'CaviarDreamsRegular', Helvetica, sans-serif;
+	font-size: 20px;
+	vertical-align: top;
+	width:120px;
+	height:80px;
+	padding: 40px 20px;
+	border: 2px solid #8FB9E2;
+	border-radius: 80px;
+	color: #70AAE2;
+	background-color: white;
+	text-decoration: none;
+	text-align: center;
+	margin: 20px;
+}
+
+nav.the-project {
+	margin-top: 40px;
+}
+nav.hello {
+	position: absolute;
+	width: 100%;
+  padding-top:1em;
+  transition: top .3s;
+  -moz-transition: top .3s;
+  -webkit-transition: top .3s;
+  -o-transition: top .3s;
+}
+
+section#tryout .comment {
+  position: absolute;
+  left: 56%;
+  width: 44%;
+}
+section#tryout .comment blockquote {
+  font-size: 1em;
+}
+.codeblock {
+	font: 1em 'andale mono', 'lucida console', monospace;
+}
+
 
 nav.the-project {
 	position:relative;
@@ -188,4 +235,21 @@ nav.the-project .links {
 
 .center {
 	text-align: center;
+}
+
+.slide1 {
+	position:absolute;
+	left:0; width:100%;
+}
+.slide2 {
+	position:absolute;
+	left:100%; width:100%;
+}
+.slide3 {
+	position:absolute;
+	left:200%; width:100%;
+}
+.slide4 {
+	position:absolute;
+	left:300%; width:100%;
 }

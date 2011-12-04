@@ -8,24 +8,6 @@ guesswho: itsme
 
 </div>
 <div class="col_12 col">
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li>
-		<figure class="postdate">
-			<!-- 
-			<span class="postweekday">{{ post.date | date: "%w" }}</span>
-			-->
-			<span class="postmonth">{{ post.date | date: "%b" }}</span>
-			<span class="postday">{{ post.date | date: "%d" }}</span>
-		</figure>
-		<h4><a href="{{ post.url }}">{{ post.title }}</a>
-			<br><small style="color:#888;">by {{ post.author }}</small>
-			</h4>
-
-		{{ post.content }}
-	</li>
-    {% endfor %}
-  </ul>
 </div>
 
 <div class="col_4 col" style="overflow:visible;">

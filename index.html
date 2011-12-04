@@ -2,44 +2,6 @@
 layout: frontpage
 rooturi: http://essentialjs.com
 ---
-<style>
-blockquote.comment {
-  position:absolute;
-  right:0;
-  width: 40%;
-  font-size:1.1em;
-}
-section.hello {
-  padding-top:1em;
-}
-section.hello pre {
-  width: 50%;
-}
-section.hello .comment {
-  position: absolute;
-  left: 56%;
-  width: 44%;
-}
-section.hello .comment blockquote {
-  font-size: 1em;
-}
-.codeblock {
-	font: 1em 'andale mono', 'lucida console', monospace;
-}
-</style>
-
-<script>
-var NumberType = Resolver("essential")("Type").variant("Number");
-var StringType = Resolver("essential")("Type").variant("String");
-var DateType = Resolver("essential")("Type").variant("Date");
-var ObjectType = Resolver("essential")("Type").variant("Object");
-function Shape(options) {}
-Shape.args = [
-  ObjectType({name:"options",preset:true})      
-];
-Resolver().set("shapes.Shape", Generator(Shape));
-</script>
-
 <script name="declare-shapes" type="tryout/javascript">
 function Rectangle(width,height,options) {}
 Rectangle.args = [
@@ -59,6 +21,7 @@ Resolver().set("shapes.Circle", Generator(Circle,Shape));
 Generator(Shape).variant("circle",Generator(Circle));  
 </script>
 
+
 <nav class="the-project">
     <span class="prodname">Essential JavaScript</span>
     <div class="links">
@@ -67,21 +30,25 @@ Generator(Shape).variant("circle",Generator(Circle));
     </div>
 </nav>
 
-<section class="hello">
+<nav class="hello" id="hello" data-class=":hello scrolled-above-fold:popped-out">
   <div class="center">
+  <a class="infocircle" href="#tryout">Tryout<br>and<br>News</a>
   <a class="circle" href="#oojs">Better Object Orientation</a>
   <a class="circle" href="#snippets">Live <br>HTML5 Snippets</a>
   <a class="circle" href="#pages">Combining HTML5 Sectioning</a>
   </div>
+</nav>
+<div role="tracker" style="height:20em" data-track-heights="hello"></div>
 
-<h2>Declaring a Generator</h2>
-{% highlight javascript %}
-function Shape(options) {}
-Shape.arguments = [
-  ObjectType({name:"options",preset:true})      
-];
-Resolver().set("shapes.Shape", Generator(Shape));
-{% endhighlight %}
+<section id="tryout" class="slide1">
+  <h2>Declaring a Generator</h2>
+  {% highlight javascript %}
+  function Shape(options) {}
+  Shape.arguments = [
+    ObjectType({name:"options",preset:true})      
+  ];
+  Resolver().set("shapes.Shape", Generator(Shape));
+  {% endhighlight %}
 
   <div class="comment">
     <blockquote class="tryout" name="declare-shapes-error"></blockquote>
@@ -89,9 +56,33 @@ Resolver().set("shapes.Shape", Generator(Shape));
     <blockquote name="declare-shapes-code"></blockquote>
   </div>
   <textarea class="tryout codeblock" name="declare-shapes" cols="60" rows="20" ></textarea>
+
+  <ul class="posts">
+    {% for post in site.posts %}
+      {% for cat in post.category %} {% if cat == "news" %} 
+
+      <li>
+    <figure class="postdate">
+      <!-- 
+      <span class="postweekday">{{ post.date | date: "%w" }}</span>
+      -->
+      <span class="postmonth">{{ post.date | date: "%b" }}</span>
+      <span class="postday">{{ post.date | date: "%d" }}</span>
+    </figure>
+    <h4><a href="{{ post.url }}">{{ post.title }}</a>
+      <br><small style="color:#888;">by {{ post.author }}</small>
+      </h4>
+
+    {{ post.content }}
+  </li>
+
+    {% endif %}{% endfor %}
+    {% endfor %}
+  </ul>
 </section>
 
-<section id="oojs">
+<section id="oojs" class="slide2">
+  <div id="declaring">
   <h2>Better Object Orientation</h2>
   <p>JavaScript has great fundamental support for encapsulation and inheriance. To provide better decoupling
   several principles can be applied such as: Aspects, Dependency Injection, Introspection. EssentialJS 
@@ -135,9 +126,9 @@ So you want a concrete instance of a shape constructor. The simple solution is [
 Occasionally you don't want to a particular variant, but rather use the default one, and allow configurations
 to determine which constructor to use. [Generating a Default Variant](Generating a Variant).
 </p>
-</section>
+</div>
 
-<section id="namespaces">
+<div id="namespaces">
 <h2>Namespaces and Globals</h2>
 
 <p>When your page needs more than a couple of common variables and functions, you need a way to divide them into packages.
@@ -175,9 +166,9 @@ You can assign an entry in a package using a single statement.
 
 <a href="https://github.com/essentialjs/EssentialJS/wiki/Namespaces-and-Globals">More about Namespaces and Globals</a>
 
-</section>
+</div>
 
-<section id="preset">
+<div id="preset">
 <h2>Generating Pre-Initialised Object</h2>
       <p>By default a generated object starts out blank before the constructors are called. You can fill in member variables with argument values. This will seed the members before the base constructors are called.</p>
 
@@ -199,9 +190,10 @@ before the constructors are called. A name can be specified or true for the argu
 <p>Variants can be configured separately. This allows you to change the behaviour of your web app without changing
 the program code. You can try out a better version of Rectangle without changing the existing implementation.
 </p>
+</div>
 </section>
 
-<section id="snippets">
+<section id="snippets" class="slide3">
   <h2>Live HTML Snippets</h2>
   <p>When you make a highly interactive web page you can benefit from a concept used on the server side
   templates. Taking advantage of the browsers built-in DOM manipulation function Snippets allow you to
@@ -210,7 +202,7 @@ the program code. You can try out a better version of Rectangle without changing
   <a>More about this later</a>
 </section>
 
-<section id="pages">
+<section id="pages" class="slide4">
   <h2>Combined Sectioning</h2>
   <p>HTML5 defines new tags for sectioning the outline of a page. In a highly interactive web page you
   want to swap parts of the page in and out on the fly rather than reloading the whole page. To do this
@@ -218,3 +210,6 @@ the program code. You can try out a better version of Rectangle without changing
   </p>
   <a>More about this later</a>
 </section>
+
+<div role="tracker" style="height:60em" data-track-heights="tryout oojs snippets pages"></div>
+
