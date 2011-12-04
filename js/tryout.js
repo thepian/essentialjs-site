@@ -1,4 +1,15 @@
 (function(){
+
+var NumberType = Resolver("essential")("Type").variant("Number");
+var StringType = Resolver("essential")("Type").variant("String");
+var DateType = Resolver("essential")("Type").variant("Date");
+var ObjectType = Resolver("essential")("Type").variant("Object");
+function Shape(options) {}
+Shape.args = [
+  ObjectType({name:"options",preset:true})      
+];
+Resolver().set("shapes.Shape", Generator(Shape));
+
 	
 function tryoutUpdate(value,name) {
 	var errorQ = document.querySelector("blockquote[name="+ name +"-error]");
