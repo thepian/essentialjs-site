@@ -210,6 +210,16 @@ nav.hello.popped-out {
 	border-bottom: 2px solid #8FB9E2;
 }
 
+.switcher {
+	position: relative;	
+	width:100%;
+	overflow:hidden;
+}
+.content {
+	position: relative;	
+	width:400%;
+}
+
 section#tryout .comment {
   position: absolute;
   left: 56%;
@@ -248,16 +258,20 @@ nav.the-project .links {
 .slide1 {
 	position:absolute;
 	left:0; width:100%;
+	padding-top: 20em;
 }
 .slide2 {
 	position:absolute;
 	left:100%; width:100%;
+	padding-top: 20em;
 }
 .slide3 {
 	position:absolute;
 	left:200%; width:100%;
+	padding-top: 20em;
 }
 .slide4 {
 	position:absolute;
 	left:300%; width:100%;
+	padding-top: 20em;
 }
