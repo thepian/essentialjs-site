@@ -1,0 +1,17 @@
+/** 
+ *  @author: Henrik Vendelbo
+ *  @website: essentialjs.com
+ */
+
+@import "css3-mixins/main.less";
+@import "addons.less";
+@import "definitions.less";
+
+.reset_html5doctor();
+/* TODO remove 100% font size ? */
+
+body {
+    position: relative; // Otherwise bottom-edge doesn't work
+    overflow-x: hidden; // for rounding errors of percentages
+    
+}

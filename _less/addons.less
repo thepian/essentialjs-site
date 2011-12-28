@@ -1,0 +1,52 @@
+/* INSTALL ADDONS
+ * Here you can add imports to install addons that
+ * reside in subfolders of the addons folder. This
+ * enables everyone to write addons to the framework
+ * and easy installation for the end user.
+ */
+
+.opacity(@fraction) {
+     -moz-opacity: @fraction; 
+     filter: e(%("alpha(opacity=%s)",100 * @fraction)); 
+     opacity: @fraction;
+}
+
+@import "less-addons/reset/install.less";
+@import "less-addons/debug.less";
+@import "less-addons/nav/install.less";
+@import "less-addons/orientation.less";
+@import "less-addons/divide_width.less";
+/*
+@import "less-addons/posts.less"; // TODO make macro 
+@import "less-addons/forms.less";
+
+@import "less-addons/type/fonts.less";
+*/
+
+/**
+ * Text syntax highlights and general formatting
+ */
+@import "less-addons/type/typography.less";
+/*
+@import "../dev-time/less-addons/text/syntax.less";
+@import "../dev-time/less-addons/text/pygments.less";
+*/
+ 
+/**
+ * jQuery plugin styling support
+ */
+/*
+@import "less-addons/jQuery/jScrollPane.less";
+@import "less-addons/jQuery/jquery.fancybox.less";
+@import "less-addons/jQuery/jquery.tweet.less";
+*/
+
+/**
+ * Theming
+ */
+@import "less-addons/theme/install.less";
+
+.thatch() {
+	background: white url("data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADxJREFUeNpMjEkOADAIAtH04P8/qzcq3VISYwZEy0wCsIiAVFUcMnrYsLbYsfUMgZ8avwCuH/fiBlOAAQAQWBTZ4wlu4wAAAABJRU5ErkJggg==");
+}
+

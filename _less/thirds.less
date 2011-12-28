@@ -1,0 +1,116 @@
+/** 
+ *  @author: Henrik Vendelbo
+ *  @website: essentialjs.com
+ */
+
+@import "css3-mixins/main.less";
+@import "addons.less";
+
+/* ================== SETUP THE FRAMEWORK  ==================
+ * Here you can see the basic three setup variables that most
+ * websites will need to set in order to use the framework.
+ *
+ * it is also important to set up those vars here so that all
+ * imported .less files you create build upon this foundation
+ */
+ 
+@setup_images_path: "images";
+@setup_resources_path: "css";
+
+/**
+ * Default constants used in the Two Thirds fundamental as well as the themes.
+ */
+ 
+/* The vertical rhythm is used to give your webpages a consistent
+ * look. The whole grid system relies on this value to calculate
+ * gaps, spans and so on. Basically this defines the row-height of
+ * the grid in pixels and aligns all elements in the flow of the grid. 
+ */
+ @normal_read_vertical_rhythm: 1.5;
+ @light_read_vertical_rythm: 2;
+ @dense_read_vertical_rythm: 1.2;
+
+/* Here you can control the overall font size. Not that this value 
+ * strongly correlates with the vertical rhythm. If you make these
+ * two values too different your text flow will look ugly
+ */
+@theme_font_size: 13;
+
+/* Here we define the standard styles that are applied all screens  */
+@left_overhang: 80px;
+
+.reset_html5doctor();
+/* TODO remove 100% font size ? */
+
+body {
+    position: relative; // Otherwise bottom-edge doesn't work
+    overflow-x: hidden; // for rounding errors of percentages
+    
+}
+
+/* 
+ * Base layout for SuperVGA sizes, default for older browser
+ */
+.constrained {
+    .divide_width_thirds_commons();
+    .divide_width_thirds(1200px,800px);
+    overflow:visible; /* allow top-overhang navigation to be visible */
+
+    /* used for copyright in footer */
+    .centered-content {
+        position:relative;
+        text-align: center;
+        overflow: hidden;
+
+        margin: 0 auto;
+    }
+}
+
+.four-columns {
+    .divide_four_columns(1200px,800px);
+}
+
+nav.top-overhang {
+    .nav_top_overhang();
+}
+aside nav.top-overhang {
+    left:0;
+}
+
+body > .top-edge {
+    position:absolute;
+    top:0; left:0; width:100%;
+    overflow: visible;
+    
+    .normal_list_rhythm();
+}
+
+body > .bottom-edge {
+    // relies on body position relative
+    position:absolute;
+    bottom:0; left:0; width:100%;
+}
+
+/* Modern browser in a large window */
+@media only screen and (min-width: 1200px) {
+    .constrained {
+        .divide_width_thirds(1800px,1200px);
+    }
+    .four-columns {
+        .divide_four_columns(1800px,1200px);
+    }
+}
+
+/* Modern browser on a iPad any orientation (defaults to 980px width)*/
+@media only screen and (device-width: 768px) {
+    .constrained {
+        .divide_width_thirds_mobile(1024px,980px);
+    }
+    .four-columns {
+        .divide_four_columns(1024px,980px);
+    }
+    
+    .top-edge, .bottom-edge {
+        max-width: 980px;
+    }
+}
