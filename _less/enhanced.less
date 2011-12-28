@@ -13,6 +13,10 @@
 .constrained {
     .divide_width_thirds_commons();
     .divide_width_thirds(1200px,800px);
+
+    .divide_width_fourths_commons();
+    .divide_width_fourths(1200px,800px);
+    
     overflow:visible; /* allow top-overhang navigation to be visible */
 
     /* used for copyright in footer */
@@ -54,6 +58,7 @@ body > .bottom-edge {
 @media only screen and (min-width: 1200px) {
     .constrained {
         .divide_width_thirds(1800px,1200px);
+        .divide_width_fourths(1800px,1200px);
     }
     .four-columns {
         .divide_four_columns(1800px,1200px);
@@ -64,6 +69,7 @@ body > .bottom-edge {
 @media only screen and (device-width: 768px) {
     .constrained {
         .divide_width_thirds_mobile(1024px,980px);
+        .divide_width_fourths_mobile(1024px,980px);
     }
     .four-columns {
         .divide_four_columns(1024px,980px);
@@ -73,3 +79,11 @@ body > .bottom-edge {
         max-width: 980px;
     }
 }
+
+@media screen and (max-device-width: 480px) {
+  /* All Capable Mobile Browser (Opera Mobile, iPhone Safari, Android Chrome) CSS goes here */
+  
+  /* Prevent iOS, WinMobile from adjusting font size */
+  html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; } 
+}
+

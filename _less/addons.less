@@ -5,12 +5,6 @@
  * and easy installation for the end user.
  */
 
-.opacity(@fraction) {
-     -moz-opacity: @fraction; 
-     filter: e(%("alpha(opacity=%s)",100 * @fraction)); 
-     opacity: @fraction;
-}
-
 @import "less-addons/reset/install.less";
 @import "less-addons/debug.less";
 @import "less-addons/nav/install.less";
@@ -31,6 +25,7 @@
 @import "../dev-time/less-addons/text/syntax.less";
 @import "../dev-time/less-addons/text/pygments.less";
 */
+@import "less-addons/utils.less";
  
 /**
  * jQuery plugin styling support
@@ -45,8 +40,4 @@
  * Theming
  */
 @import "less-addons/theme/install.less";
-
-.thatch() {
-	background: white url("data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADxJREFUeNpMjEkOADAIAtH04P8/qzcq3VISYwZEy0wCsIiAVFUcMnrYsLbYsfUMgZ8avwCuH/fiBlOAAQAQWBTZ4wlu4wAAAABJRU5ErkJggg==");
-}
 
