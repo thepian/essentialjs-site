@@ -1,5 +1,10 @@
-<!doctype html>
-<html lang="en" class="no-js">
+<!DOCTYPE HTML>
+<!--[if IEMobile 7 ]><html class="no-js no-horizontal-scroll iem7"><![endif]-->
+<!--[if lt IE 7 ]><html class="no-js no-horizontal-scroll ie6" lang="en"><![endif]-->
+<!--[if IE 7 ]><html class="no-js no-horizontal-scroll ie7" lang="en"><![endif]-->
+<!--[if IE 8 ]><html class="no-js no-horizontal-scroll ie8" lang="en"><![endif]-->
+<!--[if (gte IE 9)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js no-horizontal-scroll"  lang="en"><!--<![endif]-->
+
 <head>
   <meta charset="utf-8">
 
@@ -44,43 +49,22 @@
   <!-- general stylesheet contains some default styles, you do not need this, but it helps you keep a uniform style -->
   <link rel="stylesheet" type="text/css" href="/css/general.css" media="screen" />
   
-  <!-- grid's will help you keep your website appealing to your users, view 52framework.com website for documentation -->
-  <link rel="stylesheet" type="text/css" href="/css/grid.css" media="screen" />
-  
   <link rel="stylesheet" type="text/css" media="screen, projection" charset="utf-8" href="/css/twitter.css" />
 
   <link rel="stylesheet" type="text/css" media="screen, projection" charset="utf-8" href="/css/test.css" />
-
-  <link rel="stylesheet" type="text/css" media="screen, projection" charset="utf-8" href="/css/pygments.css" />
-
-  <link rel="stylesheet" type="text/css" href="/css/jScrollPane.css" />
 
   <!-- link href="http://feeds.feedburner.com/essentialjs" type="application/atom+xml" rel="alternate" -->	
   <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml" />
 
 </head>
 
-<!-- http://paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<body>
 
-<!--[if lt IE 7 ]> <body class="ie6"> <![endif]-->
-<!--[if IE 7 ]>    <body class="ie7"> <![endif]-->
-<!--[if IE 8 ]>    <body class="ie8"> <![endif]-->
-<!--[if IE 9 ]>    <body class="ie9"> <![endif]-->
-<!--[if gt IE 9]>  <body>             <![endif]-->
-<!--[if !IE]><!--> <body>         <!--<![endif]-->
-
-	<div class="fullwidth">
+	<div class="constrained fabric normal-read">
 		
-	<header class="row">
-		<div class="col_12 col using">
-  <blockquote class="comment">
-      Fetch the previously defined Rectangle and Circle <a href="#variant">generator variant</a> of 
-      the <a href="#concrete">concrete generator</a> for Shape, 
-      and make a new object.
-      You can use an <a href="#namespaces">Alternate or Private Namespace</a> by passing
-      a namespace in the Resolver() call.
-  </blockquote>
+	<header class="thirds-content">
 
+  <div class="third"> 
 {% highlight javascript %}
 var Shape = Resolver()("shapes.Shape");
 var Rectangle = Shape.variant("rectangle");
@@ -89,45 +73,38 @@ var Circle = Shape.variant("circle");
 var eight = Circle(8, {stroke:"recessed"});
 {% endhighlight %}
 
-		</div>
-		<div class="col_4 col">
-		    <blockquote class="download">
-		    Better and leaner web site coding
-		    with Namespaces, Generators and HTML Snippets.
-		    
-		    <a href="https://raw.github.com/essentialjs/EssentialJS/master/essential.min.js" class="btn">Download <big>&#x21e9;</big> <small>v0.9 - minified 4k</small></a>
-		    </blockquote>
-		</div>
+  </div>
+  <div class="third">
+    <blockquote class="comment">
+        Fetch the previously defined Rectangle and Circle <a href="#variant">generator variant</a> of 
+        the <a href="#concrete">concrete generator</a> for Shape, 
+        and make a new object.
+        You can use an <a href="#namespaces">Alternate or Private Namespace</a> by passing
+        a namespace in the Resolver() call.
+    </blockquote>
+  </div>
+
+  <div class="third">
+    <blockquote class="download">
+    Better and leaner web site coding
+    with Namespaces, Generators and HTML Snippets.
+
+    <a href="https://raw.github.com/essentialjs/EssentialJS/master/essential.min.js" class="btn">Download <big>&#x21e9;</big> <small>v0.9 - minified 4k</small></a>
+    </blockquote>
+  </div>
+
 	</header>
 	</div>
 
-	<div class="fullwidth">
-	<section class="row">
+	<div class="constrained fabric normal-read">
+	<section class="thirds-content">
 	{{ content }}
 	</section>
 	</div>
 	
-	<footer class="row">
-	<div class="col_8 inlined">
-		<!-- 
-	  <p>
-	    {% if site.author %}{{site.author}} {% endif %}<br/>
-	     {% if site.email %}{{site.email}} {% endif %}<br/>
-	  </p>
-	-->
-	</div>
-	<div class="col_4 inlined">
-	</div>
-	<div class="col_4 inlined">
-		<!-- 
-	  <a href="{{site.url}}/atom.xml" class="noul">
-	    <img src="/images/rss.png" alt="Subscribe to RSS Feed" />
-	  </a>
-	-->
-	</div>
-	<div class="clear"></div>
-	
-	<div class="col_16 copyright">
+	<footer class="constrained">
+		
+	<div class="thirds-content copyright">
 		Essential JavaScript is powered by <a target="_new" href="http://pages.github.com/">Github Pages</a>. <br>
 		Essential Javascript a trademark and copyright of Right Here Inc, 2010 - 2011.<br>
 		This site design is 
