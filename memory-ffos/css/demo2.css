@@ -1,0 +1,227 @@
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.demo2 {
+  /* -- make sure to declare a default for every property that you want animated -- */
+
+  /* -- general styles, including Y axis rotation -- */
+
+  /* -- X axis rotation for click panel -- */
+
+  /* -- contact panel -- */
+
+  /* -- diagonal axis rotation -- */
+
+  /* -- swing like a gate -- */
+
+}
+.demo2 .panel {
+  float: left;
+  width: 200px;
+  height: 200px;
+  margin: 20px;
+  position: relative;
+  font-size: .8em;
+  -webkit-perspective: 600px;
+  -moz-perspective: 600px;
+}
+.demo2 .panel .front {
+  top: 0;
+  left: 0;
+  z-index: 900;
+  position: absolute;
+  -webkit-transform: rotateX(0deg) rotateY(0deg);
+  -webkit-transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  -moz-transform: rotateX(0deg) rotateY(0deg);
+  -moz-transform-style: preserve-3d;
+  -moz-backface-visibility: hidden;
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.demo2 .panel.flipped .front {
+  z-index: 900;
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+}
+.demo2 .panel .back {
+  top: 0;
+  left: 0;
+  z-index: 800;
+  position: absolute;
+  -webkit-transform: rotateY(-180deg);
+  -webkit-transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  -moz-transform: rotateY(-180deg);
+  -moz-transform-style: preserve-3d;
+  -moz-backface-visibility: hidden;
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.demo2 .panel.flipped .back {
+  -webkit-transform: rotateX(0deg) rotateY(0deg);
+  -moz-transform: rotateX(0deg) rotateY(0deg);
+}
+.demo2 .panel .front {
+  float: none;
+  border: 1px solid #ccc;
+  background: #6b7077;
+  text-align: center;
+  -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.9);
+  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.9);
+}
+.demo2 .panel.flipped .front {
+  border-color: #eee;
+  background: #333;
+  -moz-box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+.demo2 .panel .back {
+  float: none;
+  border: 1px solid #ccc;
+  background: #333;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+}
+.demo2 .panel.flipped .back {
+  z-index: 1000;
+  background: #80868d;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+.demo2 .click .front {
+  cursor: pointer;
+  -webkit-transform: rotateX(0deg);
+  -moz-transform: rotateX(0deg);
+}
+.demo2 .click.flip .front {
+  -webkit-transform: rotateX(180deg);
+  -moz-transform: rotateX(180deg);
+}
+.demo2 .click .back {
+  cursor: pointer;
+  -webkit-transform: rotateX(-180deg);
+  -moz-transform: rotateX(-180deg);
+}
+.demo2 .click.flip .back {
+  -webkit-transform: rotateX(0deg);
+  -moz-transform: rotateX(0deg);
+}
+.demo2 .contact {
+  width: 290px;
+  height: 240px;
+}
+.demo2 .diagonal .front {
+  -webkit-transform: rotate3d(45, 45, 0, 0deg);
+  -moz-transform: rotate3d(45, 45, 0, 0deg);
+}
+.demo2 .diagonal .front:hover {
+  /* for the patient :) */
+
+  -webkit-transition-duration: 10s;
+  -moz-transition-duration: 10s;
+  -webkit-transition-delay: 0s;
+  -moz-transition-delay: 0s;
+  -webkit-transform: rotate3d(45, 45, 0, -36deg);
+  -moz-transform: rotate3d(45, 45, 0, -36deg);
+}
+.demo2 .diagonal.flip .front,
+.demo2 .diagonal.flip .front:hover {
+  -webkit-transform: rotate3d(-45, -45, 0, 150deg);
+  -moz-transform: rotate3d(-45, -45, 0, 150deg);
+  -o-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.demo2 .diagonal .front .message {
+  opacity: 0;
+  font-size: 1.4em;
+}
+.demo2 .diagonal .front:hover .message {
+  opacity: .4;
+  -webkit-transition-duration: 12s;
+  -moz-transition-duration: 12s;
+  -webkit-transition-delay: 4s;
+  -moz-transition-delay: 4s;
+  -webkit-transform: translateX(-30px) translateZ(40px) scale(1.4);
+  -moz-transform: translateX(-30px) translateZ(40px) scale(1.4);
+}
+.demo2 .diagonal.flip .front .message {
+  -webkit-transition-duration: 1s;
+  -webkit-transform: translateZ(0px) scale(0.5);
+}
+.demo2 .diagonal .back {
+  -webkit-transform: rotate3d(45, 45, 0, -180deg);
+  -moz-transform: rotate3d(45, 45, 0, -180deg);
+}
+.demo2 .diagonal.flip .back {
+  -webkit-transform: rotate3d(45, 45, 0, -30deg);
+  -moz-transform: rotate3d(45, 45, 0, -30deg);
+}
+.demo2 .swing .front,
+.demo2 .swing .back {
+  width: 140px;
+  -webkit-backface-visibility: visible;
+  -moz-backface-visibility: visible;
+  -webkit-transition-duration: 1s;
+  -moz-transition-duration: 1s;
+  -webkit-transform-origin: 170px 0;
+  -moz-transform-origin: 170px 0;
+}
+.demo2 .swing .front {
+  -webkit-transform: rotateY(0deg);
+  -moz-transform: rotateY(0deg);
+}
+.demo2 .swing .back {
+  background-color: #555;
+  /* hiding this side, so get darker */
+
+  -webkit-transform: rotateY(-180deg) translateX(198px) translateZ(2px);
+  -moz-transform: rotateY(-180deg) translateX(198px) translateZ(2px);
+}
+.demo2 .swing.flip .front {
+  background-color: #222;
+  /* hiding this side, so get darker */
+
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+}
+.demo2 .swing.flip .back {
+  background-color: #80888f;
+  -webkit-transform: rotateY(0deg) translateX(198px) translateZ(2px);
+  -moz-transform: rotateY(0deg) translateX(198px) translateZ(2px);
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Memory - English",
+  "description": "Memory game for the Firefox OS App Day in Zurich - 25.05.2013",
+  "launch_path": "index.html",
+  "icons": {
+    "128": "/app-icon-128.png"
+  },
+  "developer": {
+    "name": "Mozilla Switzerland",
+    "url": "http://twitter.com/MozillaCH"
+  },
+  "default_locale": "en"
+}

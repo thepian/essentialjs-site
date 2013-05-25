@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width">
+
+    <meta name="enhanced roles" content="dialog button toolbar form">
+    <link rel="stylesheet" href="css/basic.css">
+    <link rel="stylesheet" href="css/enhanced.css">
+    <script src="js/prefix|modernizr|essential.js"></script>
+    <!-- script src="http://twinkle.local:8080/target/target-script-min.js#survey"></script -->
+    <link rel="preload" type="text/javascript" src="js/impl.js" charset="utf-8">
+    <link rel="preload" type="text/javascript" src="js/uri.js" charset="utf-8">
+    <link rel="preload" type="text/javascript" src="js/form.js" charset="utf-8">
+    <link rel="preload" type="text/javascript" src="js/memory.js" charset="utf-8">
+    <link rel="no-postload" type="text/javascript" src="http://freshtranslation.com/learn/portuguese/for-travelers/latest.js" charset="utf-8">
+
+    <style>
+    body { background: #dfe;}
+
+    .formLabel {
+        vertical-align: top;
+    }
+    form table {
+        border: 1px solid #aaa;
+        background-color: #d2f870;
+    }
+
+    </style>
+</head>
+<body>
+
+    <h3 class="online-status only-offline">
+        You need an internet connection to proceed.
+    </h3>
+
+    <h3 class="online-status only-disconnected">
+        Please proceed later, there are <strong>connection</strong> errors.
+    </h3>
+
+
+    <!-- input type="file" accept="audio/*;capture=microphone" -->
+    <div role="toolbar" data-role="'generator':'app.Application'" action="controls">
+        <button name="play game">Play Game</button>
+    </div>
+
+
+    <div class="demo2">
+
+    <div class="hover panel">
+        <div class="front">
+          <div class="pad">
+        <h2>Mouse Over Me!</h2>
+        <p>
+          The effect on this box can be done using 100% CSS.<br><br>
+          The other boxes all require some Javascript, but the animation is driven by CSS3.
+        </p>
+            </div>
+        </div>
+        <div class="back">
+            <div class="pad">
+                <h2>check you on the flip side</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact panel">
+        <div class="front">
+            <h3>Contact Us</h3>
+            <address>
+                Acme, Co.<br />
+                123 Easy St.<br />
+                Austin, TX 78731
+            </address>
+            <p>Or <a class="action" href="#form">send us a message</a>
+        </div>
+        <div class="back" id="contact">
+            <div class="pad">
+                <h3>Send us a Fake Message</h3>
+                <form action="###" method="post">
+                    <p><label for="f-name">Name:</label><input id="f-name" name="f-name" type="text" /></p>
+                    <p><label for="f-email">Email:</label><input id="f-email" name="f-email" type="text" /></p>
+                    <p><label for="f-how">How did you find us?</label><select id="f-how" name="f-how"><option value="">- Pick an Option -</option><option value="internet">Internet</option></select></p>
+                    <p><label for="f-msg">Message:</label><textarea id="f-msg" name="f-msg"></textarea></p>
+                    <input type="submit" class="edit-submit" value="Fake Send Message" />
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="click panel circle">
+        <div class="front">
+            <h2>Click or tap this circle!</h2>
+        </div>
+        <div class="back">
+            <h2>Tap Again!</h2>
+        </div>
+    </div>
+
+    <div class="block panel">
+        <div class="front">
+            <a class="action">Configure Block</a>
+            <h2 id="list-title">Top Sellers</h2>
+            <ol id="list-items">
+                <li>Name 1</li>
+                <li>Name 2</li>
+                <li>Name 3</li>
+            </ol>
+        </div>
+        <div class="back">
+            <div class="pad">
+                <form action="###" method="post">
+                    <h3>Edit List</h3>
+                    <p><input type="text" name="form_title" id="form_title" value="Top Sellers" /></p>
+                    <p>Display <select name="form_items" id="form_items"><option value="1">1</option><option value="2">2</option><option value="3" selected="selected">3</option><option value="4">4</option><option value="5">5</option></select> items</p>
+                    <input type="submit" class="edit-submit" value="Save Changes" />
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="click diagonal panel">
+        <div class="front">
+            <h2><br>
+            Click or tap for<br>
+            Diagonal Rotation</h2>
+            <p class="message">woahdude</p>
+        </div>
+        <div class="back">
+            <div class="pad">
+                <h2>like a diamond in the rough</h2>
+                <p><small>yes, I'm a little crooked</small></p>
+            </div>
+        </div>
+    </div>
+
+  <div class="click swing panel">
+    <div class="front">
+      <h2>Swing like a gate</h2>
+    </div>
+    <div class="back">
+      <div class="pad">
+      <h2>Any axis is possible</h2>
+      </div>
+    </div>
+  </div>
+
+
+        
+    </div>
+
+
+    <ul class="squares" role="toolbar" action="player"
+        expanded="false" 
+        data-role="'layouter':'scatterbox'">
+
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <img src="pics/pear.jpg">
+                    <button name="A" role="button">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="B" role="button">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="C">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="D">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="E">Play</button>
+                    </div>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="F">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="G">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="H">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="I">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="J">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="K">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="L">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="M">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="J">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="J">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+        <li>
+            <div class="panel">
+                <figure class="front">
+                    <div class="content">
+                    <button name="flip">Flip</button>
+                    </div>
+                </figure>
+                <figure class="back">
+                    <div class="content">
+                    <button name="J">Play</button>
+                    </div>
+                </figure>
+            </div>
+        </li> 
+    </ul>
+
+<!-- 
+var ReadingSystem = navigator.epubReadingSystem;
+ReadingSystem.name , version, layoutStyle
+.hasFeature( "dom-manipulation","mouse-events","touch-events","spine-scripting")
+-->
+
+
+<!--
+    <dl>
+        <dt>Browser<dt>
+        <dd eval="navigator.userAgent"></dd>
+
+        <dt>appName<dt>
+        <dd eval="navigator.appName"></dd>
+
+        <dt>platform<dt>
+        <dd eval="navigator.platform"></dd>
+
+        <dt>BrowserID<dt>
+        <dd eval="navigator.id"></dd>
+
+        <dt>Language<dt>
+        <dd eval="navigator.language"></dd>
+
+        <dt>connection<dt>
+        <dd eval="navigator.connection"></dd>
+
+    <script type="application/init" >
+        var dds = parentElement.getElementsByTagName("dd");
+        for(var i=0,e; e = dds[i]; ++i) {
+            var _eval = e.getAttribute("eval");
+            if (_eval) eval("e.innerHTML = "+_eval);
+        }
+
+        if (/PhantomJS\//.test(navigator.userAgent)) {
+
+        }
+    </script>
+    </dl>
+-->
+</body>
+</html>
